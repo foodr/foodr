@@ -4,5 +4,4 @@ class User < ApplicationRecord
 	has_many :searches
 	has_many :products, through: :searches
 	has_many :ingredients, through: :products
-
 end
