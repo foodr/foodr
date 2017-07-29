@@ -18,6 +18,7 @@
 
 .byebug_history
 
+/foodr-backend/log
 /foodr-backend/tmp
 
 .env
