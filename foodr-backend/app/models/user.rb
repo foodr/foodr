@@ -6,4 +6,8 @@ class User < ApplicationRecord
 	has_many :ingredients, through: :products
 
   validates :email, uniqueness: true
+
+  def grade
+
+  end
 end
