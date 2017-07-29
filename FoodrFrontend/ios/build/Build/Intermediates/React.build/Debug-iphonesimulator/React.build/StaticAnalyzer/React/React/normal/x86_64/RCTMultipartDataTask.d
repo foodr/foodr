@@ -1,0 +1,4 @@
+dependencies: \
+  /Users/kanankalelker/Desktop/DBC/p3/finalProject/foodr/FoodrFrontend/node_modules/react-native/React/Base/RCTMultipartDataTask.m \
+  /Users/kanankalelker/Desktop/DBC/p3/finalProject/foodr/FoodrFrontend/node_modules/react-native/React/Base/RCTMultipartDataTask.h \
+  /Users/kanankalelker/Desktop/DBC/p3/finalProject/foodr/FoodrFrontend/node_modules/react-native/React/Base/RCTMultipartStreamReader.h
