@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get 'ingredients/:id', to: 'ingredients#show'
   get 'users/:id', to: 'users#show'
   post 'users/', to: 'users#create'
+  post 'searches/:id/save', to: 'searches#save'
 end
