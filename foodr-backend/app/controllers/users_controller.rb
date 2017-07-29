@@ -11,6 +11,7 @@ class UsersController < ApplicationController
       render json: {
         found: true,
         user: user,
+        user_grade: user.grade,
         searches: searches,
         searched_products: searched_products,
         saved_products: saved_products
