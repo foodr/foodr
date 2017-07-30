@@ -1,8 +1,5 @@
 class SearchesController < ApplicationController
 
-  def create
-  end
-
   def save
     search = Search.find_by(id: params[:id])
     if search
