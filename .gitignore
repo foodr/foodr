@@ -22,4 +22,5 @@
 /foodr-backend/tmp
 
 .env
+.DS_Store
 
