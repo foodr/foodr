@@ -13,13 +13,16 @@
 !/log/.keep
 !/tmp/.keep
 
-/FoodrFrontend/node_modules
 /yarn-error.log
 
 .byebug_history
 
+.env
+.DS_Store
+
 /foodr-backend/log
 /foodr-backend/tmp
 
-.env
-
+/FoodrFrontend/node_modules
+/FoodrFrontend/ios/build
+/FoodrFrontend/ios/FoodrFrontend.xcodeproj/project.xcworkspace/xcuserdata/
