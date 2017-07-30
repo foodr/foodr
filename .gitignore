@@ -24,3 +24,5 @@
 .env
 .DS_Store
 
+/FoodrFrontend/ios/build/Build/
+/FoodrFrontend/ios/build/ModuleCache/
