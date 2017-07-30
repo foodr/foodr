@@ -6,7 +6,9 @@ import {
   View,
   Dimensions,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
 // import Camera from 'react-native-camera';
 
@@ -66,7 +68,7 @@ export default class FoodrFrontend extends Component {
           <SearchPage
           updateCurrentPage = {this.updateCurrentPage}
           currentPage = {this.state.currentPage}
-          searchTerm = {this.state.searchTerm}
+          searchProduct = {this.searchProduct}
           updateSearchTerm = {this.updateSearchTerm} />
         )
       case 'CameraPage':
@@ -122,78 +124,70 @@ export default class FoodrFrontend extends Component {
 
 // VICTORIA
 
-// class CameraPage extends Component {
-//   constructor() {
-//     super()
-//     this.onBarCodeRead = this.onBarCodeRead.bind(this)
-//     this.existingItem = this.existingItem.bind(this)
-//     this.nonExistingItem = this.nonExistingItem.bind(this)
-//   }
-
-//   onBarCodeRead(e) {
-//     this.props.searchProduct(e.data)
-//   }
-
-//   // for testing
-//   existingItem() {
-//     this.props.searchProduct('03077504')
-//   }
-
-//   nonExistingItem() {
-//     this.props.searchProduct('asdf')
-//   }
-
-//   render() {
-//     return(
-//       <View style={styles.container}>
-//         <Text style={styles.welcome}>Place Barcode in View</Text>
-//         <Camera
-//           ref={(cam) => {this.camera = cam;}}
-//           style={styles.preview}
-//           onBarCodeRead = {this.onBarCodeRead}
-//           aspect={Camera.constants.Aspect.fill}>
-//         </Camera>
-//         <Text style={styles.instructions}>The camera will automatically detect when a barcode is present</Text>
-
-
-//         <Text style={styles.capture} onPress={this.existingItem}>[EXISTING ITEM]</Text>
-//         <Text style={styles.capture} onPress={this.nonExistingItem}>[NONEXISTING ITEM]</Text>
-//       </View>
-//     );
-//   }
-// }
-
-
-// TIFF
-
-class ProductPage extends Component {
+class CameraPage extends Component {
   constructor() {
     super()
-    this.goToCamera = this.goToCamera.bind(this)
-    this.goToSearch = this.goToSearch.bind(this)
+    this.onBarCodeRead = this.onBarCodeRead.bind(this)
+    this.existingItem = this.existingItem.bind(this)
+    this.nonExistingItem = this.nonExistingItem.bind(this)
   }
 
-  goToCamera () {
-    this.props.updateCurrentPage('CameraPage')
+  onBarCodeRead(e) {
+    this.props.searchProduct(e.data)
   }
 
-  goToSearch() {
-    this.props .updateCurrentPage('SearchPage')
+  // for testing
+  existingItem() {
+    this.props.searchProduct('03077504')
+  }
+
+  nonExistingItem() {
+    this.props.searchProduct('asdf')
   }
 
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.welcome} >Product Page</Text>
-        <Text>{this.props.foundProduct.product.name}</Text>
-        <Button
-          onPress={this.goToCamera}
-          title="Scan Another Item"
-        />
+        <Text style={styles.welcome}>Place Barcode in View</Text>
+        <Text style={styles.instructions}>The camera will automatically detect when a barcode is present</Text>
+        <Text style={styles.capture} onPress={this.existingItem}>[EXISTING ITEM]</Text>
+        <Text style={styles.capture} onPress={this.nonExistingItem}>[NONEXISTING ITEM]</Text>
       </View>
-    )
+    );
   }
 }
+
+
+// TIFF
+
+// class ProductPage extends Component {
+//   constructor() {
+//     super()
+//     this.goToCamera = this.goToCamera.bind(this)
+//     this.goToSearch = this.goToSearch.bind(this)
+//   }
+
+//   goToCamera () {
+//     this.props.updateCurrentPage('CameraPage')
+//   }
+
+//   goToSearch() {
+//     this.props .updateCurrentPage('SearchPage')
+//   }
+
+//   render() {
+//     return(
+//       <View style={styles.container}>
+//         <Text style={styles.welcome} >Product Page</Text>
+//         <Text>{this.props.foundProduct.product.name}</Text>
+//         <Button
+//           onPress={this.goToCamera}
+//           title="Scan Another Item"
+//         />
+//       </View>
+//     )
+//   }
+// }
 
 // KANAN
 
@@ -205,11 +199,11 @@ class NoResultsPage extends Component {
   }
 
   searchAgain(){
-    this.props.updateCurrentPage("searchPage")
+    this.props.updateCurrentPage("SearchPage")
   }
 
   scanAgain(){
-    this.props.updateCurrentPage("cameraPage")
+    this.props.updateCurrentPage("CameraPage")
   }
 
   render() {
@@ -235,32 +229,75 @@ class NoResultsPage extends Component {
 
 
 class SearchPage extends Component {
-  constructor(props){
-    super(props)
-    this._onPressSearchWord = this._onPressSearchWord(this)
+  constructor(){
+    super();
+    this.state = {
+      text: ''
+    };
+    this.startSearch = this.startSearch.bind(this)
   }
 
-  _onPressSearchWord(){
-    this.props.updateCurrentPage("noResultsPage")
-    this.props.updateSearchTerm("something")
+  startSearch() {
+    console.log(this.state.text)
+    this.props.searchProduct(this.state.text)
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>
-          {this.props.currentPage}
-          Search Product
-        </Text>
+        <TextInput
+        placeholder="Enter product name or upc"
+        placeholderTextColor='#ecf0f1'
+        returnKeyType="search"
+        keyboardType="default"
+        style={styles.input}
+        onChangeText={(text) => this.setState({text})}
+        />
+        <TouchableOpacity style={styles.buttonContainer}>
+        <Button title="Search Product" color="#ecf0f1" onPress={this.startSearch}/>
+        </TouchableOpacity>
       </View>
-    );
+    )  
   }
+
+
+
+
+
+
+
+
+  // constructor(props){
+  //   super(props)
+  //   this.state = {
+  //     text: "Enter product name or upc"
+  //   };
+  //   this._onPressSearchWord = this._onPressSearchWord(this)
+  // }
+
+  // _onPressSearchWord(){
+  //   // this.props.updateCurrentPage("noResultsPage")
+  //   this.props.updateSearchTerm("this.state.text")
+  //   // this.props.updateCurrentPage("ProductPage")
+  // }
+
+  // render() {
+  //   return (
+  //     <View style={styles.container}>
+  //       <TextInput
+  //       style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+  //       onChangeText={this._onPressSearchWord}
+  //       value={this.state.text}
+  //     />
+  //     </View>
+  //   );
+  // }
 }
 
 
 class IndexPage extends Component {
-  constructor(props){
-    super(props)
+  constructor(){
+    super()
     this._onPressSearchButton = this._onPressSearchButton.bind(this)
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
@@ -289,10 +326,18 @@ class IndexPage extends Component {
         <Text>
           foodr
         </Text>
+        <TouchableOpacity>
         <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
+        </TouchableOpacity>
+        <TouchableOpacity>
         <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
+        </TouchableOpacity>
+        <TouchableOpacity>
         <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+        </TouchableOpacity>
+        <TouchableOpacity>
         <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
+        </TouchableOpacity>
       </View>
     );
   }
@@ -335,6 +380,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  input: {
+    height: 40,
+    width: 340,
+    backgroundColor: '#e67e22',
+    color: '#2c3e50',
+    fontWeight: "200",
+    marginBottom: 20,
+    paddingHorizontal: 5
+  },
+  buttonContainer: {
+    backgroundColor: "#d35400",
+    borderRadius: 15,
+    padding: 5
+    
+    // justifyContent: 'center'
   },
   welcome: {
     fontSize: 20,
