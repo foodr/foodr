@@ -22,6 +22,13 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+
+
+	<!-- for react-native-camera -->
+	<key>NSCameraUsageDescription</key>
+	<string>Foodr would like to access your camera</string>
+
+
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
