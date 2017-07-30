@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Dimensions,
-  Button
+  Button,
+  ActivityIndicator
 } from 'react-native';
 import Camera from 'react-native-camera';
 
@@ -13,7 +14,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'cameraPage',
+      currentPage: 'CameraPage',
       foundProduct: {},
       userId: false
     }
@@ -22,7 +23,7 @@ export default class FoodrFrontend extends Component {
   }
 
   searchProduct(upc) {
-    this.updateCurrentPage('searching')
+    this.updateCurrentPage('SearchingPage')
 
     fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
     // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
@@ -30,9 +31,9 @@ export default class FoodrFrontend extends Component {
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
       if (this.state.foundProduct.found) {
-        this.updateCurrentPage('productPage')
+        this.updateCurrentPage('ProductPage')
       } else {
-        this.updateCurrentPage('noResultsPage')
+        this.updateCurrentPage('NoResultsPage')
       }
     });
   }
@@ -43,40 +44,44 @@ export default class FoodrFrontend extends Component {
 
   render() {
     switch(this.state.currentPage) {
-      case 'searching':
-        return(
-          <Searching />
-        )
-      case 'indexPage':
+      case 'IndexPage':
         return(
           <IndexPage />
         )
-      case 'cameraPage':
+      case 'SearchPage':
+        return(
+          <SearchPage />
+        )
+      case 'CameraPage':
         return(
           <CameraPage
             searchProduct = {this.searchProduct}
           />
         )
-      case 'productPage':
+      case 'ProductPage':
         return(
           <ProductPage
             foundProduct = {this.state.foundProduct}
             updateCurrentPage = {this.updateCurrentPage}
           />
         )
-      case 'noResultsPage':
+      case 'IngredientPage':
+        return(
+          <IngredientPage />
+        )
+      case 'NoResultsPage':
         return(
           <NoResultsPage
             updateCurrentPage = {this.updateCurrentPage}
           />
         )
-      case 'searchPage':
+      case 'SearchingPage':
         return(
-          <SearchPage />
+          <SearchingPage />
         )
       default:
         return(
-          <IndexPage />
+          <DefaultPage />
         )
     }
   }
@@ -131,11 +136,11 @@ class ProductPage extends Component {
   }
 
   goToCamera () {
-    this.props.updateCurrentPage('cameraPage')
+    this.props.updateCurrentPage('CameraPage')
   }
 
   goToSearch() {
-    this.props .updateCurrentPage('searchPage')
+    this.props .updateCurrentPage('SearchPage')
   }
 
   render() {
@@ -160,11 +165,11 @@ class NoResultsPage extends Component {
   }
 
   goToCamera () {
-    this.props.updateCurrentPage('cameraPage')
+    this.props.updateCurrentPage('CameraPage')
   }
 
   goToSearch() {
-    this.props .updateCurrentPage('searchPage')
+    this.props .updateCurrentPage('SearchPage')
   }
 
   render() {
@@ -186,10 +191,15 @@ class NoResultsPage extends Component {
   }
 }
 
-class Searching extends Component {
+class SearchingPage extends Component {
   render() {
     return(
       <View style={styles.container}>
+        <ActivityIndicator
+          animating = {true}
+          size = 'large'
+          style={styles.activityIndicator}
+        />
         <Text>Searching...</Text>
       </View>
     );
@@ -211,6 +221,17 @@ class IndexPage extends Component {
     return(
       <View style={styles.container}>
         <Text>Index Page</Text>
+      </View>
+    );
+  }
+}
+
+class DefaultPage extends Component {
+  render() {
+    return(
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Default Page</Text>
+        <Text>The case statement hit default</Text>
       </View>
     );
   }
@@ -240,6 +261,9 @@ const styles = StyleSheet.create({
   preview: {
     height: 300,
     width: Dimensions.get('window').width
+  },
+  activityIndicator: {
+    marginBottom: 20,
   },
   // for testing
   capture: {
