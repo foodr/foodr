@@ -8,7 +8,7 @@ import {
   Button,
   ActivityIndicator
 } from 'react-native';
-// import Camera from 'react-native-camera';
+import Camera from 'react-native-camera';
 
 // PARENT
 
@@ -16,7 +16,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'IndexPage',
+      currentPage: 'CameraPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
       loggedIn: false,
@@ -69,10 +69,6 @@ export default class FoodrFrontend extends Component {
             foundProduct = {this.state.foundProduct}
             updateCurrentPage = {this.updateCurrentPage}
           />
-        )
-      case 'IngredientPage':
-        return(
-          <IngredientPage />
         )
       case 'NoResultsPage':
         return(
