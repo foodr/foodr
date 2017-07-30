@@ -24,8 +24,8 @@ export default class FoodrFrontend extends Component {
   searchProduct(upc) {
     this.updateCurrentPage('searching')
 
-    // fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -61,6 +61,7 @@ export default class FoodrFrontend extends Component {
         return(
           <ProductPage
             foundProduct = {this.state.foundProduct}
+            updateCurrentPage = {this.updateCurrentPage}
           />
         )
       case 'noResultsPage':
@@ -85,7 +86,8 @@ class CameraPage extends Component {
   constructor() {
     super()
     this.onBarCodeRead = this.onBarCodeRead.bind(this)
-    this.takePicture = this.takePicture.bind(this)
+    this.existingItem = this.existingItem.bind(this)
+    this.nonExistingItem = this.nonExistingItem.bind(this)
   }
 
   onBarCodeRead(e) {
@@ -93,9 +95,12 @@ class CameraPage extends Component {
   }
 
   // for testing
-  takePicture() {
+  existingItem() {
     this.props.searchProduct('03077504')
-    // this.props.searchProduct('asdf')
+  }
+
+  nonExistingItem() {
+    this.props.searchProduct('asdf')
   }
 
   render() {
@@ -111,20 +116,37 @@ class CameraPage extends Component {
         <Text style={styles.instructions}>The camera will automatically detect when a barcode is present</Text>
 
 
-        <Text style={styles.capture} onPress={this.takePicture}>[CAPTURE]</Text>
-
-
+        <Text style={styles.capture} onPress={this.existingItem}>[EXISTING ITEM]</Text>
+        <Text style={styles.capture} onPress={this.nonExistingItem}>[NONEXISTING ITEM]</Text>
       </View>
     );
   }
 }
 
 class ProductPage extends Component {
+  constructor() {
+    super()
+    this.goToCamera = this.goToCamera.bind(this)
+    this.goToSearch = this.goToSearch.bind(this)
+  }
+
+  goToCamera () {
+    this.props.updateCurrentPage('cameraPage')
+  }
+
+  goToSearch() {
+    this.props .updateCurrentPage('searchPage')
+  }
+
   render() {
     return(
       <View style={styles.container}>
         <Text style={styles.welcome} >Product Page</Text>
         <Text>{this.props.foundProduct.product.name}</Text>
+        <Button
+          onPress={this.goToCamera}
+          title="Scan Another Item"
+        />
       </View>
     )
   }
@@ -215,10 +237,19 @@ const styles = StyleSheet.create({
     color: '#333333',
     margin: 10,
   },
-   preview: {
+  preview: {
     height: 300,
     width: Dimensions.get('window').width
   },
+  // for testing
+  capture: {
+    flex: 0,
+    backgroundColor: 'lightblue',
+    borderRadius: 5,
+    padding: 10,
+    margin: 5
+  },
+
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
