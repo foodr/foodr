@@ -20,7 +20,7 @@ export default class FoodrFrontend extends Component {
       currentPage: 'CameraPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
-      userId: 8, // false if not logged in
+      userId: false, // false if not logged in
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
