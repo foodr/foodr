@@ -3,13 +3,17 @@ class UsersController < ApplicationController
     user = User.find_by(id: params[:id])
 
     if user
-      searches = user.products
+      searches = user.searches
+      searched_products = user.products
       saved_product_ids = user.searches.where(is_saved: true).pluck(:product_id)
       saved_products = Product.find(saved_product_ids)
+
       render json: {
         found: true,
         user: user,
+        user_grade: user.grade,
         searches: searches,
+        searched_products: searched_products,
         saved_products: saved_products
       }.to_json
     else

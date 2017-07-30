@@ -3,6 +3,9 @@ class ProductsController < ApplicationController
     search_term = params[:search_term]
     product = Product.find_by(upc: search_term) || Product.find_by(name: search_term)
     if product
+      if params[:user_id]
+        Search.create(user_id: params[:user_id], product_id: product.id, is_saved: false)
+      end
       render json: {
         found: true,
         product: product,
