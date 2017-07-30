@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -11,21 +5,24 @@ import {
   Text,
   View
 } from 'react-native';
+import Camera from 'react-native-camera';
 
 export default class FoodrFrontend extends Component {
+  takePicture() {
+    alert('clicked');
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to FOOOOOODR!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <Camera
+          ref={(cam) => {
+            this.camera = cam;
+          }}
+          style={styles.preview}
+          aspect={Camera.constants.Aspect.fill}>
+          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+        </Camera>
       </View>
     );
   }
@@ -47,6 +44,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    color: '#000',
+    padding: 10,
+    margin: 40
   },
 });
 
