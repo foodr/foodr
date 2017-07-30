@@ -70,10 +70,6 @@ export default class FoodrFrontend extends Component {
             updateCurrentPage = {this.updateCurrentPage}
           />
         )
-      case 'IngredientPage':
-        return(
-          <IngredientPage />
-        )
       case 'NoResultsPage':
         return(
           <NoResultsPage
