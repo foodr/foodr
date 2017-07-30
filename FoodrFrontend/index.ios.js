@@ -8,7 +8,8 @@ import {
   Button,
   ActivityIndicator,
   Image,
-  ListView
+  Modal,
+  TouchableHighlight
 } from 'react-native';
 // import Camera from 'react-native-camera';
 
@@ -224,6 +225,12 @@ class ProductPage extends Component {
       }
   }
 
+  renderIngredient() {
+    return this.props.foundProduct.ingredients.map(ingredient =>
+      <IngredientModal ingredient = {ingredient} />
+    );
+  }
+
   render() {
     return(
       <View style={styles.container}>
@@ -234,32 +241,54 @@ class ProductPage extends Component {
         <Text style={styles.welcome}>{this.props.foundProduct.product.name}</Text>
         <Text>Score: {this.scoreConverter()}</Text>
 
-        <IngredientList foundProduct={this.props.foundProduct} />
+        <Text>Ingredients:</Text>
+        {this.renderIngredient()}
       </View>
     )
   }
 }
 
-
-class IngredientList extends Component {
-  state = { ingredients: [] };
-
-  renderIngredient() {
-    return this.props.foundProduct.ingredients.map(ingredient =>
-      <Text>{ingredient.name}</Text>);
+class IngredientModal extends Component {
+  constructor() {
+    super()
+    this.state = {
+      modalVisible: false
+    }
+    this.setModalVisible = this.setModalVisible.bind(this)
   }
 
-  render () {
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  render() {
     return (
-      <View>
-        <Text>Ingredients</Text>
-        {this.renderIngredient()}
+      <View style={{marginTop: 22}}>
+
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+          <View style={styles.container}>
+            <Text style={styles.welcome}>{this.props.ingredient.name}</Text>
+
+            <TouchableHighlight onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
+              <Text>Hide Modal</Text>
+            </TouchableHighlight>
+
+          </View>
+        </Modal>
+
+        <TouchableHighlight onPress={() => {this.setModalVisible(true)}}>
+          <Text>{this.props.ingredient.name}</Text>
+        </TouchableHighlight>
+
       </View>
     );
   }
 }
-
-
 
 
 // KANAN
