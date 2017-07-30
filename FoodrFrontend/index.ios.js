@@ -27,25 +27,38 @@ export default class FoodrFrontend extends Component {
       userId: false
 
     }
-    this.handleButtonPress = this.handleButtonPress.bind(this)
+    this.updateCurrentPage = this.updateCurrentPage.bind(this)
   }
 
 
-  handleButtonPress = function(pageName){
+  updateCurrentPage = function(pageName){
+    console.log("Pagename" + pageName)
     this.setState({currentPage: pageName})
+
   }
 
 
   render() {
 
-    return (
-      <View style={styles.container}>
-        <IndexPage 
-        handleButtonPress = {this.handleButtonPress}
+      switch (this.state.currentPage) {
+
+        case 'indexPage': return (
+          <IndexPage 
+          updateCurrentPage = {this.updateCurrentPage}
+          currentPage = {this.state.currentPage}
+        />)
+
+       case 'searchPage': return (
+          <SearchPage
+        updateCurrentPage = {this.updateCurrentPage}
         currentPage = {this.state.currentPage}
-        />
-      </View>
-    );
+        />)
+
+        default: return (
+          <UserPage/>)
+
+      }
+
   }
 }
 
@@ -61,26 +74,20 @@ class IndexPage extends Component {
   }
   
   _onPressSearchButton(){
-    this.props.handleButtonPress("searchPage")
+    this.props.updateCurrentPage("searchPage")
   }
 
   _onPressScanButton(){
-    this.props.handleButtonPress("cameraPage")
+    this.props.updateCurrentPage("cameraPage")
   }
 
   _onPressSignUpButton(){
-    this.props.handleButtonPress("indexPage")
+    this.props.updateCurrentPage("indexPage")
   }
 
   _onPressSignInButton(){
-    this.props.handleButtonPress("indexPage")
+    this.props.updateCurrentPage("indexPage")
   }
-
-
-
-
-
-
 
   render() {
     return (
@@ -89,15 +96,15 @@ class IndexPage extends Component {
           foodr
         </Text>
         <Button 
-          title="Search Product"
-          onPress={this._onPressSearchButton}
-          color="green"
-        />
-        <Button 
           title="Scan Product"
           onPress={this._onPressScanButton}
           color="blue"
           />
+          <Button 
+          title="Search Product"
+          onPress={this._onPressSearchButton}
+          color="green"
+        />
         <Button 
         onPress={this._onPressSignUpButton}
         title="Sign Up"
@@ -115,104 +122,43 @@ class IndexPage extends Component {
 }
 
 
-// class SearchProduct extends Component {
-//   _onPressButton(){
-//     this.props.currentPage = "searchPage"
-//   }
 
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Button 
-//         onPress={this._onPressButton}
-//         title="Search Product"
-//         color="green"
-//         />
+class SearchPage extends Component {
+  constructor(props){
+    super(props)
+    this._onPressSearchButton = this._onPressSearchButton(this)
+  }
 
-//       </View>
-//     );
-//   }
-// }
+  _onPressSearchButton(){
+    this.props.updateCurrentPage("noResultsPage")
+  }
 
-
-
-
-
-
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>
+          {this.props.currentPage}
+          Search Product
+        </Text>
+      </View>
+    );
+  }
+}
 
 
+class UserPage extends Component {
+  
 
-// class ScanProduct extends Component {
-//   _onPressButton(){
-//     this.props.currentPage = "cameraPage"
-//   }
-
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Button 
-//         onPress={this._onPressButton}
-//         title="Scan Product"
-//         color="blue"
-
-//         />
-
-//       </View>
-//     );
-//   }
-// }
-
-
-
-
-// class SignUp extends Component {
-//   _onPressButton(){
-//     this.props.currentPage = "signupPage"
-//   }
-
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Button 
-//         onPress={this._onPressButton}
-//         title="Sign Up"
-//         color="purple"
-//         />
-
-//       </View>
-//     );
-//   }
-// }
-
-// class SignIn extends Component {
-//   _onPressButton(){
-//     this.props.currentPage = "signinPage"
-//   }
-
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//       <Text>
-//         Already have an account?  
-//       </Text>
-//       <Button 
-//         onPress={this._onPressButton}
-//         title="Sign In"
-//         color="green"
-//         />
-
-//       </View>
-//     );
-//   }
-// }
-
-
-
-
-
-
-
-
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>
+          User Profile Page
+        </Text>
+      </View>
+    );
+  }
+}
 
 
 
