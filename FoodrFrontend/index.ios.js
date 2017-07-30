@@ -6,7 +6,8 @@ import {
   View,
   Dimensions,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
+  AlertIOS
 } from 'react-native';
 import Camera from 'react-native-camera';
 
@@ -19,12 +20,11 @@ export default class FoodrFrontend extends Component {
       currentPage: 'CameraPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
-      loggedIn: false,
-      userId: false,
-      searchTerm: ''
+      userId: false, // false if not logged in
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
+    this.saveSearch = this.saveSearch.bind(this)
   }
 
   searchProduct(upc) {
@@ -41,6 +41,22 @@ export default class FoodrFrontend extends Component {
         this.updateCurrentPage('NoResultsPage')
       }
     });
+  }
+
+  saveSearch(searchId) {
+    if (this.state.userId) {
+      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
+      .then(data => data.json())
+      .then(jsonData => {
+        if (jsonData.save_successful) {
+          AlertIOS.alert('Product Saved!');
+        } else {
+          AlertIOS.alert('Product was not saved.');
+        }
+      })
+    } else {
+      AlertIOS.alert('Please sign up or login to save an item.');
+    }
   }
 
   updateCurrentPage(pageName) {
@@ -68,6 +84,7 @@ export default class FoodrFrontend extends Component {
           <ProductPage
             foundProduct = {this.state.foundProduct}
             updateCurrentPage = {this.updateCurrentPage}
+            saveSearch = {this.saveSearch}
           />
         )
       case 'NoResultsPage':
@@ -118,7 +135,7 @@ class CameraPage extends Component {
 
   // for testing
   existingItem() {
-    this.props.searchProduct('03077504')
+    this.props.searchProduct('40084510')
   }
 
   nonExistingItem() {
@@ -150,16 +167,11 @@ class CameraPage extends Component {
 class ProductPage extends Component {
   constructor() {
     super()
-    this.goToCamera = this.goToCamera.bind(this)
-    this.goToSearch = this.goToSearch.bind(this)
+    this.saveItem = this.saveItem.bind(this)
   }
 
-  goToCamera () {
-    this.props.updateCurrentPage('CameraPage')
-  }
-
-  goToSearch() {
-    this.props .updateCurrentPage('SearchPage')
+  saveItem() {
+    this.props.saveSearch(this.props.foundProduct.search.id);
   }
 
   render() {
@@ -168,8 +180,8 @@ class ProductPage extends Component {
         <Text style={styles.welcome} >Product Page</Text>
         <Text>{this.props.foundProduct.product.name}</Text>
         <Button
-          onPress={this.goToCamera}
-          title="Scan Another Item"
+          onPress={this.saveItem}
+          title="Save Product"
         />
       </View>
     )
