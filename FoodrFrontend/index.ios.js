@@ -10,13 +10,18 @@ import {
 } from 'react-native';
 import Camera from 'react-native-camera';
 
+// PARENT
+
 export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'CameraPage',
+      currentPage: 'IndexPage',
+      previousPage: 'DefaultPage',
       foundProduct: {},
-      userId: false
+      loggedIn: false,
+      userId: false,
+      searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
@@ -87,6 +92,22 @@ export default class FoodrFrontend extends Component {
   }
 }
 
+// CHILDREN
+
+// XANDER
+
+class LayoutPage extends Component {
+  render() {
+    return(
+      <View style={styles.container}>
+        <Text>Layout Page</Text>
+      </View>
+    )
+  }
+}
+
+// VICTORIA
+
 class CameraPage extends Component {
   constructor() {
     super()
@@ -128,6 +149,8 @@ class CameraPage extends Component {
   }
 }
 
+// TIFF
+
 class ProductPage extends Component {
   constructor() {
     super()
@@ -156,6 +179,8 @@ class ProductPage extends Component {
     )
   }
 }
+
+// KANAN
 
 class NoResultsPage extends Component {
   constructor() {
@@ -191,6 +216,32 @@ class NoResultsPage extends Component {
   }
 }
 
+// KANAN
+
+class SearchPage extends Component {
+  render() {
+    return(
+      <View style={styles.container}>
+        <Text>Search Page</Text>
+      </View>
+    );
+  }
+}
+
+// KANAN
+
+class IndexPage extends Component {
+  render() {
+    return(
+      <View style={styles.container}>
+        <Text>Index Page</Text>
+      </View>
+    );
+  }
+}
+
+// DONE
+
 class SearchingPage extends Component {
   render() {
     return(
@@ -206,25 +257,7 @@ class SearchingPage extends Component {
   }
 }
 
-class SearchPage extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
-        <Text>Search Page</Text>
-      </View>
-    );
-  }
-}
-
-class IndexPage extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
-        <Text>Index Page</Text>
-      </View>
-    );
-  }
-}
+// FOR TESTING
 
 class DefaultPage extends Component {
   render() {
@@ -236,9 +269,6 @@ class DefaultPage extends Component {
     );
   }
 }
-
-
-
 
 
 const styles = StyleSheet.create({
