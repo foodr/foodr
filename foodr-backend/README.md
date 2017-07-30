@@ -1,24 +1,236 @@
-# README
+# API Documentation
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Note: parameters and queries with spaces need to be substituted with `%20`
 
-Things you may want to cover:
+## Product Info
 
-* Ruby version
+### Endpoints
 
-* System dependencies
+If not logged in:
 
-* Configuration
+`GET /products/[SEARCH TERM]`
 
-* Database creation
+If user is logged in, provide a user ID as a query so a `Search` object is created and associated with the user:
 
-* Database initialization
+ `GET /products/[SEARCH TERM]?user_id=[USER ID HERE]`
 
-* How to run the test suite
+Search term can be UPC code or exact name of product
 
-* Services (job queues, cache servers, search engines, etc.)
+### Output
+If successful:
 
-* Deployment instructions
+```
+{
+    "found": true,
+    "product": {
+        "id": 1,
+        "upc": "03077504",
+        "name": "Quaker Chewy Chocolate Chip Bar",
+        "score": 3,
+        "img_url": "http://www.quakeroats.com/images/default-source/products/choc-chip_hero6c265c418cb46e438643ff2300547e50",
+        "created_at": "2017-07-29T02:12:28.868Z",
+        "updated_at": "2017-07-29T02:12:28.868Z"
+    },
+    "ingredients": [
+        {
+            "id": 1,
+            "name": "Pumpkin Seed",
+            "description": "this is healthy",
+            "img_url": null,
+            "created_at": "2017-07-29T02:12:28.909Z",
+            "updated_at": "2017-07-29T02:12:28.909Z"
+        },
+        {
+            "id": 3,
+            "name": "Blue Swimmer Crab",
+            "description": "this is healthy",
+            "img_url": null,
+            "created_at": "2017-07-29T02:12:28.913Z",
+            "updated_at": "2017-07-29T02:12:28.913Z"
+        },
+        {
+            "id": 5,
+            "name": "White rice",
+            "description": "this is healthy",
+            "img_url": null,
+            "created_at": "2017-07-29T02:12:28.917Z",
+            "updated_at": "2017-07-29T02:12:28.917Z"
+        }
+    ]
+}
+```
+If unsuccessful:
+```
+{
+    "found": false
+}
+```
 
-* ...
+## Ingredient Info
+
+### Endpoint
+
+`GET /ingredients/[PRODUCT ID]`
+
+### Output
+If successful:
+```
+{
+    "found": true,
+    "ingredient": {
+        "id": 1,
+        "name": "Pumpkin Seed",
+        "description": "this is healthy",
+        "img_url": null,
+        "created_at": "2017-07-29T02:12:28.909Z",
+        "updated_at": "2017-07-29T02:12:28.909Z"
+    }
+}
+```
+If unsuccessful:
+```
+{
+    "found": false
+}
+```
+
+## User Profile
+
+### Endpoint
+
+`GET /users/[USER ID]`
+
+### Output
+If successful:
+```
+{
+    "found": true,
+    "user": {
+        "id": 3,
+        "email": "mohamed_lang@example.net",
+        "password_digest": "$2a$10$agXQaoyU6swVtXApobwGwODc5ktcPISMZByBrZW9EAvJo/xugrvTK",
+        "created_at": "2017-07-29T02:12:28.857Z",
+        "updated_at": "2017-07-29T02:12:28.857Z"
+    },
+    "user_grade": "2.0",
+    "searches": [
+        {
+            "id": 5,
+            "product_id": 2,
+            "user_id": 3,
+            "is_saved": true,
+            "created_at": "2017-07-29T02:12:28.896Z",
+            "updated_at": "2017-07-29T02:12:28.896Z"
+        },
+        {
+            "id": 8,
+            "product_id": 1,
+            "user_id": 3,
+            "is_saved": false,
+            "created_at": "2017-07-29T23:48:53.165Z",
+            "updated_at": "2017-07-29T23:48:53.165Z"
+        }
+    ],
+    "searched_products": [
+        {
+            "id": 1,
+            "upc": "03077504",
+            "name": "Quaker Chewy Chocolate Chip Bar",
+            "score": 3,
+            "img_url": "http://www.quakeroats.com/images/default-source/products/choc-chip_hero6c265c418cb46e438643ff2300547e50",
+            "created_at": "2017-07-29T02:12:28.868Z",
+            "updated_at": "2017-07-29T02:12:28.868Z"
+        },
+        {
+            "id": 2,
+            "upc": "40084510",
+            "name": "Hanute Hazelnut Wafer",
+            "score": 2,
+            "img_url": "https://images-na.ssl-images-amazon.com/images/I/815%2BCzZIVxL._SX355_.jpg",
+            "created_at": "2017-07-29T02:12:28.870Z",
+            "updated_at": "2017-07-29T02:12:28.870Z"
+        }
+    ],
+    "saved_products": [
+        {
+            "id": 2,
+            "upc": "40084510",
+            "name": "Hanute Hazelnut Wafer",
+            "score": 2,
+            "img_url": "https://images-na.ssl-images-amazon.com/images/I/815%2BCzZIVxL._SX355_.jpg",
+            "created_at": "2017-07-29T02:12:28.870Z",
+            "updated_at": "2017-07-29T02:12:28.870Z"
+        }
+    ]
+}
+```
+If unsuccessful:
+```
+{
+    "found": false
+}
+```
+
+## Create User
+
+### Endpoint
+
+`POST /users?email=[EMAIL HERE]&password=[PASSWORD HERE]`
+
+### Output
+If successful:
+```
+{
+    "saved": true,
+    "user": {
+        "id": 7,
+        "email": "bleh@blah",
+        "password_digest": "$2a$10$f69LEK3uY0tmwPnRhcwSWuRNPGT4bL2SMhg02nPO98Dii6Qb5Uguu",
+        "created_at": "2017-07-30T00:10:16.423Z",
+        "updated_at": "2017-07-30T00:10:16.423Z"
+    }
+}
+```
+If unsuccessful:
+```
+{
+    "saved": false,
+    "errors": [
+        "Email has already been taken"
+    ]
+}
+```
+
+## Save a Product (aka Saving a Search)
+### Endpoint
+`POST searches/[SEARCH ID]/save`
+### Output
+If successful:
+```
+{
+    "save_successful": true,
+    "search": {
+        "id": 4,
+        "is_saved": true,
+        "user_id": 2,
+        "product_id": 1,
+        "created_at": "2017-07-29T02:12:28.894Z",
+        "updated_at": "2017-07-29T22:45:45.429Z"
+    },
+    "product": {
+        "id": 1,
+        "upc": "03077504",
+        "name": "Quaker Chewy Chocolate Chip Bar",
+        "score": 3,
+        "img_url": "http://www.quakeroats.com/images/default-source/products/choc-chip_hero6c265c418cb46e438643ff2300547e50",
+        "created_at": "2017-07-29T02:12:28.868Z",
+        "updated_at": "2017-07-29T02:12:28.868Z"
+    }
+}
+```
+If unsuccessful:
+```
+{
+    "save_successful": false
+}
+```
