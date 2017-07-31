@@ -338,12 +338,35 @@ class NoResultsPage extends Component {
 // KANAN
 
 class SearchPage extends Component {
+  constructor(){
+    super();
+    this.state = {
+      text: ''
+    };
+    this.startSearch = this.startSearch.bind(this)
+  }
+
+  startSearch() {
+    this.props.updateSearchTerm(this.state.text)
+    this.props.searchProduct(this.state.text)
+  }
+
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <Text>Search Page</Text>
+        <TextInput
+        placeholder="Enter product name or upc"
+        placeholderTextColor='#ecf0f1'
+        returnKeyType="search"
+        keyboardType="default"
+        style={styles.input}
+        onChangeText={(text) => this.setState({text})}
+        />
+        <TouchableOpacity style={styles.buttonContainer}>
+        <Button title="Search Product" color="#fffaf0" onPress={this.startSearch}/>
+        </TouchableOpacity>
       </View>
-    );
+    )  
   }
 }
 
