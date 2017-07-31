@@ -300,36 +300,38 @@ class IngredientModal extends Component {
 // KANAN
 
 class NoResultsPage extends Component {
-  constructor() {
+  constructor(){
     super()
-    this.goToCamera = this.goToCamera.bind(this)
-    this.goToSearch = this.goToSearch.bind(this)
+    this.searchAgain = this.searchAgain.bind(this)
+    this.scanAgain = this.scanAgain.bind(this)
   }
 
-  goToCamera () {
-    this.props.updateCurrentPage('CameraPage')
+  searchAgain(){
+    this.props.updateCurrentPage("SearchPage")
   }
 
-  goToSearch() {
-    this.props .updateCurrentPage('SearchPage')
+  scanAgain(){
+    this.props.updateCurrentPage("CameraPage")
   }
 
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>No Products Found</Text>
-        <Text>Sorry we do not have that item in our database{"\n\n"}</Text>
-        <Button
-            onPress={this.goToCamera}
-            title="Scan Another Item"
-          />
+        <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
+        <Text> Would you like to try another product?</Text>
+        <Button 
+         title="Scan Another Product"
+         onPress={this.scanAgain}
+         color="blue"
+        />
         <Text>or</Text>
-        <Button
-            onPress={this.goToSearch}
-            title="Search for an Item"
-          />
+        <Button 
+         title="Search Product"
+         onPress={this.searchAgain}
+         color="green"
+        />
       </View>
-    )
+    );
   }
 }
 
