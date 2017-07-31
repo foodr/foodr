@@ -10,7 +10,9 @@ import {
   Image,
   Modal,
   TouchableHighlight,
-  AlertIOS
+  AlertIOS,
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
 import Camera from 'react-native-camera';
 
@@ -28,6 +30,7 @@ export default class FoodrFrontend extends Component {
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
+    this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
   }
 
@@ -67,15 +70,22 @@ export default class FoodrFrontend extends Component {
     this.setState({currentPage: pageName})
   }
 
+  updateSearchTerm(searchTerm) {
+    this.setState({searchTerm: searchTerm})
+  }
+
   render() {
     switch(this.state.currentPage) {
       case 'IndexPage':
         return(
-          <IndexPage />
+          <IndexPage 
+          updateCurrentPage = {this.updateCurrentPage} />
         )
       case 'SearchPage':
         return(
-          <SearchPage />
+          <SearchPage
+          searchProduct = {this.searchProduct}
+          updateSearchTerm = {this.updateSearchTerm}/>
         )
       case 'CameraPage':
         return(
@@ -95,7 +105,8 @@ export default class FoodrFrontend extends Component {
         return(
           <NoResultsPage
             updateCurrentPage = {this.updateCurrentPage}
-          />
+            searchTerm = {this.state.searchTerm}
+            />
         )
       case 'SearchingPage':
         return(
@@ -289,46 +300,36 @@ class IngredientModal extends Component {
 // KANAN
 
 class NoResultsPage extends Component {
-  constructor() {
+  constructor(){
     super()
-    this.goToCamera = this.goToCamera.bind(this)
-    this.goToSearch = this.goToSearch.bind(this)
+    this.searchAgain = this.searchAgain.bind(this)
+    this.scanAgain = this.scanAgain.bind(this)
   }
 
-  goToCamera () {
-    this.props.updateCurrentPage('CameraPage')
+  searchAgain(){
+    this.props.updateCurrentPage("SearchPage")
   }
 
-  goToSearch() {
-    this.props .updateCurrentPage('SearchPage')
+  scanAgain(){
+    this.props.updateCurrentPage("CameraPage")
   }
 
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>No Products Found</Text>
-        <Text>Sorry we do not have that item in our database{"\n\n"}</Text>
-        <Button
-            onPress={this.goToCamera}
-            title="Scan Another Item"
-          />
+        <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
+        <Text> Would you like to try another product?</Text>
+        <Button 
+         title="Scan Another Product"
+         onPress={this.scanAgain}
+         color="blue"
+        />
         <Text>or</Text>
-        <Button
-            onPress={this.goToSearch}
-            title="Search for an Item"
-          />
-      </View>
-    )
-  }
-}
-
-// KANAN
-
-class SearchPage extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
-        <Text>Search Page</Text>
+        <Button 
+         title="Search Product"
+         onPress={this.searchAgain}
+         color="green"
+        />
       </View>
     );
   }
@@ -336,11 +337,84 @@ class SearchPage extends Component {
 
 // KANAN
 
-class IndexPage extends Component {
+class SearchPage extends Component {
+  constructor(){
+    super();
+    this.state = {
+      text: ''
+    };
+    this.startSearch = this.startSearch.bind(this)
+  }
+
+  startSearch() {
+    this.props.updateSearchTerm(this.state.text)
+    this.props.searchProduct(this.state.text)
+  }
+
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <Text>Index Page</Text>
+        <TextInput
+        placeholder="Enter product name or upc"
+        placeholderTextColor='#ecf0f1'
+        returnKeyType="search"
+        keyboardType="default"
+        style={styles.input}
+        onChangeText={(text) => this.setState({text})}
+        />
+        <TouchableOpacity style={styles.buttonContainer}>
+        <Button title="Search Product" color="#fffaf0" onPress={this.startSearch}/>
+        </TouchableOpacity>
+      </View>
+    )  
+  }
+}
+
+// KANAN
+
+class IndexPage extends Component {
+  constructor(){
+    super()
+    this._onPressSearchButton = this._onPressSearchButton.bind(this)
+    this._onPressScanButton = this._onPressScanButton.bind(this)
+    this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
+    this._onPressSignInButton = this._onPressSignInButton.bind(this)
+  }
+  
+  _onPressSearchButton(){
+    this.props.updateCurrentPage("SearchPage")
+  }
+
+  _onPressScanButton(){
+    this.props.updateCurrentPage("CameraPage")
+  }
+
+  _onPressSignUpButton(){
+    this.props.updateCurrentPage("IndexPage")
+  }
+
+  _onPressSignInButton(){
+    this.props.updateCurrentPage("IndexPage")
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>
+          foodr
+        </Text>
+        <TouchableOpacity>
+        <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
+        </TouchableOpacity>
       </View>
     );
   }
@@ -382,6 +456,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  input: {
+    height: 40,
+    width: 340,
+    backgroundColor: 'green',
+    color: '#fffaf0',
+    fontWeight: "200",
+    marginBottom: 20,
+    paddingHorizontal: 5
+  },
+  buttonContainer: {
+    backgroundColor: "green",
+    borderRadius: 15,
+    padding: 5
   },
   welcome: {
     fontSize: 20,
