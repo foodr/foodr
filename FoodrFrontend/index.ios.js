@@ -73,7 +73,7 @@ export default class FoodrFrontend extends Component {
   updateSearchTerm(searchTerm) {
     this.setState({searchTerm: searchTerm})
   }
-  
+
   render() {
     switch(this.state.currentPage) {
       case 'IndexPage':
@@ -456,6 +456,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  input: {
+    height: 40,
+    width: 340,
+    backgroundColor: 'green',
+    color: '#fffaf0',
+    fontWeight: "200",
+    marginBottom: 20,
+    paddingHorizontal: 5
+  },
+  buttonContainer: {
+    backgroundColor: "green",
+    borderRadius: 15,
+    padding: 5
   },
   welcome: {
     fontSize: 20,
