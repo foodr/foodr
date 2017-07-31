@@ -373,10 +373,48 @@ class SearchPage extends Component {
 // KANAN
 
 class IndexPage extends Component {
+  constructor(){
+    super()
+    this._onPressSearchButton = this._onPressSearchButton.bind(this)
+    this._onPressScanButton = this._onPressScanButton.bind(this)
+    this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
+    this._onPressSignInButton = this._onPressSignInButton.bind(this)
+  }
+  
+  _onPressSearchButton(){
+    this.props.updateCurrentPage("SearchPage")
+  }
+
+  _onPressScanButton(){
+    this.props.updateCurrentPage("CameraPage")
+  }
+
+  _onPressSignUpButton(){
+    this.props.updateCurrentPage("IndexPage")
+  }
+
+  _onPressSignInButton(){
+    this.props.updateCurrentPage("IndexPage")
+  }
+
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <Text>Index Page</Text>
+        <Text>
+          foodr
+        </Text>
+        <TouchableOpacity>
+        <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
+        </TouchableOpacity>
       </View>
     );
   }
