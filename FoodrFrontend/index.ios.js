@@ -7,6 +7,9 @@ import {
   Dimensions,
   Button,
   ActivityIndicator,
+  Image,
+  Modal,
+  TouchableHighlight,
   AlertIOS
 } from 'react-native';
 import Camera from 'react-native-camera';
@@ -17,10 +20,11 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'CameraPage',
+      currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
       userId: false, // false if not logged in
+      searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
@@ -135,7 +139,7 @@ class CameraPage extends Component {
 
   // for testing
   existingItem() {
-    this.props.searchProduct('40084510')
+    this.props.searchProduct('03077504')
   }
 
   nonExistingItem() {
@@ -173,18 +177,112 @@ class ProductPage extends Component {
   saveItem() {
     this.props.saveSearch(this.props.foundProduct.search.id);
   }
+  
+  scoreConverter() {
+    let numberScore = this.props.foundProduct.product.score
+      switch(numberScore) {
+        case 5:
+          return ('A');
+        case 4:
+          return ('B');
+        case 3:
+          return ('C');
+        case 2:
+          return ('D');
+        case 1:
+          return ('F');
+        default:
+          ('Not Found');
+      }
+  }
+  
+  renderIngredientList() {
+    return this.props.foundProduct.ingredients.map(ingredient =>
+      <View key={ingredient.id}>
+        { ingredient.is_natural ?
+          <Image
+            style={{width: 50, height: 50}}
+          source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
+          />
+          :
+          <Image
+            style={{width: 50, height: 50}}
+          source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
+          />
+         }
+
+        <IngredientModal ingredient = {ingredient} />
+      </View>
+    );
+  }
 
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.welcome} >Product Page</Text>
-        <Text>{this.props.foundProduct.product.name}</Text>
+        <Image
+          style={{width: 375, height: 200}}
+        source={{uri: this.props.foundProduct.product.img_url}}
+        />
+        <Text style={styles.welcome}>{this.props.foundProduct.product.name}</Text>
+        <Text>Score: {this.scoreConverter()}</Text>
+
+        <Text>Ingredients:</Text>
+        {this.renderIngredientList()}
+
         <Button
           onPress={this.saveItem}
           title="Save Product"
         />
       </View>
     )
+  }
+}
+
+class IngredientModal extends Component {
+  constructor() {
+    super()
+    this.state = {
+      modalVisible: false
+    }
+    this.setModalVisible = this.setModalVisible.bind(this)
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  render() {
+    return (
+      <View style={{marginTop: 22}}>
+
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+          <View style={styles.container}>
+            <Image
+              style={{width: 375, height: 200}}
+            source={{uri: this.props.ingredient.img_url}}
+            />
+
+            <Text style={styles.welcome}>{this.props.ingredient.name}</Text>
+            <Text>{this.props.ingredient.description}</Text>
+
+            <TouchableHighlight onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
+              <Text>Hide Modal</Text>
+            </TouchableHighlight>
+
+          </View>
+        </Modal>
+
+        <TouchableHighlight onPress={() => {this.setModalVisible(true)}}>
+          <Text>{this.props.ingredient.name}</Text>
+        </TouchableHighlight>
+
+      </View>
+    );
   }
 }
 
@@ -277,7 +375,6 @@ class DefaultPage extends Component {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
