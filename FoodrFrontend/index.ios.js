@@ -25,13 +25,15 @@ export default class FoodrFrontend extends Component {
       currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
-      userId: false, // false if not logged in
+      userDetails: {},
+      userId: 1, // false if not logged in
       searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
+    this.findUser = this.findUser.bind(this)
   }
 
   searchProduct(upc) {
@@ -66,6 +68,25 @@ export default class FoodrFrontend extends Component {
     }
   }
 
+  findUser(){
+    if (this.state.userId) {
+      // fetch('https://dbc-foodr-api.herokuapp.com/users/' + this.state.userId)
+      fetch('http://localhost:3000/users/' + this.state.userId)
+      .then(data => data.json())
+      .then(jsonData => {
+        this.setState({ userDetails: jsonData })
+        if (this.state.userDetails.found) {
+          this.updateCurrentPage('UserProfilePage')
+        } else {
+          AlertIOS.alert('You are not a registered user.');
+          this.updateCurrentPage('IndexPage');
+        }
+      })
+    } else {
+      AlertIOS.alert('Please sign up or login to save an item.');
+    }
+  }
+
   updateCurrentPage(pageName) {
     this.setState({currentPage: pageName})
   }
@@ -79,7 +100,8 @@ export default class FoodrFrontend extends Component {
       case 'IndexPage':
         return(
           <IndexPage 
-          updateCurrentPage = {this.updateCurrentPage} />
+          updateCurrentPage = {this.updateCurrentPage} 
+          findUser = {this.findUser}/>
         )
       case 'SearchPage':
         return(
@@ -108,6 +130,14 @@ export default class FoodrFrontend extends Component {
             searchTerm = {this.state.searchTerm}
             />
         )
+        case 'UserProfilePage':
+        return(
+          <UserProfilePage
+          updateCurrentPage = {this.updateCurrentPage}
+          findUser = {this.findUser}
+          userDetails = {this.state.userDetails}
+          />
+        )
       case 'SearchingPage':
         return(
           <SearchingPage />
@@ -120,6 +150,45 @@ export default class FoodrFrontend extends Component {
   }
 }
 
+
+
+class UserProfilePage extends Component {
+  constructor(){
+    super()
+    this.scoreConverter = this.scoreConverter.bind(this) 
+  }
+
+  scoreConverter() {
+      switch(this.props.userDetails.user_grade) {
+        case "5.0":
+          return ('A');
+        case "4.0":
+          return ('B');
+        case "3.0":
+          return ('C');
+        case "2.0":
+          return ('D');
+        case "1.0":
+          return ('F');
+        default:
+          ('Not Found');
+      }
+  }
+
+  render () {
+    return(
+    
+      <View>
+        <Text> {this.props.userDetails.user.email} </Text>
+        <Text> Your health grade for the day: {this.scoreConverter()} </Text>
+        this.props.userDetails.saved_products.map(product =>
+            <Text> product.upc </Text>
+            <Text> product.name </Text>
+          )
+      </View>
+    );
+  }
+}
 // CHILDREN
 
 // XANDER
@@ -379,6 +448,7 @@ class IndexPage extends Component {
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
     this._onPressSignInButton = this._onPressSignInButton.bind(this)
+    this._onPressUserButton = this._onPressUserButton.bind(this)
   }
   
   _onPressSearchButton(){
@@ -397,6 +467,10 @@ class IndexPage extends Component {
     this.props.updateCurrentPage("IndexPage")
   }
 
+  _onPressUserButton(){
+    this.props.findUser()
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -404,16 +478,19 @@ class IndexPage extends Component {
           foodr
         </Text>
         <TouchableOpacity>
-        <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
+          <Button title="User Profile" onPress={this._onPressUserButton} color="red" />
         </TouchableOpacity>
         <TouchableOpacity>
-        <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
+          <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
         </TouchableOpacity>
         <TouchableOpacity>
-        <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+          <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
         </TouchableOpacity>
         <TouchableOpacity>
-        <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
+          <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
         </TouchableOpacity>
       </View>
     );
