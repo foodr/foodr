@@ -21,13 +21,12 @@ export default class FoodrFrontend extends Component {
       currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
-      loggedIn: false,
+      searchTerm: "",
       userId: false,
-      searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
-    this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
+    this.updateSearchTerm = this.updateSearchTerm.bind(this)
   }
 
 
@@ -35,7 +34,7 @@ export default class FoodrFrontend extends Component {
     this.setState({currentPage: pageName})
   }
 
-  updateSearchTerm(searchTerm){
+  updateSearchTerm(searchTerm) {
     this.setState({searchTerm: searchTerm})
   }
 
@@ -60,16 +59,13 @@ export default class FoodrFrontend extends Component {
       case 'IndexPage':
         return(
           <IndexPage 
-          updateCurrentPage = {this.updateCurrentPage}
-          currentPage = {this.state.currentPage}/>
+          updateCurrentPage = {this.updateCurrentPage} />
         )
       case 'SearchPage':
         return(
           <SearchPage
-          updateCurrentPage = {this.updateCurrentPage}
-          currentPage = {this.state.currentPage}
           searchProduct = {this.searchProduct}
-          updateSearchTerm = {this.updateSearchTerm} />
+          updateSearchTerm = {this.updateSearchTerm}/>
         )
       case 'CameraPage':
         return(
@@ -92,7 +88,8 @@ export default class FoodrFrontend extends Component {
         return(
           <NoResultsPage
             updateCurrentPage = {this.updateCurrentPage}
-          />
+            searchTerm = {this.state.searchTerm}
+            />
         )
       case 'SearchingPage':
         return(
@@ -160,40 +157,40 @@ class CameraPage extends Component {
 
 // TIFF
 
-// class ProductPage extends Component {
-//   constructor() {
-//     super()
-//     this.goToCamera = this.goToCamera.bind(this)
-//     this.goToSearch = this.goToSearch.bind(this)
-//   }
+class ProductPage extends Component {
+  constructor() {
+    super()
+    this.goToCamera = this.goToCamera.bind(this)
+    this.goToSearch = this.goToSearch.bind(this)
+  }
 
-//   goToCamera () {
-//     this.props.updateCurrentPage('CameraPage')
-//   }
+  goToCamera () {
+    this.props.updateCurrentPage('CameraPage')
+  }
 
-//   goToSearch() {
-//     this.props .updateCurrentPage('SearchPage')
-//   }
+  goToSearch() {
+    this.props .updateCurrentPage('SearchPage')
+  }
 
-//   render() {
-//     return(
-//       <View style={styles.container}>
-//         <Text style={styles.welcome} >Product Page</Text>
-//         <Text>{this.props.foundProduct.product.name}</Text>
-//         <Button
-//           onPress={this.goToCamera}
-//           title="Scan Another Item"
-//         />
-//       </View>
-//     )
-//   }
-// }
+  render() {
+    return(
+      <View style={styles.container}>
+        <Text style={styles.welcome} >Product Page</Text>
+        <Text>{this.props.foundProduct.product.name}</Text>
+        <Button
+          onPress={this.goToCamera}
+          title="Scan Another Item"
+        />
+      </View>
+    )
+  }
+}
 
 // KANAN
 
 class NoResultsPage extends Component {
-  constructor(props){
-    super(props)
+  constructor(){
+    super()
     this.searchAgain = this.searchAgain.bind(this)
     this.scanAgain = this.scanAgain.bind(this)
   }
@@ -209,7 +206,7 @@ class NoResultsPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>No Products Found</Text>
+        <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
         <Text> Would you like to try another product?</Text>
         <Button 
          title="Scan Another Product"
@@ -238,7 +235,7 @@ class SearchPage extends Component {
   }
 
   startSearch() {
-    console.log(this.state.text)
+    this.props.updateSearchTerm(this.state.text)
     this.props.searchProduct(this.state.text)
   }
 
@@ -259,39 +256,6 @@ class SearchPage extends Component {
       </View>
     )  
   }
-
-
-
-
-
-
-
-
-  // constructor(props){
-  //   super(props)
-  //   this.state = {
-  //     text: "Enter product name or upc"
-  //   };
-  //   this._onPressSearchWord = this._onPressSearchWord(this)
-  // }
-
-  // _onPressSearchWord(){
-  //   // this.props.updateCurrentPage("noResultsPage")
-  //   this.props.updateSearchTerm("this.state.text")
-  //   // this.props.updateCurrentPage("ProductPage")
-  // }
-
-  // render() {
-  //   return (
-  //     <View style={styles.container}>
-  //       <TextInput
-  //       style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-  //       onChangeText={this._onPressSearchWord}
-  //       value={this.state.text}
-  //     />
-  //     </View>
-  //   );
-  // }
 }
 
 
