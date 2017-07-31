@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   Dimensions,
   Button,
   ActivityIndicator,
@@ -15,6 +16,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import Camera from 'react-native-camera';
+import NavigationBar from 'react-native-navbar';
 
 // PARENT
 
@@ -75,42 +77,119 @@ export default class FoodrFrontend extends Component {
   }
 
   render() {
+    const titleConfig = {
+      title: 'FOODR',
+    };
+
+    const leftButtonConfig = {
+      title: 'Profile',
+      handler: () => this.updateCurrentPage('UserProfilePage'),
+    };
+
+    const rightButtonConfig = {
+      title: 'Scan',
+      handler: () => this.updateCurrentPage('CameraPage'),
+    };
+
     switch(this.state.currentPage) {
       case 'IndexPage':
         return(
-          <IndexPage 
-          updateCurrentPage = {this.updateCurrentPage} />
+          <View style={styles.container}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <ScrollView style={styles.scrollView}>
+              <IndexPage
+              updateCurrentPage = {this.updateCurrentPage} />
+            </ScrollView>
+          </View>
         )
       case 'SearchPage':
         return(
-          <SearchPage
-          searchProduct = {this.searchProduct}
-          updateSearchTerm = {this.updateSearchTerm}/>
+          <View style={styles.container}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+            />
+            <ScrollView style={styles.scrollView}>
+              <SearchPage
+                style={styles.body}
+                searchProduct = {this.searchProduct}
+                updateSearchTerm = {this.updateSearchTerm}/>
+            </ScrollView>
+          </View>
         )
       case 'CameraPage':
         return(
-          <CameraPage
-            searchProduct = {this.searchProduct}
-          />
+          <View style={styles.container}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+            />
+            <ScrollView style={styles.scrollView}>
+              <CameraPage
+                searchProduct = {this.searchProduct}
+              />
+            </ScrollView>
+          </View>
         )
       case 'ProductPage':
         return(
-          <ProductPage
-            foundProduct = {this.state.foundProduct}
-            updateCurrentPage = {this.updateCurrentPage}
-            saveSearch = {this.saveSearch}
-          />
+          <View style={styles.container}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <ScrollView>
+              <ProductPage
+                foundProduct = {this.state.foundProduct}
+                updateCurrentPage = {this.updateCurrentPage}
+                saveSearch = {this.saveSearch}
+              />
+            </ScrollView>
+        </View>
         )
       case 'NoResultsPage':
         return(
-          <NoResultsPage
-            updateCurrentPage = {this.updateCurrentPage}
-            searchTerm = {this.state.searchTerm}
+          <View style={styles.container}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
             />
+            <ScrollView>
+              <NoResultsPage
+                updateCurrentPage = {this.updateCurrentPage}
+                searchTerm = {this.state.searchTerm}
+                />
+            </ScrollView>
+          </View>
         )
       case 'SearchingPage':
         return(
           <SearchingPage />
+        )
+      case 'UserProfilePage':
+        return(
+          <View style={styles.container}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <ScrollView>
+              <UserProfilePage />
+            </ScrollView>
+          </View>
         )
       default:
         return(
@@ -121,18 +200,6 @@ export default class FoodrFrontend extends Component {
 }
 
 // CHILDREN
-
-// XANDER
-
-class LayoutPage extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
-        <Text>Layout Page</Text>
-      </View>
-    )
-  }
-}
 
 // VICTORIA
 
@@ -188,7 +255,7 @@ class ProductPage extends Component {
   saveItem() {
     this.props.saveSearch(this.props.foundProduct.search.id);
   }
-  
+
   scoreConverter() {
     let numberScore = this.props.foundProduct.product.score
       switch(numberScore) {
@@ -206,7 +273,7 @@ class ProductPage extends Component {
           ('Not Found');
       }
   }
-  
+
   renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
       <View key={ingredient.id}>
@@ -319,13 +386,13 @@ class NoResultsPage extends Component {
       <View style={styles.container}>
         <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
         <Text> Would you like to try another product?</Text>
-        <Button 
+        <Button
          title="Scan Another Product"
          onPress={this.scanAgain}
          color="blue"
         />
         <Text>or</Text>
-        <Button 
+        <Button
          title="Search Product"
          onPress={this.searchAgain}
          color="green"
@@ -366,7 +433,7 @@ class SearchPage extends Component {
         <Button title="Search Product" color="#fffaf0" onPress={this.startSearch}/>
         </TouchableOpacity>
       </View>
-    )  
+    )
   }
 }
 
@@ -380,7 +447,7 @@ class IndexPage extends Component {
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
     this._onPressSignInButton = this._onPressSignInButton.bind(this)
   }
-  
+
   _onPressSearchButton(){
     this.props.updateCurrentPage("SearchPage")
   }
@@ -399,7 +466,7 @@ class IndexPage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.body}>
         <Text>
           foodr
         </Text>
@@ -413,7 +480,7 @@ class IndexPage extends Component {
         <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
         </TouchableOpacity>
         <TouchableOpacity>
-        <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
+        <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/>
         </TouchableOpacity>
       </View>
     );
@@ -438,6 +505,17 @@ class SearchingPage extends Component {
 }
 
 // FOR TESTING
+
+class UserProfilePage extends Component {
+  render() {
+    return(
+      <View style={styles.container}>
+        <Text style={styles.welcome}>User Profile Page</Text>
+        <Text>This is where the user's info will go.</Text>
+      </View>
+    );
+  }
+}
 
 class DefaultPage extends Component {
   render() {
@@ -487,6 +565,19 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     marginBottom: 20,
+  },
+  navbar: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'pink',
+  },
+  body: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: '#F5FCFF',
   },
   // for testing
   capture: {
