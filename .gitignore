@@ -13,13 +13,47 @@
 !/log/.keep
 !/tmp/.keep
 
-/FoodrFrontend/node_modules
 /yarn-error.log
 
 .byebug_history
+.env
 
+# OS X temporary files that should never be committed
+.DS_Store
+*.swp
+*.lock
+profile
+
+# Rails backend logs and temporary files
 /foodr-backend/log
 /foodr-backend/tmp
 
-.env
+# Xcode temporary files that should never be committed
+*~.nib
 
+
+# Front End
+
+/FoodrFrontend/node_modules
+
+# Xcode (source: https://github.com/github/gitignore/blob/master/Global/Xcode.gitignore)
+
+## Build generated
+build/
+DerivedData/
+
+## Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+
+## Other
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint

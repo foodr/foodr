@@ -9,9 +9,10 @@ import {
   ActivityIndicator,
   Image,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  AlertIOS
 } from 'react-native';
-// import Camera from 'react-native-camera';
+import Camera from 'react-native-camera';
 
 // PARENT
 
@@ -19,56 +20,15 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'ProductPage',
+      currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
-
-      foundProduct: {
-        "found": true,
-        "product": {
-            "id": 1,
-            "upc": "03077504",
-            "name": "Quaker Chewy Chocolate Chip Bar",
-            "score": 3,
-            "img_url": "https://images-na.ssl-images-amazon.com/images/I/81wqeA8l9CL._SL1500_.jpg",
-            "created_at": "2017-07-29T02:12:28.868Z",
-            "updated_at": "2017-07-29T02:12:28.868Z"
-          },
-        "ingredients": [
-            {
-                "id": 1,
-                "name": "Pumpkin Seed",
-                "description": "this is healthy",
-                "is_natural": true,
-                "img_url": "https://cdn.foodtolive.com/wp-content/uploads/2014/02/Pumpkin-Seeds-1-480x480.png",
-                "created_at": "2017-07-29T02:12:28.909Z",
-                "updated_at": "2017-07-29T02:12:28.909Z"
-            },
-            {
-                "id": 3,
-                "name": "Blue Swimmer Crab",
-                "description": "this is healthy",
-                "is_natural": true,
-                "img_url": "https://previews.123rf.com/images/kerdkanno/kerdkanno1305/kerdkanno130500343/19918393-Fresh-blue-swimmer-crab-Stock-Photo.jpg",
-                "created_at": "2017-07-29T02:12:28.913Z",
-                "updated_at": "2017-07-29T02:12:28.913Z"
-            },
-            {
-                "id": 5,
-                "name": "White rice",
-                "description": "this is healthy",
-                "is_natural": false,
-                "img_url": "https://media1.popsugar-assets.com/files/thumbor/X4NKHlkRX1a5B5yEYkd_H865fHg/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2015/03/27/860/n/1922398/10752659_shutterstock_147035048.jpg",
-                "created_at": "2017-07-29T02:12:28.917Z",
-                "updated_at": "2017-07-29T02:12:28.917Z"
-            }
-        ]
-      },
-      loggedIn: false,
-      userId: false,
+      foundProduct: {},
+      userId: false, // false if not logged in
       searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
+    this.saveSearch = this.saveSearch.bind(this)
   }
 
   searchProduct(upc) {
@@ -85,6 +45,22 @@ export default class FoodrFrontend extends Component {
         this.updateCurrentPage('NoResultsPage')
       }
     });
+  }
+
+  saveSearch(searchId) {
+    if (this.state.userId) {
+      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
+      .then(data => data.json())
+      .then(jsonData => {
+        if (jsonData.save_successful) {
+          AlertIOS.alert('Product Saved!');
+        } else {
+          AlertIOS.alert('Product was not saved.');
+        }
+      })
+    } else {
+      AlertIOS.alert('Please sign up or login to save an item.');
+    }
   }
 
   updateCurrentPage(pageName) {
@@ -112,6 +88,7 @@ export default class FoodrFrontend extends Component {
           <ProductPage
             foundProduct = {this.state.foundProduct}
             updateCurrentPage = {this.updateCurrentPage}
+            saveSearch = {this.saveSearch}
           />
         )
       case 'NoResultsPage':
@@ -194,18 +171,13 @@ class CameraPage extends Component {
 class ProductPage extends Component {
   constructor() {
     super()
-    this.goToCamera = this.goToCamera.bind(this)
-    this.goToSearch = this.goToSearch.bind(this)
+    this.saveItem = this.saveItem.bind(this)
   }
 
-  goToCamera () {
-    this.props.updateCurrentPage('CameraPage')
+  saveItem() {
+    this.props.saveSearch(this.props.foundProduct.search.id);
   }
-
-  goToSearch() {
-    this.props.updateCurrentPage('SearchPage')
-  }
-
+  
   scoreConverter() {
     let numberScore = this.props.foundProduct.product.score
       switch(numberScore) {
@@ -223,14 +195,10 @@ class ProductPage extends Component {
           ('Not Found');
       }
   }
-
+  
   renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
       <View key={ingredient.id}>
-        {/* <Image
-          style={{width: 50, height: 50}}
-        source={{uri: ingredient.img_url}}
-        /> */}
         { ingredient.is_natural ?
           <Image
             style={{width: 50, height: 50}}
@@ -260,6 +228,11 @@ class ProductPage extends Component {
 
         <Text>Ingredients:</Text>
         {this.renderIngredientList()}
+
+        <Button
+          onPress={this.saveItem}
+          title="Save Product"
+        />
       </View>
     )
   }
@@ -312,7 +285,6 @@ class IngredientModal extends Component {
     );
   }
 }
-
 
 // KANAN
 
@@ -403,7 +375,6 @@ class DefaultPage extends Component {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {

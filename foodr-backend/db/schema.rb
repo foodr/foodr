@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170729002146) do
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.string "type"
+    t.boolean "is_natural"
     t.string "img_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

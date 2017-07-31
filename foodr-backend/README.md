@@ -27,36 +27,40 @@ If successful:
         "upc": "03077504",
         "name": "Quaker Chewy Chocolate Chip Bar",
         "score": 3,
-        "img_url": "http://www.quakeroats.com/images/default-source/products/choc-chip_hero6c265c418cb46e438643ff2300547e50",
-        "created_at": "2017-07-29T02:12:28.868Z",
-        "updated_at": "2017-07-29T02:12:28.868Z"
+        "img_url": "https://images-na.ssl-images-amazon.com/images/I/81wqeA8l9CL._SL1500_.jpg",
+        "created_at": "2017-07-30T22:56:12.139Z",
+        "updated_at": "2017-07-30T22:56:12.139Z"
     },
     "ingredients": [
         {
-            "id": 1,
-            "name": "Pumpkin Seed",
-            "description": "this is healthy",
+            "id": 2,
+            "name": "Tea Oil",
+            "description": "this is unhealthy",
+            "is_natural": false,
             "img_url": null,
-            "created_at": "2017-07-29T02:12:28.909Z",
-            "updated_at": "2017-07-29T02:12:28.909Z"
+            "created_at": "2017-07-30T22:56:12.207Z",
+            "updated_at": "2017-07-30T22:56:12.207Z"
         },
         {
             "id": 3,
-            "name": "Blue Swimmer Crab",
+            "name": "Sultanas",
             "description": "this is healthy",
+            "is_natural": true,
             "img_url": null,
-            "created_at": "2017-07-29T02:12:28.913Z",
-            "updated_at": "2017-07-29T02:12:28.913Z"
+            "created_at": "2017-07-30T22:56:12.209Z",
+            "updated_at": "2017-07-30T22:56:12.209Z"
         },
         {
-            "id": 5,
-            "name": "White rice",
-            "description": "this is healthy",
+            "id": 6,
+            "name": "Olives",
+            "description": "this is unhealthy",
+            "is_natural": false,
             "img_url": null,
-            "created_at": "2017-07-29T02:12:28.917Z",
-            "updated_at": "2017-07-29T02:12:28.917Z"
+            "created_at": "2017-07-30T22:56:12.214Z",
+            "updated_at": "2017-07-30T22:56:12.214Z"
         }
-    ]
+    ],
+    "search": null
 }
 ```
 If unsuccessful:
