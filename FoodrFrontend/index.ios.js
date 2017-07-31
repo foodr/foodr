@@ -27,6 +27,7 @@ export default class FoodrFrontend extends Component {
       currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
+      foundProductSaved: false,
       userId: false, // false if not logged in
       searchTerm: ''
     }
@@ -45,6 +46,7 @@ export default class FoodrFrontend extends Component {
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
       if (this.state.foundProduct.found) {
+        this.setState({foundProductSaved: jsonData.search.is_saved})
         this.updateCurrentPage('ProductPage')
       } else {
         this.updateCurrentPage('NoResultsPage')
@@ -58,8 +60,10 @@ export default class FoodrFrontend extends Component {
       .then(data => data.json())
       .then(jsonData => {
         if (jsonData.save_successful) {
+          this.setState({foundProductSaved: true});
           AlertIOS.alert('Product Saved!');
         } else {
+          this.setState({foundProductSaved: false});
           AlertIOS.alert('Product was not saved.');
         }
       })
@@ -152,6 +156,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView>
               <ProductPage
                 foundProduct = {this.state.foundProduct}
+                foundProductSaved = {this.state.foundProductSaved}
                 updateCurrentPage = {this.updateCurrentPage}
                 saveSearch = {this.saveSearch}
               />
@@ -284,7 +289,7 @@ class ProductPage extends Component {
         case 1:
           return ('F');
         default:
-          ('Not Found');
+          return ('Not Found');
       }
   }
 
@@ -294,12 +299,12 @@ class ProductPage extends Component {
         { ingredient.is_natural ?
           <Image
             style={{width: 50, height: 50}}
-          source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
+            source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
           />
           :
           <Image
             style={{width: 50, height: 50}}
-          source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
+            source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
           />
          }
 
@@ -318,13 +323,18 @@ class ProductPage extends Component {
         <Text style={styles.welcome}>{this.props.foundProduct.product.name}</Text>
         <Text>Score: {this.scoreConverter()}</Text>
 
+        {this.props.foundProductSaved ?
+          <Text>Product is Saved</Text>
+          :
+          <Button
+            onPress={this.saveItem}
+            title="Save Product"
+          />
+        }
+
         <Text>Ingredients:</Text>
         {this.renderIngredientList()}
 
-        <Button
-          onPress={this.saveItem}
-          title="Save Product"
-        />
       </View>
     )
   }
