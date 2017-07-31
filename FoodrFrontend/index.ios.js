@@ -7,12 +7,10 @@ import {
   Dimensions,
   Button,
   ActivityIndicator,
-  Image,
-  Modal,
-  TouchableHighlight,
-  AlertIOS
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
-import Camera from 'react-native-camera';
+// import Camera from 'react-native-camera';
 
 // PARENT
 
@@ -23,12 +21,21 @@ export default class FoodrFrontend extends Component {
       currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
-      userId: false, // false if not logged in
-      searchTerm: ''
+      searchTerm: "",
+      userId: false,
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
-    this.saveSearch = this.saveSearch.bind(this)
+    this.updateSearchTerm = this.updateSearchTerm.bind(this)
+  }
+
+
+  updateCurrentPage(pageName) {
+    this.setState({currentPage: pageName})
+  }
+
+  updateSearchTerm(searchTerm) {
+    this.setState({searchTerm: searchTerm})
   }
 
   searchProduct(upc) {
@@ -47,35 +54,18 @@ export default class FoodrFrontend extends Component {
     });
   }
 
-  saveSearch(searchId) {
-    if (this.state.userId) {
-      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
-      .then(data => data.json())
-      .then(jsonData => {
-        if (jsonData.save_successful) {
-          AlertIOS.alert('Product Saved!');
-        } else {
-          AlertIOS.alert('Product was not saved.');
-        }
-      })
-    } else {
-      AlertIOS.alert('Please sign up or login to save an item.');
-    }
-  }
-
-  updateCurrentPage(pageName) {
-    this.setState({currentPage: pageName})
-  }
-
   render() {
     switch(this.state.currentPage) {
       case 'IndexPage':
         return(
-          <IndexPage />
+          <IndexPage 
+          updateCurrentPage = {this.updateCurrentPage} />
         )
       case 'SearchPage':
         return(
-          <SearchPage />
+          <SearchPage
+          searchProduct = {this.searchProduct}
+          updateSearchTerm = {this.updateSearchTerm}/>
         )
       case 'CameraPage':
         return(
@@ -88,14 +78,18 @@ export default class FoodrFrontend extends Component {
           <ProductPage
             foundProduct = {this.state.foundProduct}
             updateCurrentPage = {this.updateCurrentPage}
-            saveSearch = {this.saveSearch}
           />
+        )
+      case 'IngredientPage':
+        return(
+          <IngredientPage />
         )
       case 'NoResultsPage':
         return(
           <NoResultsPage
             updateCurrentPage = {this.updateCurrentPage}
-          />
+            searchTerm = {this.state.searchTerm}
+            />
         )
       case 'SearchingPage':
         return(
@@ -107,21 +101,23 @@ export default class FoodrFrontend extends Component {
         )
     }
   }
+
 }
 
 // CHILDREN
 
 // XANDER
 
-class LayoutPage extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
-        <Text>Layout Page</Text>
-      </View>
-    )
-  }
-}
+// class LayoutPage extends Component {
+//   render() {
+//     return(
+//       <View style={styles.container}>
+//         <Text>Layout Page</Text>
+//       </View>
+//     )
+//   }
+// }
+
 
 // VICTORIA
 
@@ -150,15 +146,7 @@ class CameraPage extends Component {
     return(
       <View style={styles.container}>
         <Text style={styles.welcome}>Place Barcode in View</Text>
-        <Camera
-          ref={(cam) => {this.camera = cam;}}
-          style={styles.preview}
-          onBarCodeRead = {this.onBarCodeRead}
-          aspect={Camera.constants.Aspect.fill}>
-        </Camera>
         <Text style={styles.instructions}>The camera will automatically detect when a barcode is present</Text>
-
-
         <Text style={styles.capture} onPress={this.existingItem}>[EXISTING ITEM]</Text>
         <Text style={styles.capture} onPress={this.nonExistingItem}>[NONEXISTING ITEM]</Text>
       </View>
@@ -166,129 +154,10 @@ class CameraPage extends Component {
   }
 }
 
+
 // TIFF
 
 class ProductPage extends Component {
-  constructor() {
-    super()
-    this.saveItem = this.saveItem.bind(this)
-  }
-
-  saveItem() {
-    this.props.saveSearch(this.props.foundProduct.search.id);
-  }
-  
-  scoreConverter() {
-    let numberScore = this.props.foundProduct.product.score
-      switch(numberScore) {
-        case 5:
-          return ('A');
-        case 4:
-          return ('B');
-        case 3:
-          return ('C');
-        case 2:
-          return ('D');
-        case 1:
-          return ('F');
-        default:
-          ('Not Found');
-      }
-  }
-  
-  renderIngredientList() {
-    return this.props.foundProduct.ingredients.map(ingredient =>
-      <View key={ingredient.id}>
-        { ingredient.is_natural ?
-          <Image
-            style={{width: 50, height: 50}}
-          source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
-          />
-          :
-          <Image
-            style={{width: 50, height: 50}}
-          source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
-          />
-         }
-
-        <IngredientModal ingredient = {ingredient} />
-      </View>
-    );
-  }
-
-  render() {
-    return(
-      <View style={styles.container}>
-        <Image
-          style={{width: 375, height: 200}}
-        source={{uri: this.props.foundProduct.product.img_url}}
-        />
-        <Text style={styles.welcome}>{this.props.foundProduct.product.name}</Text>
-        <Text>Score: {this.scoreConverter()}</Text>
-
-        <Text>Ingredients:</Text>
-        {this.renderIngredientList()}
-
-        <Button
-          onPress={this.saveItem}
-          title="Save Product"
-        />
-      </View>
-    )
-  }
-}
-
-class IngredientModal extends Component {
-  constructor() {
-    super()
-    this.state = {
-      modalVisible: false
-    }
-    this.setModalVisible = this.setModalVisible.bind(this)
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-
-  render() {
-    return (
-      <View style={{marginTop: 22}}>
-
-        <Modal
-          animationType={"slide"}
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-          <View style={styles.container}>
-            <Image
-              style={{width: 375, height: 200}}
-            source={{uri: this.props.ingredient.img_url}}
-            />
-
-            <Text style={styles.welcome}>{this.props.ingredient.name}</Text>
-            <Text>{this.props.ingredient.description}</Text>
-
-            <TouchableHighlight onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
-              <Text>Hide Modal</Text>
-            </TouchableHighlight>
-
-          </View>
-        </Modal>
-
-        <TouchableHighlight onPress={() => {this.setModalVisible(true)}}>
-          <Text>{this.props.ingredient.name}</Text>
-        </TouchableHighlight>
-
-      </View>
-    );
-  }
-}
-
-// KANAN
-
-class NoResultsPage extends Component {
   constructor() {
     super()
     this.goToCamera = this.goToCamera.bind(this)
@@ -306,17 +175,12 @@ class NoResultsPage extends Component {
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.welcome}>No Products Found</Text>
-        <Text>Sorry we do not have that item in our database{"\n\n"}</Text>
+        <Text style={styles.welcome} >Product Page</Text>
+        <Text>{this.props.foundProduct.product.name}</Text>
         <Button
-            onPress={this.goToCamera}
-            title="Scan Another Item"
-          />
-        <Text>or</Text>
-        <Button
-            onPress={this.goToSearch}
-            title="Search for an Item"
-          />
+          onPress={this.goToCamera}
+          title="Scan Another Item"
+        />
       </View>
     )
   }
@@ -324,23 +188,120 @@ class NoResultsPage extends Component {
 
 // KANAN
 
-class SearchPage extends Component {
+class NoResultsPage extends Component {
+  constructor(){
+    super()
+    this.searchAgain = this.searchAgain.bind(this)
+    this.scanAgain = this.scanAgain.bind(this)
+  }
+
+  searchAgain(){
+    this.props.updateCurrentPage("SearchPage")
+  }
+
+  scanAgain(){
+    this.props.updateCurrentPage("CameraPage")
+  }
+
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <Text>Search Page</Text>
+        <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
+        <Text> Would you like to try another product?</Text>
+        <Button 
+         title="Scan Another Product"
+         onPress={this.scanAgain}
+         color="blue"
+        />
+        <Text>or</Text>
+        <Button 
+         title="Search Product"
+         onPress={this.searchAgain}
+         color="green"
+        />
       </View>
     );
   }
 }
 
-// KANAN
+
+class SearchPage extends Component {
+  constructor(){
+    super();
+    this.state = {
+      text: ''
+    };
+    this.startSearch = this.startSearch.bind(this)
+  }
+
+  startSearch() {
+    this.props.updateSearchTerm(this.state.text)
+    this.props.searchProduct(this.state.text)
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <TextInput
+        placeholder="Enter product name or upc"
+        placeholderTextColor='#ecf0f1'
+        returnKeyType="search"
+        keyboardType="default"
+        style={styles.input}
+        onChangeText={(text) => this.setState({text})}
+        />
+        <TouchableOpacity style={styles.buttonContainer}>
+        <Button title="Search Product" color="#fffaf0" onPress={this.startSearch}/>
+        </TouchableOpacity>
+      </View>
+    )  
+  }
+}
+
 
 class IndexPage extends Component {
+  constructor(){
+    super()
+    this._onPressSearchButton = this._onPressSearchButton.bind(this)
+    this._onPressScanButton = this._onPressScanButton.bind(this)
+    this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
+    this._onPressSignInButton = this._onPressSignInButton.bind(this)
+  }
+  
+  _onPressSearchButton(){
+    this.props.updateCurrentPage("SearchPage")
+  }
+
+  _onPressScanButton(){
+    this.props.updateCurrentPage("CameraPage")
+  }
+
+  _onPressSignUpButton(){
+    this.props.updateCurrentPage("IndexPage")
+  }
+
+  _onPressSignInButton(){
+    this.props.updateCurrentPage("IndexPage")
+  }
+
   render() {
-    return(
+    return (
       <View style={styles.container}>
-        <Text>Index Page</Text>
+        <Text>
+          foodr
+        </Text>
+        <TouchableOpacity>
+        <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+        <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
+        </TouchableOpacity>
       </View>
     );
   }
@@ -376,12 +337,29 @@ class DefaultPage extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  input: {
+    height: 40,
+    width: 340,
+    backgroundColor: '#228b22',
+    color: '#fffaf0',
+    fontWeight: "200",
+    marginBottom: 20,
+    paddingHorizontal: 5
+  },
+  buttonContainer: {
+    backgroundColor: "#228b22",
+    borderRadius: 15,
+    padding: 5
+    
+    // justifyContent: 'center'
   },
   welcome: {
     fontSize: 20,
@@ -408,7 +386,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5
   },
-
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
