@@ -38,7 +38,8 @@ export default class FoodrFrontend extends Component {
                 "id": 1,
                 "name": "Pumpkin Seed",
                 "description": "this is healthy",
-                "img_url": null,
+                "is_natural": true,
+                "img_url": "https://cdn.foodtolive.com/wp-content/uploads/2014/02/Pumpkin-Seeds-1-480x480.png",
                 "created_at": "2017-07-29T02:12:28.909Z",
                 "updated_at": "2017-07-29T02:12:28.909Z"
             },
@@ -46,7 +47,8 @@ export default class FoodrFrontend extends Component {
                 "id": 3,
                 "name": "Blue Swimmer Crab",
                 "description": "this is healthy",
-                "img_url": null,
+                "is_natural": true,
+                "img_url": "https://previews.123rf.com/images/kerdkanno/kerdkanno1305/kerdkanno130500343/19918393-Fresh-blue-swimmer-crab-Stock-Photo.jpg",
                 "created_at": "2017-07-29T02:12:28.913Z",
                 "updated_at": "2017-07-29T02:12:28.913Z"
             },
@@ -54,7 +56,8 @@ export default class FoodrFrontend extends Component {
                 "id": 5,
                 "name": "White rice",
                 "description": "this is healthy",
-                "img_url": null,
+                "is_natural": false,
+                "img_url": "https://media1.popsugar-assets.com/files/thumbor/X4NKHlkRX1a5B5yEYkd_H865fHg/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2015/03/27/860/n/1922398/10752659_shutterstock_147035048.jpg",
                 "created_at": "2017-07-29T02:12:28.917Z",
                 "updated_at": "2017-07-29T02:12:28.917Z"
             }
@@ -110,10 +113,6 @@ export default class FoodrFrontend extends Component {
             foundProduct = {this.state.foundProduct}
             updateCurrentPage = {this.updateCurrentPage}
           />
-        )
-      case 'IngredientPage':
-        return(
-          <IngredientPage  />
         )
       case 'NoResultsPage':
         return(
@@ -225,9 +224,27 @@ class ProductPage extends Component {
       }
   }
 
-  renderIngredient() {
+  renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
-      <IngredientModal ingredient = {ingredient} />
+      <View key={ingredient.id}>
+        {/* <Image
+          style={{width: 50, height: 50}}
+        source={{uri: ingredient.img_url}}
+        /> */}
+        { ingredient.is_natural ?
+          <Image
+            style={{width: 50, height: 50}}
+          source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
+          />
+          :
+          <Image
+            style={{width: 50, height: 50}}
+          source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
+          />
+         }
+
+        <IngredientModal ingredient = {ingredient} />
+      </View>
     );
   }
 
@@ -242,7 +259,7 @@ class ProductPage extends Component {
         <Text>Score: {this.scoreConverter()}</Text>
 
         <Text>Ingredients:</Text>
-        {this.renderIngredient()}
+        {this.renderIngredientList()}
       </View>
     )
   }
@@ -272,7 +289,13 @@ class IngredientModal extends Component {
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
           <View style={styles.container}>
+            <Image
+              style={{width: 375, height: 200}}
+            source={{uri: this.props.ingredient.img_url}}
+            />
+
             <Text style={styles.welcome}>{this.props.ingredient.name}</Text>
+            <Text>{this.props.ingredient.description}</Text>
 
             <TouchableHighlight onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
               <Text>Hide Modal</Text>
