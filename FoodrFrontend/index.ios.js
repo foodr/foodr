@@ -114,6 +114,7 @@ export default class FoodrFrontend extends Component {
               style={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
+              rightButton={rightButtonConfig}
             />
             <ScrollView style={styles.scrollView}>
               <SearchPage
@@ -133,6 +134,7 @@ export default class FoodrFrontend extends Component {
             />
             <ScrollView style={styles.scrollView}>
               <CameraPage
+                updateCurrentPage = {this.updateCurrentPage}
                 searchProduct = {this.searchProduct}
               />
             </ScrollView>
@@ -207,12 +209,19 @@ class CameraPage extends Component {
   constructor() {
     super()
     this.onBarCodeRead = this.onBarCodeRead.bind(this)
+    this.onPressSearchButton = this.onPressSearchButton.bind(this)
+
+    // for testing
     this.existingItem = this.existingItem.bind(this)
     this.nonExistingItem = this.nonExistingItem.bind(this)
   }
 
   onBarCodeRead(e) {
     this.props.searchProduct(e.data)
+  }
+
+  onPressSearchButton(){
+    this.props.updateCurrentPage("SearchPage")
   }
 
   // for testing
@@ -236,9 +245,14 @@ class CameraPage extends Component {
         </Camera>
         <Text style={styles.instructions}>The camera will automatically detect when a barcode is present</Text>
 
+        <Text style={styles.instructions}>No item to scan?</Text>
+        <Text style={styles.capture} onPress={this.onPressSearchButton}>Enter a Search Term</Text>
 
-        <Text style={styles.capture} onPress={this.existingItem}>[EXISTING ITEM]</Text>
-        <Text style={styles.capture} onPress={this.nonExistingItem}>[NONEXISTING ITEM]</Text>
+        <Text style={styles.instructions}>For Testing:</Text>
+        <View style={styles.inlineContainer}>
+          <Text style={styles.capture} onPress={this.existingItem}>EXISTING ITEM</Text>
+          <Text style={styles.capture} onPress={this.nonExistingItem}>NONEXISTING ITEM</Text>
+        </View>
       </View>
     );
   }
@@ -587,6 +601,10 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5
   },
+  inlineContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  }
 
 });
 
