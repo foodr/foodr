@@ -124,7 +124,8 @@ export default class FoodrFrontend extends Component {
               <SearchPage
                 style={styles.body}
                 searchProduct = {this.searchProduct}
-                updateSearchTerm = {this.updateSearchTerm}/>
+                updateSearchTerm = {this.updateSearchTerm}
+              />
             </ScrollView>
           </View>
         )
@@ -140,6 +141,7 @@ export default class FoodrFrontend extends Component {
               <CameraPage
                 updateCurrentPage = {this.updateCurrentPage}
                 searchProduct = {this.searchProduct}
+                updateSearchTerm = {this.updateSearchTerm}
               />
             </ScrollView>
           </View>
@@ -222,6 +224,7 @@ class CameraPage extends Component {
   }
 
   onBarCodeRead(e) {
+    this.props.updateSearchTerm('Product')
     this.props.searchProduct(e.data)
   }
 
@@ -231,10 +234,12 @@ class CameraPage extends Component {
 
   // for testing
   existingItem() {
+    this.props.updateSearchTerm('Product')
     this.props.searchProduct('03077504')
   }
 
   nonExistingItem() {
+    this.props.updateSearchTerm('Product')
     this.props.searchProduct('asdf')
   }
 
