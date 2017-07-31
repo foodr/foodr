@@ -10,7 +10,9 @@ import {
   Image,
   Modal,
   TouchableHighlight,
-  AlertIOS
+  AlertIOS,
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
 import Camera from 'react-native-camera';
 
@@ -28,6 +30,7 @@ export default class FoodrFrontend extends Component {
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
+    this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
   }
 
@@ -67,15 +70,22 @@ export default class FoodrFrontend extends Component {
     this.setState({currentPage: pageName})
   }
 
+  updateSearchTerm(searchTerm) {
+    this.setState({searchTerm: searchTerm})
+  }
+  
   render() {
     switch(this.state.currentPage) {
       case 'IndexPage':
         return(
-          <IndexPage />
+          <IndexPage 
+          updateCurrentPage = {this.updateCurrentPage} />
         )
       case 'SearchPage':
         return(
-          <SearchPage />
+          <SearchPage
+          searchProduct = {this.searchProduct}
+          updateSearchTerm = {this.updateSearchTerm}/>
         )
       case 'CameraPage':
         return(
@@ -95,7 +105,8 @@ export default class FoodrFrontend extends Component {
         return(
           <NoResultsPage
             updateCurrentPage = {this.updateCurrentPage}
-          />
+            searchTerm = {this.state.searchTerm}
+            />
         )
       case 'SearchingPage':
         return(
