@@ -511,7 +511,7 @@ class UserProfilePage extends Component {
     return(
       <View style={styles.container}>
         <Text style={styles.welcome}>User Profile Page</Text>
-        <Text>This is where the user's info will go.</Text>
+        <Text>This is where the users info will go.</Text>
       </View>
     );
   }
