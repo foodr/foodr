@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
   Image,
   Modal,
-  TouchableHighlight,
   AlertIOS,
   TextInput,
   TouchableOpacity
@@ -24,7 +23,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'SearchPage',
+      currentPage: 'CameraPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
       foundProductSaved: false,
@@ -40,8 +39,8 @@ export default class FoodrFrontend extends Component {
   searchProduct(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    // fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -248,7 +247,7 @@ class CameraPage extends Component {
         <Text style={styles.header}>Place Barcode in View</Text>
         <Camera
           ref={(cam) => {this.camera = cam;}}
-          style={styles.preview}
+          style={styles.cameraView}
           onBarCodeRead = {this.onBarCodeRead}
           aspect={Camera.constants.Aspect.fill}>
         </Camera>
@@ -268,7 +267,7 @@ class CameraPage extends Component {
           />
           <Button
             title="Test: Nonexisting Item"
-            onPress={this.existingItem}
+            onPress={this.nonExistingItem}
             color='red'
           />
         </TouchableOpacity>
@@ -309,7 +308,7 @@ class ProductPage extends Component {
 
   renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
-      <View key={ingredient.id}>
+      <View style={styles.inlineContainer} key={ingredient.id}>
         { ingredient.is_natural ?
           <Image
             style={{width: 50, height: 50}}
@@ -329,10 +328,10 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View>
+      <View style={styles.body}>
         <Image
           style={{width: 375, height: 200}}
-        source={{uri: this.props.foundProduct.product.img_url}}
+          source={{uri: this.props.foundProduct.product.img_url}}
         />
         <Text style={styles.header}>{this.props.foundProduct.product.name}</Text>
         <Text>Score: {this.scoreConverter()}</Text>
@@ -346,7 +345,7 @@ class ProductPage extends Component {
           />
         }
 
-        <Text>Ingredients:</Text>
+        <Text style={styles.header}>Ingredients:</Text>
         {this.renderIngredientList()}
 
       </View>
@@ -369,34 +368,37 @@ class IngredientModal extends Component {
 
   render() {
     return (
-      <View style={{marginTop: 22}}>
-
+      <View>
         <Modal
           animationType={"slide"}
           transparent={false}
           visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-          <View>
+        >
+          <View style={{marginTop: 22}}>
             <Image
               style={{width: 375, height: 200}}
-            source={{uri: this.props.ingredient.img_url}}
+              source={{uri: this.props.ingredient.img_url}}
             />
 
             <Text style={styles.header}>{this.props.ingredient.name}</Text>
-            <Text>{this.props.ingredient.description}</Text>
+            <Text style={styles.small_content}>{this.props.ingredient.description}</Text>
 
-            <TouchableHighlight onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
-              <Text>Hide Modal</Text>
-            </TouchableHighlight>
+            <TouchableOpacity>
+              <Button
+                onPress={() => {this.setModalVisible(!this.state.modalVisible)}}
+                title="Back to Product"
+              />
+            </TouchableOpacity>
 
           </View>
         </Modal>
 
-        <TouchableHighlight onPress={() => {this.setModalVisible(true)}}>
-          <Text>{this.props.ingredient.name}</Text>
-        </TouchableHighlight>
-
+        <TouchableOpacity>
+          <Button
+            onPress={() => {this.setModalVisible(true)}}
+            title={this.props.ingredient.name}
+          />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -572,6 +574,10 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  inlineContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
   body: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -585,11 +591,6 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
   },
-  buttonContainer: {
-    backgroundColor: "green",
-    borderRadius: 15,
-    padding: 5
-  },
   header: {
     fontSize: 20,
     textAlign: 'center',
@@ -599,7 +600,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  preview: {
+  cameraView: {
     height: 300,
     width: '100%',
   },
