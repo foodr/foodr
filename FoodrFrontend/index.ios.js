@@ -4,12 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   Dimensions,
   Button,
   ActivityIndicator,
   Image,
   Modal,
-  TouchableHighlight,
   AlertIOS,
   TextInput,
   TouchableOpacity,
@@ -17,6 +17,7 @@ import {
   ListView
 } from 'react-native';
 import Camera from 'react-native-camera';
+import NavigationBar from 'react-native-navbar';
 
 // PARENT
 
@@ -25,9 +26,9 @@ export default class FoodrFrontend extends Component {
     super()
     this.state = {
       currentPage: 'IndexPage',
-      previousPage: 'DefaultPage',
       foundProduct: {},
       userDetails: {},
+      foundProductSaved: false,
       userId: false, // false if not logged in
       searchTerm: ''
     }
@@ -47,6 +48,7 @@ export default class FoodrFrontend extends Component {
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
       if (this.state.foundProduct.found) {
+        this.setState({foundProductSaved: jsonData.search.is_saved})
         this.updateCurrentPage('ProductPage')
       } else {
         this.updateCurrentPage('NoResultsPage')
@@ -60,8 +62,10 @@ export default class FoodrFrontend extends Component {
       .then(data => data.json())
       .then(jsonData => {
         if (jsonData.save_successful) {
+          this.setState({foundProductSaved: true});
           AlertIOS.alert('Product Saved!');
         } else {
+          this.setState({foundProductSaved: false});
           AlertIOS.alert('Product was not saved.');
         }
       })
@@ -98,50 +102,129 @@ export default class FoodrFrontend extends Component {
   }
 
   render() {
+    const titleConfig = {
+      title: 'FOODR',
+    };
+
+    const leftButtonConfig = {
+      title: 'Profile',
+      handler: () => this.updateCurrentPage('UserProfilePage'),
+    };
+
+    const rightButtonConfig = {
+      title: 'Scan',
+      handler: () => this.updateCurrentPage('CameraPage'),
+    };
+
     switch(this.state.currentPage) {
       case 'IndexPage':
         return(
-          <IndexPage 
-          updateCurrentPage = {this.updateCurrentPage} 
-          findUser = {this.findUser}/>
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <IndexPage 
+              updateCurrentPage = {this.updateCurrentPage}
+            />
+          </View>
         )
       case 'SearchPage':
         return(
-          <SearchPage
-          searchProduct = {this.searchProduct}
-          updateSearchTerm = {this.updateSearchTerm}/>
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <ScrollView>
+              <SearchPage
+                searchProduct = {this.searchProduct}
+                updateSearchTerm = {this.updateSearchTerm}
+              />
+            </ScrollView>
+          </View>
         )
       case 'CameraPage':
         return(
-          <CameraPage
-            searchProduct = {this.searchProduct}
-          />
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+            />
+            <ScrollView>
+              <CameraPage
+                updateCurrentPage = {this.updateCurrentPage}
+                searchProduct = {this.searchProduct}
+                updateSearchTerm = {this.updateSearchTerm}
+              />
+            </ScrollView>
+          </View>
         )
       case 'ProductPage':
         return(
-          <ProductPage
-            foundProduct = {this.state.foundProduct}
-            updateCurrentPage = {this.updateCurrentPage}
-            saveSearch = {this.saveSearch}
-          />
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <ScrollView>
+              <ProductPage
+                foundProduct = {this.state.foundProduct}
+                foundProductSaved = {this.state.foundProductSaved}
+                updateCurrentPage = {this.updateCurrentPage}
+                saveSearch = {this.saveSearch}
+              />
+            </ScrollView>
+        </View>
         )
       case 'NoResultsPage':
         return(
-          <NoResultsPage
-            updateCurrentPage = {this.updateCurrentPage}
-            searchTerm = {this.state.searchTerm}
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
             />
+            <NoResultsPage
+              updateCurrentPage = {this.updateCurrentPage}
+              searchTerm = {this.state.searchTerm}
+              />
+          </View>
         )
-        case 'UserProfilePage':
+      case 'UserProfilePage':
         return(
           <UserProfilePage
-          userDetails = {this.state.userDetails}
-          searchProduct = {this.searchProduct}
+            userDetails = {this.state.userDetails}
+            searchProduct = {this.searchProduct}
           />
         )
       case 'SearchingPage':
         return(
-          <SearchingPage />
+          <View style={styles.parentContainer}>
+            <SearchingPage />
+          </View>
+        )
+      case 'UserProfilePage':
+        return(
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <ScrollView>
+              <UserProfilePage />
+            </ScrollView>
+          </View>
         )
       default:
         return(
@@ -207,64 +290,72 @@ render() {
     );
   } 
 }
-// CHILDREN
-
-// XANDER
-
-class LayoutPage extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
-        <Text>Layout Page</Text>
-      </View>
-    )
-  }
-}
-
-// VICTORIA
 
 class CameraPage extends Component {
   constructor() {
     super()
     this.onBarCodeRead = this.onBarCodeRead.bind(this)
+    this.onPressSearchButton = this.onPressSearchButton.bind(this)
+
+    // for testing
     this.existingItem = this.existingItem.bind(this)
     this.nonExistingItem = this.nonExistingItem.bind(this)
   }
 
   onBarCodeRead(e) {
+    this.props.updateSearchTerm('Product')
     this.props.searchProduct(e.data)
+  }
+
+  onPressSearchButton(){
+    this.props.updateCurrentPage("SearchPage")
   }
 
   // for testing
   existingItem() {
+    this.props.updateSearchTerm('Product')
     this.props.searchProduct('03077504')
   }
 
   nonExistingItem() {
+    this.props.updateSearchTerm('Product')
     this.props.searchProduct('asdf')
   }
 
   render() {
     return(
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Place Barcode in View</Text>
+      <View style={styles.body}>
+        <Text style={styles.header}>Place Barcode in View</Text>
         <Camera
           ref={(cam) => {this.camera = cam;}}
-          style={styles.preview}
+          style={styles.cameraView}
           onBarCodeRead = {this.onBarCodeRead}
           aspect={Camera.constants.Aspect.fill}>
         </Camera>
-        <Text style={styles.instructions}>The camera will automatically detect when a barcode is present</Text>
+        <Text style={styles.contentSmall}>The camera will automatically detect when a barcode is present</Text>
 
+        <Text style={styles.contentSmall}>{"\n\n"}No item to scan?</Text>
 
-        <Text style={styles.capture} onPress={this.existingItem}>[EXISTING ITEM]</Text>
-        <Text style={styles.capture} onPress={this.nonExistingItem}>[NONEXISTING ITEM]</Text>
+        <TouchableOpacity>
+          <Button
+            title="Enter a Search Term"
+            onPress={this.onPressSearchButton}
+          />
+          <Button
+            title="Test: Existing Item"
+            onPress={this.existingItem}
+            color='red'
+          />
+          <Button
+            title="Test: Nonexisting Item"
+            onPress={this.nonExistingItem}
+            color='red'
+          />
+        </TouchableOpacity>
       </View>
     );
   }
 }
-
-// TIFF
 
 class ProductPage extends Component {
   constructor() {
@@ -275,7 +366,7 @@ class ProductPage extends Component {
   saveItem() {
     this.props.saveSearch(this.props.foundProduct.search.id);
   }
-  
+
   scoreConverter() {
     let numberScore = this.props.foundProduct.product.score
       switch(numberScore) {
@@ -290,22 +381,22 @@ class ProductPage extends Component {
         case 1:
           return ('F');
         default:
-          ('Not Found');
+          return ('Not Found');
       }
   }
-  
+
   renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
-      <View key={ingredient.id}>
+      <View style={styles.inlineContainer} key={ingredient.id}>
         { ingredient.is_natural ?
           <Image
             style={{width: 50, height: 50}}
-          source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
+            source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
           />
           :
           <Image
             style={{width: 50, height: 50}}
-          source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
+            source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
           />
          }
 
@@ -316,21 +407,26 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.body}>
         <Image
           style={{width: 375, height: 200}}
-        source={{uri: this.props.foundProduct.product.img_url}}
+          source={{uri: this.props.foundProduct.product.img_url}}
         />
-        <Text style={styles.welcome}>{this.props.foundProduct.product.name}</Text>
+        <Text style={styles.header}>{this.props.foundProduct.product.name}</Text>
         <Text>Score: {this.scoreConverter()}</Text>
 
-        <Text>Ingredients:</Text>
+        {this.props.foundProductSaved ?
+          <Text>Product is Saved</Text>
+          :
+          <Button
+            onPress={this.saveItem}
+            title="Save Product"
+          />
+        }
+
+        <Text style={styles.header}>Ingredients:</Text>
         {this.renderIngredientList()}
 
-        <Button
-          onPress={this.saveItem}
-          title="Save Product"
-        />
       </View>
     )
   }
@@ -351,40 +447,40 @@ class IngredientModal extends Component {
 
   render() {
     return (
-      <View style={{marginTop: 22}}>
-
+      <View>
         <Modal
           animationType={"slide"}
           transparent={false}
           visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-          <View style={styles.container}>
+        >
+          <ScrollView style={{marginTop: 22}}>
             <Image
               style={{width: 375, height: 200}}
-            source={{uri: this.props.ingredient.img_url}}
+              source={{uri: this.props.ingredient.img_url}}
             />
 
-            <Text style={styles.welcome}>{this.props.ingredient.name}</Text>
-            <Text>{this.props.ingredient.description}</Text>
+            <Text style={styles.header}>{this.props.ingredient.name}</Text>
+            <Text style={styles.contentSmall}>{this.props.ingredient.description}</Text>
 
-            <TouchableHighlight onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
-              <Text>Hide Modal</Text>
-            </TouchableHighlight>
-
-          </View>
+            <TouchableOpacity>
+              <Button
+                onPress={() => {this.setModalVisible(!this.state.modalVisible)}}
+                title="Back to Product"
+              />
+            </TouchableOpacity>
+          </ScrollView>
         </Modal>
 
-        <TouchableHighlight onPress={() => {this.setModalVisible(true)}}>
-          <Text>{this.props.ingredient.name}</Text>
-        </TouchableHighlight>
-
+        <TouchableOpacity>
+          <Button
+            onPress={() => {this.setModalVisible(true)}}
+            title={this.props.ingredient.name}
+          />
+        </TouchableOpacity>
       </View>
     );
   }
 }
-
-// KANAN
 
 class NoResultsPage extends Component {
   constructor(){
@@ -403,26 +499,28 @@ class NoResultsPage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
-        <Text> Would you like to try another product?</Text>
-        <Button 
-         title="Scan Another Product"
-         onPress={this.scanAgain}
-         color="blue"
-        />
+      <View style={styles.centerContainer}>
+        <Text style={styles.header}>{this.props.searchTerm} was not found</Text>
+        <Text style={styles.contentSmall}>Would you like to try another product?</Text>
+        <TouchableOpacity>
+          <Button
+           title="Scan a Product"
+           onPress={this.scanAgain}
+          />
+        </TouchableOpacity>
+
         <Text>or</Text>
-        <Button 
-         title="Search Product"
-         onPress={this.searchAgain}
-         color="green"
-        />
+
+        <TouchableOpacity>
+          <Button
+           title="Enter a Search Term"
+           onPress={this.searchAgain}
+          />
+        </TouchableOpacity>
       </View>
     );
   }
 }
-
-// KANAN
 
 class SearchPage extends Component {
   constructor(){
@@ -440,24 +538,24 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.body}>
+        <Text style={styles.header}>Search for a Product:</Text>
         <TextInput
-        placeholder="Enter product name or upc"
-        placeholderTextColor='#ecf0f1'
-        returnKeyType="search"
-        keyboardType="default"
-        style={styles.input}
-        onChangeText={(text) => this.setState({text})}
+          placeholder="Enter a Product Name or UPC"
+          placeholderTextColor='#949799'
+          returnKeyType="search"
+          keyboardType="default"
+          style={styles.input}
+          onChangeText={(text) => this.setState({text})}
+          onSubmitEditing={this.startSearch}
         />
-        <TouchableOpacity style={styles.buttonContainer}>
-        <Button title="Search Product" color="#fffaf0" onPress={this.startSearch}/>
+        <TouchableOpacity>
+          <Button title="Search" onPress={this.startSearch}/>
         </TouchableOpacity>
       </View>
-    )  
+    )
   }
 }
-
-// KANAN
 
 class IndexPage extends Component {
   constructor(){
@@ -467,7 +565,7 @@ class IndexPage extends Component {
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
     this._onPressSignInButton = this._onPressSignInButton.bind(this)
   }
-  
+
   _onPressSearchButton(){
     this.props.updateCurrentPage("SearchPage")
   }
@@ -487,37 +585,32 @@ class IndexPage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>
-          foodr
-        </Text>
+      <View style={styles.centerContainer}>
         <TouchableOpacity>
-          <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
+          <Button title="Scan Product" onPress={this._onPressScanButton} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
+          <Button title="Search Product" onPress={this._onPressSearchButton} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+          <Button onPress={this._onPressSignUpButton} title="Sign Up" />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/> 
+          <Button onPress={this._onPressSignInButton} title="Sign In" />
         </TouchableOpacity>
       </View>
     );
   }
 }
 
-// DONE
-
 class SearchingPage extends Component {
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.centerContainer}>
         <ActivityIndicator
           animating = {true}
           size = 'large'
-          style={styles.activityIndicator}
+          style={{marginBottom: 20}}
         />
         <Text>Searching...</Text>
       </View>
@@ -530,8 +623,8 @@ class SearchingPage extends Component {
 class DefaultPage extends Component {
   render() {
     return(
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Default Page</Text>
+      <View style={styles.body}>
+        <Text style={styles.header}>Default Page</Text>
         <Text>The case statement hit default</Text>
       </View>
     );
@@ -539,52 +632,51 @@ class DefaultPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  parentContainer: {
+    flex: 1,
+    backgroundColor: '#F5FCFF',
+  },
+  inlineContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
+  centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  },
+  body: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   input: {
     height: 40,
-    width: 340,
-    backgroundColor: 'green',
-    color: '#fffaf0',
-    fontWeight: "200",
-    marginBottom: 20,
-    paddingHorizontal: 5
+    width: 300,
+    borderRadius: 10,
+    margin: 10,
+    textAlign: 'center',
+    borderColor: 'gray',
+    borderWidth: 1,
   },
-  buttonContainer: {
-    backgroundColor: "green",
-    borderRadius: 15,
-    padding: 5
-  },
-  welcome: {
+  header: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
+  contentSmall: {
     textAlign: 'center',
-    color: '#333333',
     margin: 10,
   },
-  preview: {
+  cameraView: {
     height: 300,
-    width: Dimensions.get('window').width
+    width: '100%',
   },
-  activityIndicator: {
-    marginBottom: 20,
+  navbar: {
+    paddingHorizontal: 5,
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: '#EAF1F4',
   },
-  // for testing
-  capture: {
-    flex: 0,
-    backgroundColor: 'lightblue',
-    borderRadius: 5,
-    padding: 10,
-    margin: 5
-  },
-
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
