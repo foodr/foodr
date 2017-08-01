@@ -24,7 +24,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'IndexPage',
+      currentPage: 'ResultsPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
       foundProductSaved: false,
@@ -48,6 +48,9 @@ export default class FoodrFrontend extends Component {
       if (this.state.foundProduct.found) {
         this.setState({foundProductSaved: jsonData.search.is_saved})
         this.updateCurrentPage('ProductPage')
+      } else if (this.state.foundProduct.found === 'maybe') {
+        this.setState({foundProductSaved: jsonData.search.is_saved})
+        this.updateCurrentPage('ResultsPage')
       } else {
         this.updateCurrentPage('NoResultsPage')
       }
@@ -164,6 +167,21 @@ export default class FoodrFrontend extends Component {
               />
             </ScrollView>
         </View>
+        )
+      case 'ResultsPage':
+        return(
+          <View style={styles.container}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <ScrollView>
+              <ResultsPage
+              />
+            </ScrollView>
+          </View>
         )
       case 'NoResultsPage':
         return(
@@ -340,6 +358,29 @@ class ProductPage extends Component {
         <Text>Ingredients:</Text>
         {this.renderIngredientList()}
 
+      </View>
+    )
+  }
+}
+
+class ResultsPage extends Component {
+  constructor() {
+    super()
+  }
+
+  renderMatchesList() {
+    return(
+      <View>
+        <Text>Here are the matches!</Text>
+      </View>
+    )
+  }
+
+  render() {
+    return(
+      <View>
+        <Text>Possible Matches:</Text>
+        {this.renderMatchesList()}
       </View>
     )
   }
