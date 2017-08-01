@@ -609,7 +609,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   navbar: {
-    justifyContent: 'space-around',
+    paddingHorizontal: 5,
+    justifyContent: 'space-between',
     width: '100%',
     backgroundColor: '#EAF1F4',
   },
