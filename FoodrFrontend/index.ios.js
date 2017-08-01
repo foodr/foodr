@@ -649,7 +649,7 @@ class IndexPage extends Component {
     this._onPressSearchButton = this._onPressSearchButton.bind(this)
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
-    this._onPressSignInButton = this._onPressSignInButton.bind(this)
+    this._onPressLoginButton = this._onPressLoginButton.bind(this)
   }
 
   _onPressSearchButton(){
@@ -664,7 +664,7 @@ class IndexPage extends Component {
     this.props.updateCurrentPage("SignUpPage")
   }
 
-  _onPressSignInButton(){
+  _onPressLoginButton(){
     this.props.updateCurrentPage("LoginPage")
   }
 
@@ -682,7 +682,7 @@ class IndexPage extends Component {
           <Button onPress={this._onPressSignUpButton} title="Sign Up" />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Button onPress={this._onPressSignInButton} title="Sign In" />
+          <Button onPress={this._onPressLoginButton} title="Login" />
         </TouchableOpacity>
       </View>
     );
