@@ -13,7 +13,8 @@ import {
   AlertIOS,
   TextInput,
   TouchableOpacity,
-  ListView
+  ListView,
+  KeyboardAvoidingView
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
@@ -226,6 +227,56 @@ export default class FoodrFrontend extends Component {
           <DefaultPage />
         )
     }
+  }
+}
+
+class LoginPage extends Component {
+  constructor(){
+    super();
+    this.state = {
+      em: '',
+      pw: ''
+    }
+    this.loginUser = this.loginUser.bind(this)
+  }
+
+  loginUser(){
+    this.props.authenticateUser(this.state.em, this.state.pw)
+  }
+
+  render() {
+    return (
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
+        <Text style={styles.header}>Login</Text>
+        <TextInput
+          placeholder="email"
+          placeholderTextColor='#949799'
+          returnKeyType="next"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={(em) => this.setState({em})}
+          onSubmitEditing={() = > this.passwordInput.focus()}
+        />
+        <TextInput
+          placeholder="password"
+          placeholderTextColor='#949799'
+          returnKeyType="go"
+          keyboardType="default"
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={(pw) => this.setState({pw})}
+          ref={(input) => this.passwordInput = input}
+          onSubmitEditing={this.loginUser}
+        />
+        <TouchableOpacity>
+          <Button title="Login" onPress={this.loginUser}/>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    );
   }
 }
 
