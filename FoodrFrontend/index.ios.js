@@ -38,8 +38,8 @@ export default class FoodrFrontend extends Component {
   searchProduct(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    // fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
