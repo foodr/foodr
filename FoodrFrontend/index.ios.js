@@ -28,7 +28,7 @@ export default class FoodrFrontend extends Component {
       foundProduct: {},
       userDetails: {},
       foundProductSaved: false,
-      userId: false, // false if not logged in
+      userId: 1, // false if not logged in
       searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
@@ -105,10 +105,20 @@ export default class FoodrFrontend extends Component {
       title: 'FOODR',
     };
 
-    const leftButtonConfig = {
-      title: 'Profile',
-      handler: () => this.findUser(),
-    };
+
+
+    const leftButtonConfig =
+      this.state.userId ?
+        {
+          title: 'Profile',
+          handler: () => this.findUser(),
+        }
+      :
+        {
+          title: 'Login',
+          handler: () => this.updateCurrentPage('LoginPage'),
+        }
+      ;
 
     const rightButtonConfig = {
       title: 'Scan',
@@ -183,6 +193,18 @@ export default class FoodrFrontend extends Component {
             </ScrollView>
         </View>
         )
+      case 'LoginPage':
+        return(
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <LoginPage />
+          </View>
+        )
       case 'NoResultsPage':
         return(
           <View style={styles.parentContainer}>
@@ -201,6 +223,12 @@ export default class FoodrFrontend extends Component {
       case 'SearchingPage':
         return(
           <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
             <SearchingPage />
           </View>
         )
@@ -590,9 +618,6 @@ class IndexPage extends Component {
         <TouchableOpacity>
           <Button onPress={this._onPressSignUpButton} title="Sign Up" />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Button onPress={this._onPressSignInButton} title="Sign In" />
-        </TouchableOpacity>
       </View>
     );
   }
@@ -608,6 +633,16 @@ class SearchingPage extends Component {
           style={{marginBottom: 20}}
         />
         <Text>Searching...</Text>
+      </View>
+    );
+  }
+}
+
+class LoginPage extends Component {
+  render() {
+    return(
+      <View style={styles.centerContainer}>
+        <Text style={styles.header}>Login Page</Text>
       </View>
     );
   }
