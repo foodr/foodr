@@ -373,7 +373,7 @@ class IngredientModal extends Component {
           transparent={false}
           visible={this.state.modalVisible}
         >
-          <View style={{marginTop: 22}}>
+          <ScrollView style={{marginTop: 22}}>
             <Image
               style={{width: 375, height: 200}}
               source={{uri: this.props.ingredient.img_url}}
@@ -388,8 +388,7 @@ class IngredientModal extends Component {
                 title="Back to Product"
               />
             </TouchableOpacity>
-
-          </View>
+          </ScrollView>
         </Modal>
 
         <TouchableOpacity>
