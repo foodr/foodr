@@ -24,7 +24,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'IndexPage',
+      currentPage: 'SearchPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
       foundProductSaved: false,
@@ -244,7 +244,7 @@ class CameraPage extends Component {
 
   render() {
     return(
-      <View style={styles.parentContainer}>
+      <View style={styles.body}>
         <Text style={styles.header}>Place Barcode in View</Text>
         <Camera
           ref={(cam) => {this.camera = cam;}}
@@ -329,7 +329,7 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View style={styles.parentContainer}>
+      <View>
         <Image
           style={{width: 375, height: 200}}
         source={{uri: this.props.foundProduct.product.img_url}}
@@ -377,7 +377,7 @@ class IngredientModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
-          <View style={styles.parentContainer}>
+          <View>
             <Image
               style={{width: 375, height: 200}}
             source={{uri: this.props.ingredient.img_url}}
@@ -421,7 +421,7 @@ class NoResultsPage extends Component {
 
   render() {
     return (
-      <View style={styles.parentContainer}>
+      <View>
         <Text style={styles.header}>{this.props.searchTerm} was not found</Text>
         <Text> Would you like to try another product?</Text>
         <Button
@@ -458,17 +458,19 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <View style={styles.parentContainer}>
+      <View style={styles.body}>
+        <Text style={styles.header}>Search for a Product:</Text>
         <TextInput
-        placeholder="Enter product name or upc"
-        placeholderTextColor='#ecf0f1'
-        returnKeyType="search"
-        keyboardType="default"
-        style={styles.input}
-        onChangeText={(text) => this.setState({text})}
+          placeholder="Enter a Product Name or UPC"
+          placeholderTextColor='#949799'
+          returnKeyType="search"
+          keyboardType="default"
+          style={styles.input}
+          onChangeText={(text) => this.setState({text})}
+          onSubmitEditing={this.startSearch}
         />
-        <TouchableOpacity style={styles.buttonContainer}>
-        <Button title="Search Product" color="#fffaf0" onPress={this.startSearch}/>
+        <TouchableOpacity>
+          <Button title="Search" onPress={this.startSearch}/>
         </TouchableOpacity>
       </View>
     )
@@ -527,7 +529,7 @@ class IndexPage extends Component {
 class SearchingPage extends Component {
   render() {
     return(
-      <View style={styles.parentContainer}>
+      <View style={styles.body}>
         <ActivityIndicator
           animating = {true}
           size = 'large'
@@ -544,7 +546,7 @@ class SearchingPage extends Component {
 class UserProfilePage extends Component {
   render() {
     return(
-      <View style={styles.parentContainer}>
+      <View style={styles.body}>
         <Text style={styles.header}>User Profile Page</Text>
         <Text>This is where the users info will go.</Text>
       </View>
@@ -555,7 +557,7 @@ class UserProfilePage extends Component {
 class DefaultPage extends Component {
   render() {
     return(
-      <View style={styles.parentContainer}>
+      <View style={styles.body}>
         <Text style={styles.header}>Default Page</Text>
         <Text>The case statement hit default</Text>
       </View>
@@ -570,14 +572,18 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  body: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   input: {
     height: 40,
-    width: 340,
-    backgroundColor: 'green',
-    color: '#fffaf0',
-    fontWeight: "200",
-    marginBottom: 20,
-    paddingHorizontal: 5
+    width: 300,
+    borderRadius: 10,
+    margin: 10,
+    textAlign: 'center',
+    borderColor: 'gray',
+    borderWidth: 1,
   },
   buttonContainer: {
     backgroundColor: "green",
