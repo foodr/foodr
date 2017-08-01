@@ -12,7 +12,9 @@ import {
   TouchableHighlight,
   AlertIOS,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  // FlatLst,
+  ListView
 } from 'react-native';
 import Camera from 'react-native-camera';
 
@@ -70,8 +72,8 @@ export default class FoodrFrontend extends Component {
 
   findUser(){
     if (this.state.userId) {
-      // fetch('https://dbc-foodr-api.herokuapp.com/users/' + this.state.userId)
-      fetch('http://localhost:3000/users/' + this.state.userId)
+      fetch('https://dbc-foodr-api.herokuapp.com/users/' + this.state.userId)
+      //fetch('http://localhost:3000/users/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -136,6 +138,9 @@ export default class FoodrFrontend extends Component {
           updateCurrentPage = {this.updateCurrentPage}
           findUser = {this.findUser}
           userDetails = {this.state.userDetails}
+          searchProduct = {this.searchProduct}
+          updateSearchTerm = {this.updateSearchTerm}
+          searchTerm = {this.state.searchTerm}
           />
         )
       case 'SearchingPage':
@@ -153,9 +158,17 @@ export default class FoodrFrontend extends Component {
 
 
 class UserProfilePage extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
+    var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+    this.state = {
+      savedProducts: ds.cloneWithRows(this.props.userDetails.saved_products),
+      recentSearches: ds.cloneWithRows(this.props.userDetails.searched_products),
+      isButtonPressed: false
+    };
     this.scoreConverter = this.scoreConverter.bind(this) 
+    this.startSearch = this.startSearch.bind(this)
+    this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
   scoreConverter() {
@@ -175,19 +188,48 @@ class UserProfilePage extends Component {
       }
   }
 
-  render () {
-    return(
+  handleButtonPress(term){
+    this.setState({isButtonPressed: true})
+    this.startSearch(term)
+  }
+
+  startSearch(productName) {
+    if (this.state.isButtonPressed) { 
+    this.props.updateSearchTerm(productName)
+    this.props.searchProduct(this.props.searchTerm)
+    };
+    this.setState(prevState => ({
+      isButtonPressed: !prevState.isButtonPressed
+    }));
+
+  }
+
+  
+render() {
     
-      <View>
+
+    return(
+      <View style={styles.container}>
+        <Text style={styles.welcome}>USER PROFILE</Text>
         <Text> {this.props.userDetails.user.email} </Text>
         <Text> Your health grade for the day: {this.scoreConverter()} </Text>
-        this.props.userDetails.saved_products.map(product =>
-            <Text> product.upc </Text>
-            <Text> product.name </Text>
-          )
+        <Text style={styles.welcome}> Your saved products are: </Text>
+        <ListView
+          dataSource={this.state.savedProducts}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={this.handleButtonPress(rowData.name)}/>}
+        />
+        <Text style={styles.welcome}> You recently searched: </Text>
+        <ListView
+          dataSource={this.state.recentSearches}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+        />
       </View>
     );
   }
+  
+
+
+ 
 }
 // CHILDREN
 
