@@ -245,23 +245,33 @@ class CameraPage extends Component {
   render() {
     return(
       <View style={styles.parentContainer}>
-        <Text style={styles.welcome}>Place Barcode in View</Text>
+        <Text style={styles.header}>Place Barcode in View</Text>
         <Camera
           ref={(cam) => {this.camera = cam;}}
           style={styles.preview}
           onBarCodeRead = {this.onBarCodeRead}
           aspect={Camera.constants.Aspect.fill}>
         </Camera>
-        <Text style={styles.instructions}>The camera will automatically detect when a barcode is present</Text>
+        <Text style={styles.small_content}>The camera will automatically detect when a barcode is present</Text>
 
-        <Text style={styles.instructions}>No item to scan?</Text>
-        <Text style={styles.capture} onPress={this.onPressSearchButton}>Enter a Search Term</Text>
+        <Text style={styles.small_content}>{"\n\n"}No item to scan?</Text>
 
-        <Text style={styles.instructions}>For Testing:</Text>
-        <View style={styles.inlineContainer}>
-          <Text style={styles.capture} onPress={this.existingItem}>EXISTING ITEM</Text>
-          <Text style={styles.capture} onPress={this.nonExistingItem}>NONEXISTING ITEM</Text>
-        </View>
+        <TouchableOpacity>
+          <Button
+            title="Enter a Search Term"
+            onPress={this.onPressSearchButton}
+          />
+          <Button
+            title="Test: Existing Item"
+            onPress={this.existingItem}
+            color='red'
+          />
+          <Button
+            title="Test: Nonexisting Item"
+            onPress={this.existingItem}
+            color='red'
+          />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -324,7 +334,7 @@ class ProductPage extends Component {
           style={{width: 375, height: 200}}
         source={{uri: this.props.foundProduct.product.img_url}}
         />
-        <Text style={styles.welcome}>{this.props.foundProduct.product.name}</Text>
+        <Text style={styles.header}>{this.props.foundProduct.product.name}</Text>
         <Text>Score: {this.scoreConverter()}</Text>
 
         {this.props.foundProductSaved ?
@@ -373,7 +383,7 @@ class IngredientModal extends Component {
             source={{uri: this.props.ingredient.img_url}}
             />
 
-            <Text style={styles.welcome}>{this.props.ingredient.name}</Text>
+            <Text style={styles.header}>{this.props.ingredient.name}</Text>
             <Text>{this.props.ingredient.description}</Text>
 
             <TouchableHighlight onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
@@ -412,7 +422,7 @@ class NoResultsPage extends Component {
   render() {
     return (
       <View style={styles.parentContainer}>
-        <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
+        <Text style={styles.header}>{this.props.searchTerm} was not found</Text>
         <Text> Would you like to try another product?</Text>
         <Button
          title="Scan Another Product"
@@ -535,7 +545,7 @@ class UserProfilePage extends Component {
   render() {
     return(
       <View style={styles.parentContainer}>
-        <Text style={styles.welcome}>User Profile Page</Text>
+        <Text style={styles.header}>User Profile Page</Text>
         <Text>This is where the users info will go.</Text>
       </View>
     );
@@ -546,7 +556,7 @@ class DefaultPage extends Component {
   render() {
     return(
       <View style={styles.parentContainer}>
-        <Text style={styles.welcome}>Default Page</Text>
+        <Text style={styles.header}>Default Page</Text>
         <Text>The case statement hit default</Text>
       </View>
     );
@@ -574,19 +584,18 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 5
   },
-  welcome: {
+  header: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
+  small_content: {
     textAlign: 'center',
-    color: '#333333',
     margin: 10,
   },
   preview: {
     height: 300,
-    width: Dimensions.get('window').width
+    width: '100%',
   },
   activityIndicator: {
     marginBottom: 20,
@@ -596,19 +605,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#EAF1F4',
   },
-  // for testing
-  capture: {
-    flex: 0,
-    backgroundColor: 'lightblue',
-    borderRadius: 5,
-    padding: 10,
-    margin: 5
-  },
-  inlineContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  }
-
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
