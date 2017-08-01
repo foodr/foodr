@@ -28,7 +28,7 @@ export default class FoodrFrontend extends Component {
       foundProduct: {},
       userDetails: {},
       foundProductSaved: false,
-      userId: 1, // false if not logged in
+      userId: false, // false if not logged in
       searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
@@ -295,16 +295,18 @@ class UserProfilePage extends Component {
 
 render() {
     return(
-      <View style={styles.container}>
-        <Text style={styles.welcome}>USER PROFILE</Text>
+      <View style={styles.centerContainer}>
+        <Text style={styles.header}>Your Profile</Text>
         <Text> {this.props.userDetails.user.email} </Text>
         <Text> Your health grade: {this.scoreConverter()} </Text>
-        <Text style={styles.welcome}> Your saved products are: </Text>
+
+        <Text style={styles.header}>Saved Products</Text>
         <ListView
           dataSource={this.state.savedProducts}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
         />
-        <Text style={styles.welcome}> You recently searched: </Text>
+
+        <Text style={styles.header}>Recent Searches</Text>
         <ListView
           dataSource={this.state.recentSearches}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
