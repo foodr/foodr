@@ -37,7 +37,7 @@ export default class FoodrFrontend extends Component {
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
-    
+    this.authenticateUser = this.authenticateUser.bind(this)
   }
 
   searchProduct(upc) {
