@@ -98,14 +98,14 @@ export default class FoodrFrontend extends Component {
     switch(this.state.currentPage) {
       case 'IndexPage':
         return(
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <NavigationBar
               style={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <ScrollView style={styles.scrollView}>
+            <ScrollView>
               <IndexPage
               updateCurrentPage = {this.updateCurrentPage} />
             </ScrollView>
@@ -113,16 +113,15 @@ export default class FoodrFrontend extends Component {
         )
       case 'SearchPage':
         return(
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <NavigationBar
               style={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <ScrollView style={styles.scrollView}>
+            <ScrollView>
               <SearchPage
-                style={styles.body}
                 searchProduct = {this.searchProduct}
                 updateSearchTerm = {this.updateSearchTerm}
               />
@@ -131,13 +130,13 @@ export default class FoodrFrontend extends Component {
         )
       case 'CameraPage':
         return(
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <NavigationBar
               style={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
             />
-            <ScrollView style={styles.scrollView}>
+            <ScrollView>
               <CameraPage
                 updateCurrentPage = {this.updateCurrentPage}
                 searchProduct = {this.searchProduct}
@@ -148,7 +147,7 @@ export default class FoodrFrontend extends Component {
         )
       case 'ProductPage':
         return(
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <NavigationBar
               style={styles.navbar}
               leftButton={leftButtonConfig}
@@ -167,7 +166,7 @@ export default class FoodrFrontend extends Component {
         )
       case 'NoResultsPage':
         return(
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <NavigationBar
               style={styles.navbar}
               leftButton={leftButtonConfig}
@@ -188,7 +187,7 @@ export default class FoodrFrontend extends Component {
         )
       case 'UserProfilePage':
         return(
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <NavigationBar
               style={styles.navbar}
               leftButton={leftButtonConfig}
@@ -245,7 +244,7 @@ class CameraPage extends Component {
 
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.parentContainer}>
         <Text style={styles.welcome}>Place Barcode in View</Text>
         <Camera
           ref={(cam) => {this.camera = cam;}}
@@ -320,7 +319,7 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.parentContainer}>
         <Image
           style={{width: 375, height: 200}}
         source={{uri: this.props.foundProduct.product.img_url}}
@@ -368,7 +367,7 @@ class IngredientModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <Image
               style={{width: 375, height: 200}}
             source={{uri: this.props.ingredient.img_url}}
@@ -412,7 +411,7 @@ class NoResultsPage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.parentContainer}>
         <Text style={styles.welcome}>{this.props.searchTerm} was not found</Text>
         <Text> Would you like to try another product?</Text>
         <Button
@@ -449,7 +448,7 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.parentContainer}>
         <TextInput
         placeholder="Enter product name or upc"
         placeholderTextColor='#ecf0f1'
@@ -495,21 +494,18 @@ class IndexPage extends Component {
 
   render() {
     return (
-      <View style={styles.body}>
-        <Text>
-          foodr
-        </Text>
+      <View>
         <TouchableOpacity>
-        <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
+          <Button title="Scan Product" onPress={this._onPressScanButton} />
         </TouchableOpacity>
         <TouchableOpacity>
-        <Button title="Search Product" onPress={this._onPressSearchButton} color="green" />
+          <Button title="Search Product" onPress={this._onPressSearchButton} />
         </TouchableOpacity>
         <TouchableOpacity>
-        <Button onPress={this._onPressSignUpButton} title="Sign Up" color="purple" />
+          <Button onPress={this._onPressSignUpButton} title="Sign Up" />
         </TouchableOpacity>
         <TouchableOpacity>
-        <Button onPress={this._onPressSignInButton} title="Sign In" color="brown"/>
+          <Button onPress={this._onPressSignInButton} title="Sign In" />
         </TouchableOpacity>
       </View>
     );
@@ -521,7 +517,7 @@ class IndexPage extends Component {
 class SearchingPage extends Component {
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.parentContainer}>
         <ActivityIndicator
           animating = {true}
           size = 'large'
@@ -538,7 +534,7 @@ class SearchingPage extends Component {
 class UserProfilePage extends Component {
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.parentContainer}>
         <Text style={styles.welcome}>User Profile Page</Text>
         <Text>This is where the users info will go.</Text>
       </View>
@@ -549,7 +545,7 @@ class UserProfilePage extends Component {
 class DefaultPage extends Component {
   render() {
     return(
-      <View style={styles.container}>
+      <View style={styles.parentContainer}>
         <Text style={styles.welcome}>Default Page</Text>
         <Text>The case statement hit default</Text>
       </View>
@@ -558,7 +554,7 @@ class DefaultPage extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  parentContainer: {
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
@@ -599,13 +595,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
     backgroundColor: '#EAF1F4',
-  },
-  body: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: '#F5FCFF',
   },
   // for testing
   capture: {
