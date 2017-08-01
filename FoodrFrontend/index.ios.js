@@ -37,6 +37,7 @@ export default class FoodrFrontend extends Component {
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
+    
   }
 
   searchProduct(upc) {
@@ -74,10 +75,24 @@ export default class FoodrFrontend extends Component {
     }
   }
 
+  authenticateUser(email, password) {
+   fetch('http://localhost:3000/users/authenticate?email=' + email + '&password=' + password)
+   .then(data => data.json())
+   .then(jsonData => {
+     if (jsonData.found) {
+      this.setState({userId: jsonData.id})
+      this.updateCurrentPage('IndexPage')
+      AlertIOS.alert('Login Successful!')
+     } else {
+       AlertIOS.alert(jsonData.errors.join("\n"))
+     }
+   })
+  }
+
   findUser(){
     if (this.state.userId) {
       // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/' + this.state.userId)
-      fetch('http://localhost:3000/users/' + this.state.userId)
+      fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -85,6 +100,7 @@ export default class FoodrFrontend extends Component {
           this.updateCurrentPage('UserProfilePage')
         } else {
           AlertIOS.alert('You are not a registered user. Please sign up.');
+          this.setState({userId: false})
           this.updateCurrentPage('IndexPage');
         }
       })
@@ -195,6 +211,7 @@ export default class FoodrFrontend extends Component {
              />
              <LoginPage
                authenticateUser={this.authenticateUser}
+               updateCurrentPage = {this.updateCurrentPage}
              />
            </View>
          )
@@ -252,10 +269,15 @@ class LoginPage extends Component {
       pw: ''
     }
     this.loginUser = this.loginUser.bind(this)
+    this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
   }
 
   loginUser(){
     this.props.authenticateUser(this.state.em, this.state.pw)
+  }
+
+  _onPressSignUpButton(){
+    this.props.updateCurrentPage("SignUpPage")
   }
 
   render() {
@@ -271,7 +293,7 @@ class LoginPage extends Component {
           autoCorrect={false}
           style={styles.input}
           onChangeText={(em) => this.setState({em})}
-          onSubmitEditing={() = > this.passwordInput.focus()}
+          onSubmitEditing={() => this.passwordInput.focus()}
         />
         <TextInput
           placeholder="password"
@@ -288,6 +310,10 @@ class LoginPage extends Component {
         />
         <TouchableOpacity>
           <Button title="Login" onPress={this.loginUser}/>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text> Don't have an account?</Text>
+          <Button title="Sign up here." onPress={this._onPressSignUpButton} />
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
@@ -598,7 +624,7 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <View style={styles.body}>
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
         <Text style={styles.header}>Search for a Product:</Text>
         <TextInput
           placeholder="Enter a Product Name or UPC"
@@ -612,7 +638,7 @@ class SearchPage extends Component {
         <TouchableOpacity>
           <Button title="Search" onPress={this.startSearch}/>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -635,11 +661,11 @@ class IndexPage extends Component {
   }
 
   _onPressSignUpButton(){
-    this.props.updateCurrentPage("IndexPage")
+    this.props.updateCurrentPage("SignUpPage")
   }
 
   _onPressSignInButton(){
-    this.props.updateCurrentPage("IndexPage")
+    this.props.updateCurrentPage("LoginPage")
   }
 
 
