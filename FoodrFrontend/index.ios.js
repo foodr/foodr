@@ -28,7 +28,7 @@ export default class FoodrFrontend extends Component {
       previousPage: 'DefaultPage',
       foundProduct: {},
       userDetails: {},
-      userId: 1, // false if not logged in
+      userId: false, // false if not logged in
       searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
@@ -80,12 +80,12 @@ export default class FoodrFrontend extends Component {
         if (this.state.userDetails.found) {
           this.updateCurrentPage('UserProfilePage')
         } else {
-          AlertIOS.alert('You are not a registered user.');
+          AlertIOS.alert('You are not a registered user. Please sign up.');
           this.updateCurrentPage('IndexPage');
         }
       })
     } else {
-      AlertIOS.alert('Please sign up or login to save an item.');
+      AlertIOS.alert('Please sign up or login to access your profile.');
     }
   }
 
@@ -135,12 +135,8 @@ export default class FoodrFrontend extends Component {
         case 'UserProfilePage':
         return(
           <UserProfilePage
-          updateCurrentPage = {this.updateCurrentPage}
-          findUser = {this.findUser}
           userDetails = {this.state.userDetails}
           searchProduct = {this.searchProduct}
-          updateSearchTerm = {this.updateSearchTerm}
-          searchTerm = {this.state.searchTerm}
           />
         )
       case 'SearchingPage':
@@ -164,10 +160,8 @@ class UserProfilePage extends Component {
     this.state = {
       savedProducts: ds.cloneWithRows(this.props.userDetails.saved_products),
       recentSearches: ds.cloneWithRows(this.props.userDetails.searched_products),
-      // isButtonPressed: false
     };
     this.scoreConverter = this.scoreConverter.bind(this) 
-    this.startSearch = this.startSearch.bind(this)
     this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
@@ -188,22 +182,8 @@ class UserProfilePage extends Component {
       }
   }
 
-  // handleButtonPress(term){
-  //   this.setState({isButtonPressed: true})
-  //   this.startSearch(term)
-  // }
-
   handleButtonPress(productName) {
-    return function() {
-    this.props.searchProduct(productName)
-    // if (this.state.isButtonPressed) { 
-    // this.props.updateSearchTerm(productName)
-    // };
-    // this.setState(prevState => ({
-    //   isButtonPressed: !prevState.isButtonPressed
-    // }));
-
-    };
+    return this.props.searchProduct(productName)
   }
 
   
@@ -216,20 +196,16 @@ render() {
         <Text style={styles.welcome}> Your saved products are: </Text>
         <ListView
           dataSource={this.state.savedProducts}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
         />
         <Text style={styles.welcome}> You recently searched: </Text>
         <ListView
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
         />
       </View>
     );
-  }
-  
-
-
- 
+  } 
 }
 // CHILDREN
 
@@ -490,7 +466,6 @@ class IndexPage extends Component {
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
     this._onPressSignInButton = this._onPressSignInButton.bind(this)
-    this._onPressUserButton = this._onPressUserButton.bind(this)
   }
   
   _onPressSearchButton(){
@@ -509,9 +484,6 @@ class IndexPage extends Component {
     this.props.updateCurrentPage("IndexPage")
   }
 
-  _onPressUserButton(){
-    this.props.findUser()
-  }
 
   render() {
     return (
@@ -519,9 +491,6 @@ class IndexPage extends Component {
         <Text>
           foodr
         </Text>
-        <TouchableOpacity>
-          <Button title="User Profile" onPress={this._onPressUserButton} color="red" />
-        </TouchableOpacity>
         <TouchableOpacity>
           <Button title="Scan Product" onPress={this._onPressScanButton} color="blue" />
         </TouchableOpacity>
