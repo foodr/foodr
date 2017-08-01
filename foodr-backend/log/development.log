@@ -1140,3 +1140,598 @@ Processing by ProductsController#search_name as */*
 Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
 
 
+Started GET "/products/" for 127.0.0.1 at 2017-08-01 12:25:21 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/products"):
+  
+actionpack (5.1.2) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.2) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.2) lib/rails/engine.rb:522:in `call'
+puma (3.9.1) lib/puma/configuration.rb:224:in `call'
+puma (3.9.1) lib/puma/server.rb:602:in `handle_request'
+puma (3.9.1) lib/puma/server.rb:435:in `process_client'
+puma (3.9.1) lib/puma/server.rb:299:in `block in run'
+puma (3.9.1) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/products/name" for 127.0.0.1 at 2017-08-01 12:25:24 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/products/name"):
+  
+actionpack (5.1.2) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.2) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.2) lib/rails/engine.rb:522:in `call'
+puma (3.9.1) lib/puma/configuration.rb:224:in `call'
+puma (3.9.1) lib/puma/server.rb:602:in `handle_request'
+puma (3.9.1) lib/puma/server.rb:435:in `process_client'
+puma (3.9.1) lib/puma/server.rb:299:in `block in run'
+puma (3.9.1) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/products/name/1" for 127.0.0.1 at 2017-08-01 12:25:26 -0700
+Processing by ProductsController#search_name as HTML
+  Parameters: {"search_term"=>"1"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "1"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % '1')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/products/name/quaker%20chewey" for 127.0.0.1 at 2017-08-01 12:25:32 -0700
+Processing by ProductsController#search_name as HTML
+  Parameters: {"search_term"=>"quaker chewey"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "quaker chewey"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'quaker\ chewey')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'quaker\ chewey'), 0) AS "rank63926095759505886" FROM "products" WHERE (("products"."name" % 'quaker\ chewey')) ORDER BY "rank63926095759505886" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Sdfsdf?user_id=false" for 127.0.0.1 at 2017-08-01 12:31:23 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Sdfsdf"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Sdfsdf"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Sdfsdf')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/name/Quaker%20chewey?user_id=false" for 127.0.0.1 at 2017-08-01 12:31:33 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewey"}
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewey"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewey')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewey'), 0) AS "rank48987767803468504" FROM "products" WHERE (("products"."name" % 'Quaker\ chewey')) ORDER BY "rank48987767803468504" DESC[0m
+Completed 200 OK in 6ms (Views: 0.4ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/products/name/Fgdfg?user_id=false" for 127.0.0.1 at 2017-08-01 12:42:38 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Fgdfg"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Fgdfg"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Fgdfg')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.3ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/products/name/Quaker%20bar?user_id=false" for 127.0.0.1 at 2017-08-01 12:42:46 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker bar"}
+  [1m[36mProduct Load (1.0ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker bar"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (1.5ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ bar')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.9ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ bar'), 0) AS "rank33302670706316789" FROM "products" WHERE (("products"."name" % 'Quaker\ bar')) ORDER BY "rank33302670706316789" DESC[0m
+Completed 200 OK in 10ms (Views: 0.3ms | ActiveRecord: 3.4ms)
+
+
+Started GET "/products/name/chill%20con" for 127.0.0.1 at 2017-08-01 12:47:05 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"search_term"=>"chill con"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "chill con"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'chill\ con')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'chill\ con'), 0) AS "rank67841360119995131" FROM "products" WHERE (("products"."name" % 'chill\ con')) ORDER BY "rank67841360119995131" DESC[0m
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/products/upc/asdf?user_id=false" for 127.0.0.1 at 2017-08-01 13:42:22 -0700
+Processing by ProductsController#search_upc as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"asdf"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "asdf"], ["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/products/upc/03077504?user_id=false" for 127.0.0.1 at 2017-08-01 13:42:25 -0700
+Processing by ProductsController#search_upc as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"03077504"}
+  [1m[36mProduct Load (0.7ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "03077504"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mIngredient Load (0.5ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 8]]
+Completed 200 OK in 16ms (Views: 0.1ms | ActiveRecord: 2.7ms)
+
+
+Started GET "/products/name/Quaker%20chewy%20bar?user_id=false" for 127.0.0.1 at 2017-08-01 13:42:35 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy bar"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy bar"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy\ bar')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (1.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy\ bar'), 0) AS "rank2660252929118249" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy\ bar')) ORDER BY "rank2660252929118249" DESC[0m
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 2.5ms)
+
+
+Started GET "/products/name/Sdfsdf?user_id=false" for 127.0.0.1 at 2017-08-01 14:20:48 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Sdfsdf"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Sdfsdf"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Sdfsdf')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 14:20:55 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.6ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (1.0ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank69433865432364947" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank69433865432364947" DESC[0m
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/products/name/Chilli%20con?user_id=false" for 127.0.0.1 at 2017-08-01 14:23:36 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli\ con')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli\ con'), 0) AS "rank73765708442715728" FROM "products" WHERE (("products"."name" % 'Chilli\ con')) ORDER BY "rank73765708442715728" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 14:37:42 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank15677692759125189" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank15677692759125189" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/products/name/Sdfsdf?user_id=false" for 127.0.0.1 at 2017-08-01 14:37:56 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Sdfsdf"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Sdfsdf"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Sdfsdf')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 14:38:03 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.6ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank42659068395087635" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank42659068395087635" DESC[0m
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 14:41:46 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank96960951038956703" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank96960951038956703" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 14:51:58 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank94771965430504527" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank94771965430504527" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli%20con?user_id=false" for 127.0.0.1 at 2017-08-01 14:57:15 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli\ con')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli\ con'), 0) AS "rank64946732426629604" FROM "products" WHERE (("products"."name" % 'Chilli\ con')) ORDER BY "rank64946732426629604" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli%20con?user_id=false" for 127.0.0.1 at 2017-08-01 14:58:52 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli\ con')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli\ con'), 0) AS "rank81427198309312684" FROM "products" WHERE (("products"."name" % 'Chilli\ con')) ORDER BY "rank81427198309312684" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/products/name/chill%20con" for 127.0.0.1 at 2017-08-01 15:02:53 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"search_term"=>"chill con"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "chill con"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'chill\ con')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'chill\ con'), 0) AS "rank3652013571051431" FROM "products" WHERE (("products"."name" % 'chill\ con')) ORDER BY "rank3652013571051431" DESC[0m
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 15:54:43 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank94572922877335563" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank94572922877335563" DESC[0m
+Completed 200 OK in 5ms (Views: 0.3ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/products/name/Chilli%20con?user_id=false" for 127.0.0.1 at 2017-08-01 15:54:50 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli\ con')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.9ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli\ con'), 0) AS "rank32022118959177026" FROM "products" WHERE (("products"."name" % 'Chilli\ con')) ORDER BY "rank32022118959177026" DESC[0m
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 1.7ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 15:55:14 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank21095787527967501" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank21095787527967501" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 15:55:24 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank19791771592958625" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank19791771592958625" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 15:56:23 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.8ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank34779275930035442" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank34779275930035442" DESC[0m
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.5ms)
+
+
+Started GET "/products/name/Quaker%20chewy?user_id=false" for 127.0.0.1 at 2017-08-01 15:57:58 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Quaker chewy"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Quaker chewy"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Quaker\ chewy'), 0) AS "rank60531832206671775" FROM "products" WHERE (("products"."name" % 'Quaker\ chewy')) ORDER BY "rank60531832206671775" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli%20con%20Carne?user_id=false" for 127.0.0.1 at 2017-08-01 15:59:35 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con Carne"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con Carne"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli\ con\ Carne')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli\ con\ Carne'), 0) AS "rank63378811797296945" FROM "products" WHERE (("products"."name" % 'Chilli\ con\ Carne')) ORDER BY "rank63378811797296945" DESC[0m
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chili?user_id=false" for 127.0.0.1 at 2017-08-01 15:59:46 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chili"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chili"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chili')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.6ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chili'), 0) AS "rank91439569111716637" FROM "products" WHERE (("products"."name" % 'Chili')) ORDER BY "rank91439569111716637" DESC[0m
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/products/name/Chilli%20con%20carne?user_id=false" for 127.0.0.1 at 2017-08-01 15:59:59 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con carne"}
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con carne"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mIngredient Load (0.5ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 13ms (Views: 0.1ms | ActiveRecord: 2.2ms)
+
+
+Started GET "/products/name/Chilli%20con%20carne?user_id=false" for 127.0.0.1 at 2017-08-01 16:00:21 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con carne"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con carne"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mIngredient Load (0.5ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 12ms (Views: 0.1ms | ActiveRecord: 2.2ms)
+
+
+Started GET "/products/name/Blah?user_id=false" for 127.0.0.1 at 2017-08-01 16:02:36 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Blah"}
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Blah"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Blah')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:03:06 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank10095126258434319" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank10095126258434319" DESC[0m
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:04:56 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.6ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank97584593115077030" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank97584593115077030" DESC[0m
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/products/name/Chilli%20con%20carne?user_id=false" for 127.0.0.1 at 2017-08-01 16:08:24 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con carne"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con carne"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mIngredient Load (0.6ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 17ms (Views: 0.1ms | ActiveRecord: 2.7ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:08:31 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank95550100531819481" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank95550100531819481" DESC[0m
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:08:47 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank47546894973193879" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank47546894973193879" DESC[0m
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.4ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:10:15 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank57135224317369009" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank57135224317369009" DESC[0m
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-08-01 16:11:26 -0700
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/apprentice/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/railties-5.1.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/apprentice/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/railties-5.1.2/lib/rails/templates/rails/welcome/index.html.erb (7.4ms)
+Completed 200 OK in 52ms (Views: 12.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/1" for 127.0.0.1 at 2017-08-01 16:11:30 -0700
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (7.6ms)[0m  [1m[34mSELECT "searches"."product_id" FROM "searches" WHERE "searches"."user_id" = $1 AND "searches"."is_saved" = $2[0m  [["user_id", 1], ["is_saved", "t"]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "products"."score" FROM "products" INNER JOIN "searches" ON "products"."id" = "searches"."product_id" WHERE "searches"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".* FROM "products" INNER JOIN "searches" ON "products"."id" = "searches"."product_id" WHERE "searches"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mSearch Load (0.2ms)[0m  [1m[34mSELECT "searches".* FROM "searches" WHERE "searches"."user_id" = $1[0m  [["user_id", 1]]
+Completed 200 OK in 37ms (Views: 0.2ms | ActiveRecord: 9.7ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:13:20 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.2ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank18899087036448889" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank18899087036448889" DESC[0m
+Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:15:15 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank57605044739087405" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank57605044739087405" DESC[0m
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/products/name/Chilli%20con%20carne?user_id=false" for 127.0.0.1 at 2017-08-01 16:16:34 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con carne"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con carne"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mIngredient Load (0.5ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 12ms (Views: 0.1ms | ActiveRecord: 2.2ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:16:55 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank43679160212877078" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank43679160212877078" DESC[0m
+Completed 200 OK in 5ms (Views: 0.9ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Click%20con%20carbe?user_id=false" for 127.0.0.1 at 2017-08-01 16:19:22 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Click con carbe"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Click con carbe"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Click\ con\ carbe')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/name/Chili%20can%20conway?user_id=false" for 127.0.0.1 at 2017-08-01 16:19:36 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chili can conway"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chili can conway"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chili\ can\ conway')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chili\ can\ conway'), 0) AS "rank78837792649661274" FROM "products" WHERE (("products"."name" % 'Chili\ can\ conway')) ORDER BY "rank78837792649661274" DESC[0m
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Daritos?user_id=false" for 127.0.0.1 at 2017-08-01 16:20:01 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Daritos"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Daritos"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Daritos')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/name/Doritos?user_id=false" for 127.0.0.1 at 2017-08-01 16:20:08 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Doritos"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Doritos"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Doritos')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/name/Doritos%20nachos?user_id=false" for 127.0.0.1 at 2017-08-01 16:20:20 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Doritos nachos"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Doritos nachos"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Doritos\ nachos')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Doritos\ nachos'), 0) AS "rank56072433050560264" FROM "products" WHERE (("products"."name" % 'Doritos\ nachos')) ORDER BY "rank56072433050560264" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Dotios?user_id=false" for 127.0.0.1 at 2017-08-01 16:21:43 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Dotios"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Dotios"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Dotios')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/products/name/Bak?user_id=false" for 127.0.0.1 at 2017-08-01 16:21:57 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Bak"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Bak"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Bak')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/name/Blah?user_id=false" for 127.0.0.1 at 2017-08-01 16:22:36 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Blah"}
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Blah"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Blah')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/name/Blah?user_id=false" for 127.0.0.1 at 2017-08-01 16:23:00 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Blah"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Blah"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Blah')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/products/name/Asdf?user_id=false" for 127.0.0.1 at 2017-08-01 16:27:38 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Asdf"}
+  [1m[36mProduct Load (0.2ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Asdf"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Asdf')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 35ms (Views: 0.2ms | ActiveRecord: 2.2ms)
+
+
+Started GET "/products/name/?user_id=false" for 127.0.0.1 at 2017-08-01 16:27:57 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/products/name"):
+  
+actionpack (5.1.2) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.2) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.2) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.2) lib/rails/engine.rb:522:in `call'
+puma (3.9.1) lib/puma/configuration.rb:224:in `call'
+puma (3.9.1) lib/puma/server.rb:602:in `handle_request'
+puma (3.9.1) lib/puma/server.rb:435:in `process_client'
+puma (3.9.1) lib/puma/server.rb:299:in `block in run'
+puma (3.9.1) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/products/name/Asdf?user_id=false" for 127.0.0.1 at 2017-08-01 16:28:17 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Asdf"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Asdf"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Asdf')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/products/name/Asdfasdf?user_id=false" for 127.0.0.1 at 2017-08-01 16:30:23 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Asdfasdf"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Asdfasdf"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.7ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Asdfasdf')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 1.1ms)
+
+

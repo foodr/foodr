@@ -40,7 +40,8 @@ class ProductsController < ApplicationController
       }.to_json
     else
       render json: {
-        found: false
+        found: false,
+        matches: []
       }.to_json
     end
   end
