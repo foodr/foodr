@@ -12,7 +12,9 @@ import {
   Modal,
   AlertIOS,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  // FlatLst,
+  ListView
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
@@ -25,6 +27,7 @@ export default class FoodrFrontend extends Component {
     this.state = {
       currentPage: 'IndexPage',
       foundProduct: {},
+      userDetails: {},
       foundProductSaved: false,
       userId: false, // false if not logged in
       searchTerm: ''
@@ -33,6 +36,7 @@ export default class FoodrFrontend extends Component {
     this.searchProduct = this.searchProduct.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
+    this.findUser = this.findUser.bind(this)
   }
 
   searchProduct(upc) {
@@ -70,6 +74,25 @@ export default class FoodrFrontend extends Component {
     }
   }
 
+  findUser(){
+    if (this.state.userId) {
+      fetch('https://dbc-foodr-api.herokuapp.com/users/' + this.state.userId)
+      //fetch('http://localhost:3000/users/' + this.state.userId)
+      .then(data => data.json())
+      .then(jsonData => {
+        this.setState({ userDetails: jsonData })
+        if (this.state.userDetails.found) {
+          this.updateCurrentPage('UserProfilePage')
+        } else {
+          AlertIOS.alert('You are not a registered user. Please sign up.');
+          this.updateCurrentPage('IndexPage');
+        }
+      })
+    } else {
+      AlertIOS.alert('Please sign up or login to access your profile.');
+    }
+  }
+
   updateCurrentPage(pageName) {
     this.setState({currentPage: pageName})
   }
@@ -103,7 +126,7 @@ export default class FoodrFrontend extends Component {
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <IndexPage
+            <IndexPage 
               updateCurrentPage = {this.updateCurrentPage}
             />
           </View>
@@ -176,6 +199,13 @@ export default class FoodrFrontend extends Component {
               />
           </View>
         )
+      case 'UserProfilePage':
+        return(
+          <UserProfilePage
+            userDetails = {this.state.userDetails}
+            searchProduct = {this.searchProduct}
+          />
+        )
       case 'SearchingPage':
         return(
           <View style={styles.parentContainer}>
@@ -204,9 +234,62 @@ export default class FoodrFrontend extends Component {
   }
 }
 
-// CHILDREN
 
-// VICTORIA
+
+class UserProfilePage extends Component {
+  constructor(props){
+    super(props)
+    var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+    this.state = {
+      savedProducts: ds.cloneWithRows(this.props.userDetails.saved_products),
+      recentSearches: ds.cloneWithRows(this.props.userDetails.searched_products),
+    };
+    this.scoreConverter = this.scoreConverter.bind(this) 
+    this.handleButtonPress = this.handleButtonPress.bind(this)
+  }
+
+  scoreConverter() {
+      switch(this.props.userDetails.user_grade) {
+        case "5.0":
+          return ('A');
+        case "4.0":
+          return ('B');
+        case "3.0":
+          return ('C');
+        case "2.0":
+          return ('D');
+        case "1.0":
+          return ('F');
+        default:
+          ('Not Found');
+      }
+  }
+
+  handleButtonPress(productName) {
+    return this.props.searchProduct(productName)
+  }
+
+  
+render() {
+    return(
+      <View style={styles.container}>
+        <Text style={styles.welcome}>USER PROFILE</Text>
+        <Text> {this.props.userDetails.user.email} </Text>
+        <Text> Your health grade for the day: {this.scoreConverter()} </Text>
+        <Text style={styles.welcome}> Your saved products are: </Text>
+        <ListView
+          dataSource={this.state.savedProducts}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+        />
+        <Text style={styles.welcome}> You recently searched: </Text>
+        <ListView
+          dataSource={this.state.recentSearches}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+        />
+      </View>
+    );
+  } 
+}
 
 class CameraPage extends Component {
   constructor() {
@@ -273,8 +356,6 @@ class CameraPage extends Component {
     );
   }
 }
-
-// TIFF
 
 class ProductPage extends Component {
   constructor() {
@@ -401,8 +482,6 @@ class IngredientModal extends Component {
   }
 }
 
-// KANAN
-
 class NoResultsPage extends Component {
   constructor(){
     super()
@@ -443,8 +522,6 @@ class NoResultsPage extends Component {
   }
 }
 
-// KANAN
-
 class SearchPage extends Component {
   constructor(){
     super();
@@ -480,8 +557,6 @@ class SearchPage extends Component {
   }
 }
 
-// KANAN
-
 class IndexPage extends Component {
   constructor(){
     super()
@@ -507,6 +582,7 @@ class IndexPage extends Component {
     this.props.updateCurrentPage("IndexPage")
   }
 
+
   render() {
     return (
       <View style={styles.centerContainer}>
@@ -527,8 +603,6 @@ class IndexPage extends Component {
   }
 }
 
-// DONE
-
 class SearchingPage extends Component {
   render() {
     return(
@@ -545,17 +619,6 @@ class SearchingPage extends Component {
 }
 
 // FOR TESTING
-
-class UserProfilePage extends Component {
-  render() {
-    return(
-      <View style={styles.body}>
-        <Text style={styles.header}>User Profile Page</Text>
-        <Text>This is where the users info will go.</Text>
-      </View>
-    );
-  }
-}
 
 class DefaultPage extends Component {
   render() {
