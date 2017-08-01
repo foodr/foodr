@@ -560,8 +560,8 @@ class DefaultPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   input: {
@@ -597,9 +597,8 @@ const styles = StyleSheet.create({
   },
   navbar: {
     justifyContent: 'space-around',
-    alignItems: 'center',
     width: '100%',
-    backgroundColor: 'pink',
+    backgroundColor: '#EAF1F4',
   },
   body: {
     flex: 1,
