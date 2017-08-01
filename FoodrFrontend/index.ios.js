@@ -164,7 +164,7 @@ class UserProfilePage extends Component {
     this.state = {
       savedProducts: ds.cloneWithRows(this.props.userDetails.saved_products),
       recentSearches: ds.cloneWithRows(this.props.userDetails.searched_products),
-      isButtonPressed: false
+      // isButtonPressed: false
     };
     this.scoreConverter = this.scoreConverter.bind(this) 
     this.startSearch = this.startSearch.bind(this)
@@ -188,26 +188,26 @@ class UserProfilePage extends Component {
       }
   }
 
-  handleButtonPress(term){
-    this.setState({isButtonPressed: true})
-    this.startSearch(term)
-  }
+  // handleButtonPress(term){
+  //   this.setState({isButtonPressed: true})
+  //   this.startSearch(term)
+  // }
 
-  startSearch(productName) {
-    if (this.state.isButtonPressed) { 
-    this.props.updateSearchTerm(productName)
-    this.props.searchProduct(this.props.searchTerm)
+  handleButtonPress(productName) {
+    return function() {
+    this.props.searchProduct(productName)
+    // if (this.state.isButtonPressed) { 
+    // this.props.updateSearchTerm(productName)
+    // };
+    // this.setState(prevState => ({
+    //   isButtonPressed: !prevState.isButtonPressed
+    // }));
+
     };
-    this.setState(prevState => ({
-      isButtonPressed: !prevState.isButtonPressed
-    }));
-
   }
 
   
 render() {
-    
-
     return(
       <View style={styles.container}>
         <Text style={styles.welcome}>USER PROFILE</Text>
@@ -221,7 +221,7 @@ render() {
         <Text style={styles.welcome}> You recently searched: </Text>
         <ListView
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={this.handleButtonPress(rowData.name)}/>}
         />
       </View>
     );
