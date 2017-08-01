@@ -184,6 +184,20 @@ export default class FoodrFrontend extends Component {
             </ScrollView>
         </View>
         )
+        case 'LoginPage':
+         return(
+           <View style={styles.parentContainer}>
+             <NavigationBar
+               style={styles.navbar}
+               leftButton={leftButtonConfig}
+               title={titleConfig}
+               rightButton={rightButtonConfig}
+             />
+             <LoginPage
+               authenticateUser={this.authenticateUser}
+             />
+           </View>
+         )
       case 'NoResultsPage':
         return(
           <View style={styles.parentContainer}>
