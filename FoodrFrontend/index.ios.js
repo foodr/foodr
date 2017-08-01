@@ -83,7 +83,7 @@ export default class FoodrFrontend extends Component {
   }
 
   authenticateUser(email, password) {
-   fetch('http://localhost:3000/users/authenticate?email=' + email + '&password=' + password)
+   fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
    .then(data => data.json())
    .then(jsonData => {
      if (jsonData.found) {
@@ -365,8 +365,8 @@ class LoginPage extends Component {
           <Button title="Login" onPress={this.loginUser}/>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text> Don't have an account?</Text>
-          <Button title="Sign up here." onPress={this._onPressSignUpButton} />
+          <Text>Don't have an account?</Text>
+          <Button title="Sign Up" onPress={this._onPressSignUpButton} />
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
