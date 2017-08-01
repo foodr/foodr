@@ -24,7 +24,6 @@ export default class FoodrFrontend extends Component {
     super()
     this.state = {
       currentPage: 'IndexPage',
-      previousPage: 'DefaultPage',
       foundProduct: {},
       foundProductSaved: false,
       userId: false, // false if not logged in
