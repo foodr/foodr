@@ -1735,3 +1735,98 @@ Processing by ProductsController#search_name as */*
 Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 1.1ms)
 
 
+Started GET "/products/name/However?user_id=false" for 127.0.0.1 at 2017-08-01 16:33:40 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"However"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "However"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'However')) LIMIT $1[0m  [["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:34:16 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank5794658522825613" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank5794658522825613" DESC[0m
+Completed 200 OK in 13ms (Views: 0.1ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:35:58 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank63708741677789428" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank63708741677789428" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/products/name/Chili?user_id=false" for 127.0.0.1 at 2017-08-01 16:41:14 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chili"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chili"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chili')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chili'), 0) AS "rank79628409378681426" FROM "products" WHERE (("products"."name" % 'Chili')) ORDER BY "rank79628409378681426" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:46:34 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank31186346210128593" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank31186346210128593" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/products/name/Chili?user_id=false" for 127.0.0.1 at 2017-08-01 16:49:53 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chili"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chili"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chili')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chili'), 0) AS "rank842807723920992" FROM "products" WHERE (("products"."name" % 'Chili')) ORDER BY "rank842807723920992" DESC[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/products/name/Chili?user_id=false" for 127.0.0.1 at 2017-08-01 16:51:10 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chili"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chili"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chili')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chili'), 0) AS "rank25110669518786248" FROM "products" WHERE (("products"."name" % 'Chili')) ORDER BY "rank25110669518786248" DESC[0m
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli%20con%20carne?user_id=false" for 127.0.0.1 at 2017-08-01 16:51:14 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con carne"}
+  [1m[36mProduct Load (0.6ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con carne"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mIngredient Load (0.4ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 118ms (Views: 0.2ms | ActiveRecord: 13.7ms)
+
+
+Started GET "/products/name/Chilli?user_id=false" for 127.0.0.1 at 2017-08-01 16:52:30 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli"], ["LIMIT", 1]]
+  [1m[36mProduct Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "products" WHERE (("products"."name" % 'Chilli')) LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", 'Chilli'), 0) AS "rank5831175887998783" FROM "products" WHERE (("products"."name" % 'Chilli')) ORDER BY "rank5831175887998783" DESC[0m
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/products/name/Chilli%20con%20carne?user_id=false" for 127.0.0.1 at 2017-08-01 16:52:31 -0700
+Processing by ProductsController#search_name as */*
+  Parameters: {"user_id"=>"false", "search_term"=>"Chilli con carne"}
+  [1m[36mProduct Load (0.6ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "Chilli con carne"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mIngredient Load (0.5ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 15ms (Views: 0.1ms | ActiveRecord: 2.7ms)
+
+
