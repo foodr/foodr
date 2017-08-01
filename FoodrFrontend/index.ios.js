@@ -13,7 +13,8 @@ import {
   AlertIOS,
   TextInput,
   TouchableOpacity,
-  ListView
+  ListView,
+  KeyboardAvoidingView
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
@@ -37,6 +38,7 @@ export default class FoodrFrontend extends Component {
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
     this.logout = this.logout.bind(this)
+    this.createUser = this.createUser.bind(this)
   }
 
   logout() {
@@ -98,6 +100,20 @@ export default class FoodrFrontend extends Component {
     }
   }
 
+  createUser(email, password) {
+    fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
+    .then(data => data.json())
+    .then(jsonData => {
+      if (jsonData.saved) {
+        AlertIOS.alert('Registration Successful!')
+        this.setState({userId: jsonData.user.id})
+        this.updateCurrentPage('IndexPage')
+      } else {
+        AlertIOS.alert(jsonData.errors.join("\n"))
+      }
+    })
+  }
+
   updateCurrentPage(pageName) {
     this.setState({currentPage: pageName})
   }
@@ -143,6 +159,7 @@ export default class FoodrFrontend extends Component {
             />
             <IndexPage
               updateCurrentPage = {this.updateCurrentPage}
+              userId = {this.state.userId}
             />
           </View>
         )
@@ -209,6 +226,20 @@ export default class FoodrFrontend extends Component {
               rightButton={rightButtonConfig}
             />
             <LoginPage />
+          </View>
+        )
+      case 'SignUpPage':
+        return(
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <SignUpPage
+              createUser={this.createUser}
+            />
           </View>
         )
       case 'NoResultsPage':
@@ -601,7 +632,6 @@ class IndexPage extends Component {
     this._onPressSearchButton = this._onPressSearchButton.bind(this)
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
-    this._onPressSignInButton = this._onPressSignInButton.bind(this)
   }
 
   _onPressSearchButton(){
@@ -613,13 +643,8 @@ class IndexPage extends Component {
   }
 
   _onPressSignUpButton(){
-    this.props.updateCurrentPage("IndexPage")
+    this.props.updateCurrentPage("SignUpPage")
   }
-
-  _onPressSignInButton(){
-    this.props.updateCurrentPage("IndexPage")
-  }
-
 
   render() {
     return (
@@ -630,9 +655,14 @@ class IndexPage extends Component {
         <TouchableOpacity>
           <Button title="Search Product" onPress={this._onPressSearchButton} />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Button onPress={this._onPressSignUpButton} title="Sign Up" />
-        </TouchableOpacity>
+
+        {this.props.userId ?
+          <Text/>
+          :
+          <TouchableOpacity>
+            <Button onPress={this._onPressSignUpButton} title="Sign Up" />
+          </TouchableOpacity>
+        }
       </View>
     );
   }
@@ -659,6 +689,56 @@ class LoginPage extends Component {
       <View style={styles.centerContainer}>
         <Text style={styles.header}>Login Page</Text>
       </View>
+    );
+  }
+}
+
+class SignUpPage extends Component {
+  constructor() {
+    super()
+    this.state = {
+      email: '',
+      password: '',
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit() {
+    this.props.createUser(this.state.email, this.state.password)
+  }
+
+  render() {
+    return(
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
+        <Text style={styles.header}>Sign Up</Text>
+        <TextInput
+          placeholder="Enter your e-mail address"
+          placeholderTextColor='#949799'
+          style={styles.input}
+          returnKeyType="next"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(email) => this.setState({email})}
+          onSubmitEditing={() => {this.passwordInput.focus()}}
+        />
+
+        <TextInput
+          placeholder="Enter a password"
+          placeholderTextColor='#949799'
+          style={styles.input}
+          returnKeyType="done"
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          ref={(input) => this.passwordInput = input}
+          onChangeText={(password) => this.setState({password})}
+          onSubmitEditing={this.handleSubmit}
+        />
+        <TouchableOpacity>
+          <Button title="Submit" onPress={this.handleSubmit}/>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     );
   }
 }
