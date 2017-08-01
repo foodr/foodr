@@ -429,3 +429,379 @@ Migrating to CreateIngredientProducts (20170729002146)
   [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
   [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
   [1m[36mIngredient Load (0.7ms)[0m  [1m[34mSELECT  "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" INNER JOIN "products" ON "ingredient_products"."product_id" = "products"."id" INNER JOIN "searches" ON "products"."id" = "searches"."product_id" WHERE "searches"."user_id" = $1 LIMIT $2[0m  [["user_id", 1], ["LIMIT", 11]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8431568279113248150);[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(8431568279113248150)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (124.3ms)[0m  [1m[35mDROP DATABASE IF EXISTS "foodr-backend_development"[0m
+  [1m[35m (122.6ms)[0m  [1m[35mDROP DATABASE IF EXISTS "foodr-backend_test"[0m
+  [1m[35m (6.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (3.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8431568279113248150);[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20170729002100)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.6ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "email" character varying, "password_digest" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170729002100"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateProducts (20170729002112)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.2ms)[0m  [1m[35mCREATE TABLE "products" ("id" bigserial primary key, "upc" character varying, "name" character varying, "score" integer, "img_url" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170729002112"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateIngredients (20170729002122)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "ingredients" ("id" bigserial primary key, "name" character varying, "description" text, "is_natural" boolean, "img_url" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170729002122"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateSearches (20170729002131)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "searches" ("id" bigserial primary key, "product_id" integer, "user_id" integer, "is_saved" boolean, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170729002131"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateIngredientProducts (20170729002146)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "ingredient_products" ("id" bigserial primary key, "product_id" integer, "ingredient_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170729002146"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-08-01 00:21:33.150870"], ["updated_at", "2017-08-01 00:21:33.150870"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(8431568279113248150)[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.9ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user@email.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "users" ("email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "user@email.com"], ["password_digest", "$2a$10$/RPOh.Rgc5eLlC6Lx7nZ/eJDcNlVm/m4PHrNXJlBTl648w7oL2m4W"], ["created_at", "2017-08-01 00:21:38.729789"], ["updated_at", "2017-08-01 00:21:38.729789"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "kanan@email.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "kanan@email.com"], ["password_digest", "$2a$10$UIgagmQUJSYrRaJ1fMiUK.5mns8EkI2Nu5mxK9PM6LFgTV0H7gtXS"], ["created_at", "2017-08-01 00:21:38.822680"], ["updated_at", "2017-08-01 00:21:38.822680"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "tiff@email.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "tiff@email.com"], ["password_digest", "$2a$10$zW44HJfMhn/PuqmFyz741uijSpujZVulSkEWC3l0YHmiK35TBVeoy"], ["created_at", "2017-08-01 00:21:38.916214"], ["updated_at", "2017-08-01 00:21:38.916214"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "vic@email.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "vic@email.com"], ["password_digest", "$2a$10$AOEdHxF.Pz0AGmLO1kbVtuQSaibduIawgLa.otU9IYGM5mdhF4eLm"], ["created_at", "2017-08-01 00:21:39.010212"], ["updated_at", "2017-08-01 00:21:39.010212"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "xander@email.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "xander@email.com"], ["password_digest", "$2a$10$feja.uK3aFrSaupAIhuKJecxDhXbe//T.BNKSmJSV6D0M1NaUK4bW"], ["created_at", "2017-08-01 00:21:39.101656"], ["updated_at", "2017-08-01 00:21:39.101656"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "0"], ["name", "Chilli con carne"], ["score", 2], ["img_url", "https://unsplash.it/300/300"], ["created_at", "2017-08-01 00:21:39.793640"], ["updated_at", "2017-08-01 00:21:39.793640"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Vermicelli Noodles"], ["description", "Nemo adipisci quia amet quidem. At nulla totam perferendis. Debitis voluptatem qui eum unde occaecati. Reiciendis quia itaque neque ad consequatur est veniam. Magnam animi facilis voluptatum."], ["is_natural", "f"], ["img_url", "https://unsplash.it/300/200"], ["created_at", "2017-08-01 00:21:39.828568"], ["updated_at", "2017-08-01 00:21:39.828568"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 1], ["ingredient_id", 1], ["created_at", "2017-08-01 00:21:39.855655"], ["updated_at", "2017-08-01 00:21:39.855655"]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Ajowan Seed"], ["description", "Assumenda saepe quod veritatis cumque. Eum delectus ipsam placeat aut aut. Expedita voluptatibus sit."], ["is_natural", "f"], ["img_url", "https://unsplash.it/200/300"], ["created_at", "2017-08-01 00:21:39.875362"], ["updated_at", "2017-08-01 00:21:39.875362"]]
+  [1m[35m (42.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 1], ["ingredient_id", 2], ["created_at", "2017-08-01 00:21:39.923080"], ["updated_at", "2017-08-01 00:21:39.923080"]]
+  [1m[35m (99.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Sausages"], ["description", "Eligendi eaque fugiat quas sint. Labore veritatis et. Magnam non facere distinctio. Aliquam illo sint voluptas."], ["is_natural", "t"], ["img_url", "https://unsplash.it/300/300"], ["created_at", "2017-08-01 00:21:40.025832"], ["updated_at", "2017-08-01 00:21:40.025832"]]
+  [1m[35m (27.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 1], ["ingredient_id", 3], ["created_at", "2017-08-01 00:21:40.059791"], ["updated_at", "2017-08-01 00:21:40.059791"]]
+  [1m[35m (59.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "searches" ("product_id", "user_id", "is_saved", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["product_id", 1], ["user_id", 1], ["is_saved", "t"], ["created_at", "2017-08-01 00:21:40.140943"], ["updated_at", "2017-08-01 00:21:40.140943"]]
+  [1m[35m (15.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "1"], ["name", "Bruschette with Tomato"], ["score", 2], ["img_url", "https://unsplash.it/300/400"], ["created_at", "2017-08-01 00:21:40.159856"], ["updated_at", "2017-08-01 00:21:40.159856"]]
+  [1m[35m (71.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Anchovies"], ["description", "Et id animi natus vitae neque. Doloribus quos voluptatem itaque. Pariatur alias quod. Tenetur modi est consequatur ipsa natus sint dolorum."], ["is_natural", "f"], ["img_url", "https://unsplash.it/400/400"], ["created_at", "2017-08-01 00:21:40.235159"], ["updated_at", "2017-08-01 00:21:40.235159"]]
+  [1m[35m (32.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 2], ["ingredient_id", 4], ["created_at", "2017-08-01 00:21:40.273958"], ["updated_at", "2017-08-01 00:21:40.273958"]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Sour Dough Bread"], ["description", "Possimus qui atque doloremque. Ut sint sed nemo. A quos dolor quam."], ["is_natural", "f"], ["img_url", "https://unsplash.it/200/200"], ["created_at", "2017-08-01 00:21:40.293175"], ["updated_at", "2017-08-01 00:21:40.293175"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 2], ["ingredient_id", 5], ["created_at", "2017-08-01 00:21:40.298394"], ["updated_at", "2017-08-01 00:21:40.298394"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Beef Stock"], ["description", "Explicabo facere vitae dolores at quae sit totam. Reiciendis ullam modi animi. Maxime quo aut voluptate quia accusantium beatae. Cumque et libero porro ipsam necessitatibus ut. Qui suscipit voluptatem quo omnis expedita et et."], ["is_natural", "f"], ["img_url", "https://unsplash.it/300/400"], ["created_at", "2017-08-01 00:21:40.302339"], ["updated_at", "2017-08-01 00:21:40.302339"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 2], ["ingredient_id", 6], ["created_at", "2017-08-01 00:21:40.307661"], ["updated_at", "2017-08-01 00:21:40.307661"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "searches" ("product_id", "user_id", "is_saved", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["product_id", 2], ["user_id", 1], ["is_saved", "f"], ["created_at", "2017-08-01 00:21:40.312670"], ["updated_at", "2017-08-01 00:21:40.312670"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "2"], ["name", "Katsu Curry"], ["score", 1], ["img_url", "https://unsplash.it/300/400"], ["created_at", "2017-08-01 00:21:40.315640"], ["updated_at", "2017-08-01 00:21:40.315640"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Kudzu"], ["description", "Numquam fugit minus ex ut quia possimus eos. Dolor ut itaque dolores debitis quos sint quia. Et expedita vel dolorem est velit distinctio. Molestiae dolor delectus dolorem aut."], ["is_natural", "f"], ["img_url", "https://unsplash.it/200/200"], ["created_at", "2017-08-01 00:21:40.319000"], ["updated_at", "2017-08-01 00:21:40.319000"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 3], ["ingredient_id", 7], ["created_at", "2017-08-01 00:21:40.323452"], ["updated_at", "2017-08-01 00:21:40.323452"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Pork"], ["description", "Vitae natus quaerat. Ipsum ut totam. Soluta sint fugit similique magnam. Eius occaecati dolor placeat est quo cum. Perferendis quo tempora fuga."], ["is_natural", "t"], ["img_url", "https://unsplash.it/300/300"], ["created_at", "2017-08-01 00:21:40.326295"], ["updated_at", "2017-08-01 00:21:40.326295"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 3], ["ingredient_id", 8], ["created_at", "2017-08-01 00:21:40.330900"], ["updated_at", "2017-08-01 00:21:40.330900"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Red Wine Vinegar"], ["description", "Qui ipsa aut vero pariatur enim. Sint ipsum vel ullam blanditiis maiores cumque nobis. Odit qui quaerat quam a. Modi qui qui."], ["is_natural", "f"], ["img_url", "https://unsplash.it/400/300"], ["created_at", "2017-08-01 00:21:40.335568"], ["updated_at", "2017-08-01 00:21:40.335568"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 3], ["ingredient_id", 9], ["created_at", "2017-08-01 00:21:40.340657"], ["updated_at", "2017-08-01 00:21:40.340657"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "searches" ("product_id", "user_id", "is_saved", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["product_id", 3], ["user_id", 1], ["is_saved", "f"], ["created_at", "2017-08-01 00:21:40.345382"], ["updated_at", "2017-08-01 00:21:40.345382"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "3"], ["name", "Caprese Salad"], ["score", 1], ["img_url", "https://unsplash.it/400/300"], ["created_at", "2017-08-01 00:21:40.348959"], ["updated_at", "2017-08-01 00:21:40.348959"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Oranges"], ["description", "Ut cupiditate quas sit autem dolor facere. Dolor iure perspiciatis. Aut qui consequatur. Harum ut ipsum."], ["is_natural", "f"], ["img_url", "https://unsplash.it/400/300"], ["created_at", "2017-08-01 00:21:40.353016"], ["updated_at", "2017-08-01 00:21:40.353016"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 4], ["ingredient_id", 10], ["created_at", "2017-08-01 00:21:40.359336"], ["updated_at", "2017-08-01 00:21:40.359336"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Paprik"], ["description", "Animi ullam assumenda dolore qui maxime voluptas sit. Impedit est voluptates sit est velit. Illum laboriosam quia velit quis qui voluptas. Accusantium magnam a consequuntur. Omnis eum ipsa dignissimos."], ["is_natural", "t"], ["img_url", "https://unsplash.it/400/300"], ["created_at", "2017-08-01 00:21:40.363001"], ["updated_at", "2017-08-01 00:21:40.363001"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 4], ["ingredient_id", 11], ["created_at", "2017-08-01 00:21:40.367594"], ["updated_at", "2017-08-01 00:21:40.367594"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Aubergine"], ["description", "Rerum et quo reprehenderit ipsum dicta quis. Eaque voluptas non sunt odit. Commodi sunt at et dolores. Ab consectetur tempore ut dolorum dolorem quas."], ["is_natural", "f"], ["img_url", "https://unsplash.it/400/400"], ["created_at", "2017-08-01 00:21:40.371382"], ["updated_at", "2017-08-01 00:21:40.371382"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 4], ["ingredient_id", 12], ["created_at", "2017-08-01 00:21:40.376779"], ["updated_at", "2017-08-01 00:21:40.376779"]]
+  [1m[35m (140.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "searches" ("product_id", "user_id", "is_saved", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["product_id", 4], ["user_id", 1], ["is_saved", "f"], ["created_at", "2017-08-01 00:21:40.522451"], ["updated_at", "2017-08-01 00:21:40.522451"]]
+  [1m[35m (67.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "4"], ["name", "Chilli con carne"], ["score", 5], ["img_url", "https://unsplash.it/200/200"], ["created_at", "2017-08-01 00:21:40.593561"], ["updated_at", "2017-08-01 00:21:40.593561"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Dill"], ["description", "In rem amet voluptatum. Sit quia delectus. Laborum accusantium quia in sunt. Facilis quasi repellendus dolores. Mollitia deserunt reiciendis et consequuntur."], ["is_natural", "f"], ["img_url", "https://unsplash.it/200/200"], ["created_at", "2017-08-01 00:21:40.598764"], ["updated_at", "2017-08-01 00:21:40.598764"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 5], ["ingredient_id", 13], ["created_at", "2017-08-01 00:21:40.604814"], ["updated_at", "2017-08-01 00:21:40.604814"]]
+  [1m[35m (29.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Squid"], ["description", "Sed vel sunt aliquam sed officia ipsum error. Occaecati enim placeat quo et. Voluptatem repellat temporibus. Ipsam ut sed consequuntur vero."], ["is_natural", "f"], ["img_url", "https://unsplash.it/400/300"], ["created_at", "2017-08-01 00:21:40.637369"], ["updated_at", "2017-08-01 00:21:40.637369"]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 5], ["ingredient_id", 14], ["created_at", "2017-08-01 00:21:40.645483"], ["updated_at", "2017-08-01 00:21:40.645483"]]
+  [1m[35m (3.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Asian Noodles"], ["description", "Quas dolores nihil illo. Voluptatum non eligendi incidunt. Aut cupiditate voluptatum repudiandae. Est pariatur consequatur."], ["is_natural", "t"], ["img_url", "https://unsplash.it/300/300"], ["created_at", "2017-08-01 00:21:40.652512"], ["updated_at", "2017-08-01 00:21:40.652512"]]
+  [1m[35m (6.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 5], ["ingredient_id", 15], ["created_at", "2017-08-01 00:21:40.662973"], ["updated_at", "2017-08-01 00:21:40.662973"]]
+  [1m[35m (5.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "searches" ("product_id", "user_id", "is_saved", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["product_id", 5], ["user_id", 1], ["is_saved", "f"], ["created_at", "2017-08-01 00:21:40.672818"], ["updated_at", "2017-08-01 00:21:40.672818"]]
+  [1m[35m (12.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "0028400344371"], ["name", "Doritos Nacho Cheese Tortilla Chips"], ["score", 1], ["img_url", "https://images-na.ssl-images-amazon.com/images/I/41sEhSXmzXL.jpg"], ["created_at", "2017-08-01 00:21:40.688435"], ["updated_at", "2017-08-01 00:21:40.688435"]]
+  [1m[35m (5.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Corn"], ["description", "To create the actual tortilla chip, raw yellow corn kernels are soaked in large vats of near-boiling water, where they’re combined with lime (the chemical, not the fruit). While lime’s main purpose is loosening the husks and making them easier to remove, it also injects a bit of calcium into the corn and releases niacin (vitamin B3), which is known to improve cholesterol levels and lower cardiovascular risks. Once the husks and any excess lime have been washed away, the now-hydrated corn is ground into a corn flour called masa, pressed into that famous Dorito shape and fried in vegetable oil."], ["is_natural", "t"], ["img_url", "https://www.organicfacts.net/wp-content/uploads/2013/05/Corn12-1020x765.jpg"], ["created_at", "2017-08-01 00:21:40.698604"], ["updated_at", "2017-08-01 00:21:40.698604"]]
+  [1m[35m (9.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 6], ["ingredient_id", 16], ["created_at", "2017-08-01 00:21:40.714788"], ["updated_at", "2017-08-01 00:21:40.714788"]]
+  [1m[35m (10.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Vegetable Oil"], ["description", "Extracted from whichever source (sunflower, canola or corn) is cheapest at the time, vegetable oils have a notorious reputation. “The refining process of removing these oils is extremely chemically harsh,” explains physician and biochemist Cate Shanahan, author of Deep Nutrition: Why Your Genes Need Traditional Food. “It damages the molecules and turns them into new compounds that don’t occur in nature, many of which have toxic effects on our body — like, for instance, disturbing DNA replication and energy processing.”"], ["is_natural", "t"], ["img_url", "https://images-na.ssl-images-amazon.com/images/I/81CBn7U1c1L._SX355_.jpg"], ["created_at", "2017-08-01 00:21:40.727985"], ["updated_at", "2017-08-01 00:21:40.727985"]]
+  [1m[35m (6.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 6], ["ingredient_id", 17], ["created_at", "2017-08-01 00:21:40.740296"], ["updated_at", "2017-08-01 00:21:40.740296"]]
+  [1m[35m (9.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Maltodextrin"], ["description", "An artificial sugar made from maltose (aka malt sugar) and dextrose (see below), Maltodextrin is usually used as a thickener or filler ingredient to add bulk to processed food and to increase its shelf life — maltodextrin itself has a shelf life of two years."], ["is_natural", "f"], ["img_url", "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Maltodextrin.png/1200px-Maltodextrin.png"], ["created_at", "2017-08-01 00:21:40.752637"], ["updated_at", "2017-08-01 00:21:40.752637"]]
+  [1m[35m (4.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 6], ["ingredient_id", 18], ["created_at", "2017-08-01 00:21:40.761814"], ["updated_at", "2017-08-01 00:21:40.761814"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Monosodium Glutamate"], ["description", "Better known as MSG, monosodium glutamate is a naturally occurring amino acid (one of the building blocks of protein) that’s added to foods as a savory flavor enhancer. While it has a reputation for causing insatiable hunger, the food industry has no problem using it because it occurs in nature. And while Shanahan sort of agrees, there’s some room for worry. “Eating MSG without a high-protein ingredient in the food is a huge blast of MSG all at once, and some people are very sensitive to that,” she explains. “They’ll get headaches and some people who get seizures say they’ll get a seizure aura [that is, the feeling you get right before you experience a seizure].” Researchers, however, haven’t come to any decisive conclusions about the effects of MSG."], ["is_natural", "f"], ["img_url", "https://cdn.authoritynutrition.com/wp-content/uploads/2015/03/msg-monosodium-glutamate.jpg"], ["created_at", "2017-08-01 00:21:40.764926"], ["updated_at", "2017-08-01 00:21:40.764926"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 6], ["ingredient_id", 19], ["created_at", "2017-08-01 00:21:40.769083"], ["updated_at", "2017-08-01 00:21:40.769083"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Buttermilk"], ["description", "Similar to whey, buttermilk is the byproduct of churning butter out of cream and is usually added to processed foods like Doritos as a means of adding heartiness and oftentimes a sort of creamy texture (though, that’s not so much the case for Doritos)."], ["is_natural", "t"], ["img_url", "https://fthmb.tqn.com/1uefBX_jl9StT18NA3jNmtwE414=/960x0/filters:no_upscale()/about/Buttermilk-GettyImages-542871762-58a0e7175f9b58819c216897.jpg"], ["created_at", "2017-08-01 00:21:40.771638"], ["updated_at", "2017-08-01 00:21:40.771638"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 6], ["ingredient_id", 20], ["created_at", "2017-08-01 00:21:40.775545"], ["updated_at", "2017-08-01 00:21:40.775545"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "0016000507661"], ["name", "Nature Valley Peanut Butter Dark Chocolate Chewy Bar"], ["score", 4], ["img_url", "https://d2ln0cvn4pv5w2.cloudfront.net/unsafe/1024x800/filters:quality(100):max_bytes(200000):fill(white)/dcmzfk78s4reh.cloudfront.net/1470334066593.jpg"], ["created_at", "2017-08-01 00:21:40.778294"], ["updated_at", "2017-08-01 00:21:40.778294"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Roasted Peanuts"], ["description", "In addition to being every kid's (and many grownup kid's) favorite sandwich filling, peanuts pack a serious nutritional punch and offer a variety of health benefits.\n\nPeanuts are rich in monounsaturated fats, the type of fat that is emphasized in the heart-healthy Mediterranean diet. Studies of diets with a special emphasis on peanuts have shown that this little legume is a big ally for a healthy heart. In one such randomized, double-blind, cross-over study involving 22 subjects, a high monounsaturated diet that emphasized peanuts and peanut butter decreased cardiovascular disease risk by an estimated 21 percent compared to the average American diet."], ["is_natural", "t"], ["img_url", "https://sc01.alicdn.com/kf/UTB8tEc_earFXKJk43Ovq6ybnpXaU/Top-Roasted-Peanut-in-Shell-9-11.jpg"], ["created_at", "2017-08-01 00:21:40.781638"], ["updated_at", "2017-08-01 00:21:40.781638"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 7], ["ingredient_id", 21], ["created_at", "2017-08-01 00:21:40.786552"], ["updated_at", "2017-08-01 00:21:40.786552"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Soy Protein Isolate"], ["description", "Soy protein isolate is extracted from defatted soy flour. It is made of almost pure protein, since the isolation process yields a product that is 93 to 97 percent protein, leaving minimal fat and carbohydrates. The concern about the isolation process centers on the fact that aluminum found in the giant vats used to isolate the soy protein may leach into the protein itself, increasing the likelihood of heavy-metal poisoning. This is completely speculative, as we have yet to see an analysis of soy, whey, or any protein isolate showing heavy metal contamination from the containers used during the isolation process.\n\nNinety percent of genetically modified soy is resistant to glyphosate, the pesticide found in Round Up. A concern raised about eating products with soy protein isolate is that you will consume excessive amounts of this chemical. The good news? Glyphosate is not well absorbed by the human GI tract, the potential negative effects on humans are dose-dependent, and the level of that dose is very controversial."], ["is_natural", "f"], ["img_url", "https://sc01.alicdn.com/kf/UTB8uOrfcVfFXKJk43Otq6xIPFXaX/High-Quality-Soy-Isolated-Protein-and-Soy.jpg"], ["created_at", "2017-08-01 00:21:40.789119"], ["updated_at", "2017-08-01 00:21:40.789119"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 7], ["ingredient_id", 22], ["created_at", "2017-08-01 00:21:40.794243"], ["updated_at", "2017-08-01 00:21:40.794243"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Chicory Root Extract"], ["description", "Chicory root extract is a dietary supplement or food additive produced by mixing dried, ground chicory root with water, and removing the insoluble fraction by filtration and centrifugation. Other methods may be used to remove pigments and sugars. It is used as a source of soluble fiber."], ["is_natural", "t"], ["img_url", "https://lifefromthegroundup.files.wordpress.com/2013/09/chicory1.jpg"], ["created_at", "2017-08-01 00:21:40.797660"], ["updated_at", "2017-08-01 00:21:40.797660"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 7], ["ingredient_id", 23], ["created_at", "2017-08-01 00:21:40.801944"], ["updated_at", "2017-08-01 00:21:40.801944"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Cocoa"], ["description", "Health benefits of cocoa include relief from high blood pressure, cholesterol, obesity, constipation, diabetes, bronchial asthma, cancer, chronic fatigue syndrome and various neurodegenerative diseases. It is beneficial for quick wound healing, skin care, and it helps to improve cardiovascular health and brain health. It also helps in treating copper deficiency. It possesses mood-enhancing properties and exerts protective effects against neurotoxicity.\n\nCocoa beans are the fermented seeds of the cacao tree, whose Latin name is Theobroma cacao, which means “Food of the Gods”. It is native to the Amazon region and as the meaning suggests, cocoa was historically considered a very important crop in Central and South America. In fact, its beans were so prized that the native tribes used them as a form of currency. The cacao tree stands about 12-25 feet tall and grows naturally in tropical climates."], ["is_natural", "t"], ["img_url", "https://i1.wp.com/www.rjeem.com/wp-content/uploads/2015/12/00000000000000000000098.jpg"], ["created_at", "2017-08-01 00:21:40.804883"], ["updated_at", "2017-08-01 00:21:40.804883"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 7], ["ingredient_id", 24], ["created_at", "2017-08-01 00:21:40.809144"], ["updated_at", "2017-08-01 00:21:40.809144"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "products" ("upc", "name", "score", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["upc", "03077504"], ["name", "Quaker Chewy Chocolate Chip Bar"], ["score", 3], ["img_url", "https://images-na.ssl-images-amazon.com/images/I/81wqeA8l9CL._SL1500_.jpg"], ["created_at", "2017-08-01 00:21:40.812181"], ["updated_at", "2017-08-01 00:21:40.812181"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Granola"], ["description", "Granola is an extremely popular breakfast and snack food with a wealth of health benefits, including its ability to lower cholesterol, regulate digestion, aid in weight loss attempts, improve your heart health, increase energy, prevent anemia and promote proper organ function. Intake of granola also helps to lower blood pressure, increase cognitive activity, improve skin quality, build stronger bones, manage diabetes, stimulate new tissue and hormonal growth, and even prevent cancer.\n\nGranola is traditionally composed of rolled oats, which are oat groats that have been pressed flat and lightly steamed, as well as honey, nuts, and puffed rice. The entire mixture is baked until crispy and can then be taken anywhere quite conveniently for an energy-boosting snack. Most commonly, granola is regularly used by people on-the-go, as well as by hikers, campers, and outdoor-oriented people who won’t have a refrigerator for their food, and don’t want to worry about crushing anything that they plan to eat."], ["is_natural", "t"], ["img_url", "https://pioneerwoman.files.wordpress.com/2016/01/homemade-granola-08.jpg"], ["created_at", "2017-08-01 00:21:40.815109"], ["updated_at", "2017-08-01 00:21:40.815109"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 8], ["ingredient_id", 25], ["created_at", "2017-08-01 00:21:40.820036"], ["updated_at", "2017-08-01 00:21:40.820036"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Semisweet Chocolate Chip"], ["description", "Semisweet chocolate contains an impressive oxygen radical absorbance capacity (ORAC) value of 18,053 micromoles in 100 grams. These powerful antioxidants are responsible for protecting your body from oxygen free radicals that cause you to age. The flavonoids in semisweet chocolate help protect your low-density-lipoprotein (LDL) cholesterol from oxidation, thus preventing the dreaded “bad cholesterol.” Interestingly, according to Harvard University, when chocolate is combined with dairy milk, these antioxidant benefits are prevented. Traditionally, semisweet chocolate does not contain any milk, but manufacturers may hold artistic licensing on this tradition, so read the label before consuming this tasty treat."], ["is_natural", "f"], ["img_url", "https://nuts.com/images/auto/510x340/assets/51e5a614afaf394a.jpg"], ["created_at", "2017-08-01 00:21:40.822785"], ["updated_at", "2017-08-01 00:21:40.822785"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 8], ["ingredient_id", 26], ["created_at", "2017-08-01 00:21:40.826617"], ["updated_at", "2017-08-01 00:21:40.826617"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Corn Syrup"], ["description", "Corn syrup is a food syrup which is made from the starch of corn (called maize in some countries) and contains varying amounts of maltose and higher oligosaccharides, depending on the grade. Corn syrup, also known as glucose syrup to confectioners, is used in foods to soften texture, add volume, prevent crystallization of sugar, and enhance flavor. Corn syrup is distinct from high-fructose corn syrup (HFCS), which is manufactured from corn syrup by converting a large proportion of its glucose into fructose using the enzyme D-xylose isomerase, thus producing a sweeter compound due to higher levels of fructose."], ["is_natural", "f"], ["img_url", "https://health.clevelandclinic.org/wp-content/uploads/sites/3/2015/04/CornSyrup.jpg"], ["created_at", "2017-08-01 00:21:40.829323"], ["updated_at", "2017-08-01 00:21:40.829323"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 8], ["ingredient_id", 27], ["created_at", "2017-08-01 00:21:40.833456"], ["updated_at", "2017-08-01 00:21:40.833456"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredients" ("name", "description", "is_natural", "img_url", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "Glycerin"], ["description", "Glycerin belongs to a special category of carbohydrates called polyols, which also includes sugar alcohols like sorbitol and erythritol. Like sugar alcohols, which I’ve talked about before, glycerin tastes sweet but it is not metabolized as sugar in the body and doesn’t cause a rise in blood sugar. For that reason, it’s sometimes used as a sweetener in foods marketed to diabetics and low-carb dieters.  Glycerin also has that moisture-attracting property. The same way that adding glycerin to a lotion helps keeps your skin stay plump and moist, adding glycerin to foods helps them stay moist. So glycerin is also widely used in food manufacturing as a preservative."], ["is_natural", "f"], ["img_url", "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Glycerin_Skelett.svg/1200px-Glycerin_Skelett.svg.png"], ["created_at", "2017-08-01 00:21:40.836323"], ["updated_at", "2017-08-01 00:21:40.836323"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ingredient_products" ("product_id", "ingredient_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["product_id", 8], ["ingredient_id", 28], ["created_at", "2017-08-01 00:21:40.840230"], ["updated_at", "2017-08-01 00:21:40.840230"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mProduct Load (0.7ms)[0m  [1m[34mSELECT  "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8431568279113248150);[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to InstallTrigram (20170801002325)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (218.8ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS pg_trgm;[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170801002325"]]
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(8431568279113248150)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" ORDER BY "products"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (0.5ms)[0m  [1m[34mSELECT  "products".* FROM "products" ORDER BY "products"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (42.6ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chwy'), 0) AS "rank56048410255245610" FROM "products" WHERE (("products"."name" % 'chwy')) ORDER BY "rank56048410255245610" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.7ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chewy'), 0) AS "rank73560125843402530" FROM "products" WHERE (("products"."name" % 'chewy')) ORDER BY "rank73560125843402530" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.9ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chewy\ chcolate\ bar'), 0) AS "rank94795593860824659" FROM "products" WHERE (("products"."name" % 'chewy\ chcolate\ bar')) ORDER BY "rank94795593860824659" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (1.0ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chewy\ chcolbar'), 0) AS "rank50023934197842144" FROM "products" WHERE (("products"."name" % 'chewy\ chcolbar')) ORDER BY "rank50023934197842144" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.9ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chewy\ chocolate'), 0) AS "rank62364196914586664" FROM "products" WHERE (("products"."name" % 'chewy\ chocolate')) ORDER BY "rank62364196914586664" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.4ms)[0m  [1m[34mSELECT  "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProduct Load (1.2ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chilli'), 0) AS "rank83394268271920731" FROM "products" WHERE (("products"."name" % 'chilli')) ORDER BY "rank83394268271920731" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.8ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chill'), 0) AS "rank11621505066517617" FROM "products" WHERE (("products"."name" % 'chill')) ORDER BY "rank11621505066517617" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.9ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chil'), 0) AS "rank74546094205393398" FROM "products" WHERE (("products"."name" % 'chil')) ORDER BY "rank74546094205393398" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.8ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chill'), 0) AS "rank53006311720418166" FROM "products" WHERE (("products"."name" % 'chill')) ORDER BY "rank53006311720418166" DESC LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mProduct Load (0.9ms)[0m  [1m[34mSELECT  "products".*, COALESCE(similarity("products"."name", 'chcarneill'), 0) AS "rank64239340418673174" FROM "products" WHERE (("products"."name" % 'chcarneill')) ORDER BY "rank64239340418673174" DESC LIMIT $1[0m  [["LIMIT", 11]]
+Started GET "/" for 127.0.0.1 at 2017-07-31 17:57:38 -0700
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/apprentice/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/railties-5.1.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/apprentice/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/railties-5.1.2/lib/rails/templates/rails/welcome/index.html.erb (18.3ms)
+Completed 200 OK in 48ms (Views: 42.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/products/1" for 127.0.0.1 at 2017-07-31 17:57:46 -0700
+  
+SyntaxError (/Users/apprentice/foodr/foodr-backend/app/controllers/products_controller.rb:29: syntax error, unexpected keyword_end, expecting end-of-input):
+  
+app/controllers/products_controller.rb:29: syntax error, unexpected keyword_end, expecting end-of-input
+Started GET "/products/1" for 127.0.0.1 at 2017-07-31 17:58:19 -0700
+Processing by ProductsController#search as HTML
+  Parameters: {"search_term"=>"1"}
+  [1m[36mProduct Load (0.7ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "1"], ["LIMIT", 1]]
+  [1m[36mIngredient Load (0.8ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 2]]
+Completed 200 OK in 165ms (Views: 0.2ms | ActiveRecord: 11.8ms)
+
+
+Started GET "/products/2" for 127.0.0.1 at 2017-07-31 18:50:24 -0700
+Processing by ProductsController#search as HTML
+  Parameters: {"search_term"=>"2"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "2"], ["LIMIT", 1]]
+  [1m[36mIngredient Load (0.4ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 3]]
+Completed 200 OK in 64ms (Views: 0.2ms | ActiveRecord: 8.5ms)
+
+
+Started GET "/products/1" for 127.0.0.1 at 2017-07-31 18:50:28 -0700
+Processing by ProductsController#search as HTML
+  Parameters: {"search_term"=>"1"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "1"], ["LIMIT", 1]]
+  [1m[36mIngredient Load (0.4ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 2]]
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/0" for 127.0.0.1 at 2017-07-31 18:50:31 -0700
+Processing by ProductsController#search as HTML
+  Parameters: {"search_term"=>"0"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "0"], ["LIMIT", 1]]
+  [1m[36mIngredient Load (0.4ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/products/1" for 127.0.0.1 at 2017-07-31 18:50:34 -0700
+Processing by ProductsController#search as HTML
+  Parameters: {"search_term"=>"1"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "1"], ["LIMIT", 1]]
+  [1m[36mIngredient Load (0.5ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 2]]
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/products/0" for 127.0.0.1 at 2017-07-31 18:50:38 -0700
+Processing by ProductsController#search as HTML
+  Parameters: {"search_term"=>"0"}
+  [1m[36mProduct Load (0.3ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "0"], ["LIMIT", 1]]
+  [1m[36mIngredient Load (0.6ms)[0m  [1m[34mSELECT "ingredients".* FROM "ingredients" INNER JOIN "ingredient_products" ON "ingredients"."id" = "ingredient_products"."ingredient_id" WHERE "ingredient_products"."product_id" = $1[0m  [["product_id", 1]]
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/products/6" for 127.0.0.1 at 2017-07-31 18:50:42 -0700
+Processing by ProductsController#search as HTML
+  Parameters: {"search_term"=>"6"}
+  [1m[36mProduct Load (0.2ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."upc" = $1 LIMIT $2[0m  [["upc", "6"], ["LIMIT", 1]]
+  [1m[36mProduct Load (0.2ms)[0m  [1m[34mSELECT  "products".* FROM "products" WHERE "products"."name" = $1 LIMIT $2[0m  [["name", "6"], ["LIMIT", 1]]
+  [1m[36mProduct Load (1.4ms)[0m  [1m[34mSELECT "products".*, COALESCE(similarity("products"."name", '6'), 0) AS "rank34230743674102183" FROM "products" WHERE (("products"."name" % '6')) ORDER BY "rank34230743674102183" DESC[0m
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.8ms)
+
+
