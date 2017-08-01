@@ -13,7 +13,6 @@ import {
   AlertIOS,
   TextInput,
   TouchableOpacity,
-  // FlatLst,
   ListView
 } from 'react-native';
 import Camera from 'react-native-camera';
@@ -42,8 +41,8 @@ export default class FoodrFrontend extends Component {
   searchProduct(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -76,8 +75,8 @@ export default class FoodrFrontend extends Component {
 
   findUser(){
     if (this.state.userId) {
-      fetch('https://dbc-foodr-api.herokuapp.com/users/' + this.state.userId)
-      //fetch('http://localhost:3000/users/' + this.state.userId)
+      // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/' + this.state.userId)
+      fetch('http://localhost:3000/users/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -108,7 +107,7 @@ export default class FoodrFrontend extends Component {
 
     const leftButtonConfig = {
       title: 'Profile',
-      handler: () => this.updateCurrentPage('UserProfilePage'),
+      handler: () => this.findUser(),
     };
 
     const rightButtonConfig = {
@@ -126,7 +125,7 @@ export default class FoodrFrontend extends Component {
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <IndexPage 
+            <IndexPage
               updateCurrentPage = {this.updateCurrentPage}
             />
           </View>
@@ -199,13 +198,6 @@ export default class FoodrFrontend extends Component {
               />
           </View>
         )
-      case 'UserProfilePage':
-        return(
-          <UserProfilePage
-            userDetails = {this.state.userDetails}
-            searchProduct = {this.searchProduct}
-          />
-        )
       case 'SearchingPage':
         return(
           <View style={styles.parentContainer}>
@@ -222,7 +214,10 @@ export default class FoodrFrontend extends Component {
               rightButton={rightButtonConfig}
             />
             <ScrollView>
-              <UserProfilePage />
+              <UserProfilePage
+                userDetails = {this.state.userDetails}
+                searchProduct = {this.searchProduct}
+              />
             </ScrollView>
           </View>
         )
@@ -244,7 +239,7 @@ class UserProfilePage extends Component {
       savedProducts: ds.cloneWithRows(this.props.userDetails.saved_products),
       recentSearches: ds.cloneWithRows(this.props.userDetails.searched_products),
     };
-    this.scoreConverter = this.scoreConverter.bind(this) 
+    this.scoreConverter = this.scoreConverter.bind(this)
     this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
@@ -261,7 +256,7 @@ class UserProfilePage extends Component {
         case "1.0":
           return ('F');
         default:
-          ('Not Found');
+          return ('No Grade Yet');
       }
   }
 
@@ -269,13 +264,13 @@ class UserProfilePage extends Component {
     return this.props.searchProduct(productName)
   }
 
-  
+
 render() {
     return(
       <View style={styles.container}>
         <Text style={styles.welcome}>USER PROFILE</Text>
         <Text> {this.props.userDetails.user.email} </Text>
-        <Text> Your health grade for the day: {this.scoreConverter()} </Text>
+        <Text> Your health grade: {this.scoreConverter()} </Text>
         <Text style={styles.welcome}> Your saved products are: </Text>
         <ListView
           dataSource={this.state.savedProducts}
@@ -288,7 +283,7 @@ render() {
         />
       </View>
     );
-  } 
+  }
 }
 
 class CameraPage extends Component {
