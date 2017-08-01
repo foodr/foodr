@@ -37,6 +37,7 @@ export default class FoodrFrontend extends Component {
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
+    this.authenticateUser = this.authenticateUser.bind(this)
     this.logout = this.logout.bind(this)
     this.createUser = this.createUser.bind(this)
   }
@@ -81,10 +82,24 @@ export default class FoodrFrontend extends Component {
     }
   }
 
+  authenticateUser(email, password) {
+   fetch('http://localhost:3000/users/authenticate?email=' + email + '&password=' + password)
+   .then(data => data.json())
+   .then(jsonData => {
+     if (jsonData.found) {
+      this.setState({userId: jsonData.id})
+      this.updateCurrentPage('IndexPage')
+      AlertIOS.alert('Login Successful!')
+     } else {
+       AlertIOS.alert(jsonData.errors.join("\n"))
+     }
+   })
+  }
+
   findUser(){
     if (this.state.userId) {
       // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/' + this.state.userId)
-      fetch('http://localhost:3000/users/' + this.state.userId)
+      fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -92,6 +107,7 @@ export default class FoodrFrontend extends Component {
           this.updateCurrentPage('UserProfilePage')
         } else {
           AlertIOS.alert('You are not a registered user. Please sign up.');
+          this.setState({userId: false})
           this.updateCurrentPage('IndexPage');
         }
       })
@@ -216,18 +232,21 @@ export default class FoodrFrontend extends Component {
             </ScrollView>
         </View>
         )
-      case 'LoginPage':
-        return(
-          <View style={styles.parentContainer}>
-            <NavigationBar
-              style={styles.navbar}
-              leftButton={leftButtonConfig}
-              title={titleConfig}
-              rightButton={rightButtonConfig}
-            />
-            <LoginPage />
-          </View>
-        )
+        case 'LoginPage':
+         return(
+           <View style={styles.parentContainer}>
+             <NavigationBar
+               style={styles.navbar}
+               leftButton={leftButtonConfig}
+               title={titleConfig}
+               rightButton={rightButtonConfig}
+             />
+             <LoginPage
+               authenticateUser={this.authenticateUser}
+               updateCurrentPage = {this.updateCurrentPage}
+             />
+           </View>
+         )
       case 'SignUpPage':
         return(
           <View style={styles.parentContainer}>
@@ -292,6 +311,65 @@ export default class FoodrFrontend extends Component {
           <DefaultPage />
         )
     }
+  }
+}
+
+class LoginPage extends Component {
+  constructor(){
+    super();
+    this.state = {
+      em: '',
+      pw: ''
+    }
+    this.loginUser = this.loginUser.bind(this)
+    this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
+  }
+
+  loginUser(){
+    this.props.authenticateUser(this.state.em, this.state.pw)
+  }
+
+  _onPressSignUpButton(){
+    this.props.updateCurrentPage("SignUpPage")
+  }
+
+  render() {
+    return (
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
+        <Text style={styles.header}>Login</Text>
+        <TextInput
+          placeholder="email"
+          placeholderTextColor='#949799'
+          returnKeyType="next"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={(em) => this.setState({em})}
+          onSubmitEditing={() => this.passwordInput.focus()}
+        />
+        <TextInput
+          placeholder="password"
+          placeholderTextColor='#949799'
+          returnKeyType="go"
+          keyboardType="default"
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={(pw) => this.setState({pw})}
+          ref={(input) => this.passwordInput = input}
+          onSubmitEditing={this.loginUser}
+        />
+        <TouchableOpacity>
+          <Button title="Login" onPress={this.loginUser}/>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text> Don't have an account?</Text>
+          <Button title="Sign up here." onPress={this._onPressSignUpButton} />
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    );
   }
 }
 
@@ -607,7 +685,7 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <View style={styles.body}>
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
         <Text style={styles.header}>Search for a Product:</Text>
         <TextInput
           placeholder="Enter a Product Name or UPC"
@@ -621,7 +699,7 @@ class SearchPage extends Component {
         <TouchableOpacity>
           <Button title="Search" onPress={this.startSearch}/>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -678,16 +756,6 @@ class SearchingPage extends Component {
           style={{marginBottom: 20}}
         />
         <Text>Searching...</Text>
-      </View>
-    );
-  }
-}
-
-class LoginPage extends Component {
-  render() {
-    return(
-      <View style={styles.centerContainer}>
-        <Text style={styles.header}>Login Page</Text>
       </View>
     );
   }
