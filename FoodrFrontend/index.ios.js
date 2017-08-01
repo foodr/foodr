@@ -38,6 +38,13 @@ export default class FoodrFrontend extends Component {
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
     this.authenticateUser = this.authenticateUser.bind(this)
+    this.logout = this.logout.bind(this)
+    this.createUser = this.createUser.bind(this)
+  }
+
+  logout() {
+    this.setState({userId: false})
+    this.updateCurrentPage('IndexPage')
   }
 
   searchProduct(upc) {
@@ -109,6 +116,20 @@ export default class FoodrFrontend extends Component {
     }
   }
 
+  createUser(email, password) {
+    fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
+    .then(data => data.json())
+    .then(jsonData => {
+      if (jsonData.saved) {
+        AlertIOS.alert('Registration Successful!')
+        this.setState({userId: jsonData.user.id})
+        this.updateCurrentPage('IndexPage')
+      } else {
+        AlertIOS.alert(jsonData.errors.join("\n"))
+      }
+    })
+  }
+
   updateCurrentPage(pageName) {
     this.setState({currentPage: pageName})
   }
@@ -122,10 +143,20 @@ export default class FoodrFrontend extends Component {
       title: 'FOODR',
     };
 
-    const leftButtonConfig = {
-      title: 'Profile',
-      handler: () => this.findUser(),
-    };
+
+
+    const leftButtonConfig =
+      this.state.userId ?
+        {
+          title: 'Profile',
+          handler: () => this.findUser(),
+        }
+      :
+        {
+          title: 'Login',
+          handler: () => this.updateCurrentPage('LoginPage'),
+        }
+      ;
 
     const rightButtonConfig = {
       title: 'Scan',
@@ -144,6 +175,7 @@ export default class FoodrFrontend extends Component {
             />
             <IndexPage
               updateCurrentPage = {this.updateCurrentPage}
+              userId = {this.state.userId}
             />
           </View>
         )
@@ -215,6 +247,20 @@ export default class FoodrFrontend extends Component {
              />
            </View>
          )
+      case 'SignUpPage':
+        return(
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <SignUpPage
+              createUser={this.createUser}
+            />
+          </View>
+        )
       case 'NoResultsPage':
         return(
           <View style={styles.parentContainer}>
@@ -233,6 +279,12 @@ export default class FoodrFrontend extends Component {
       case 'SearchingPage':
         return(
           <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
             <SearchingPage />
           </View>
         )
@@ -249,6 +301,7 @@ export default class FoodrFrontend extends Component {
               <UserProfilePage
                 userDetails = {this.state.userDetails}
                 searchProduct = {this.searchProduct}
+                logout = {this.logout}
               />
             </ScrollView>
           </View>
@@ -358,16 +411,24 @@ class UserProfilePage extends Component {
 
 render() {
     return(
-      <View style={styles.container}>
-        <Text style={styles.welcome}>USER PROFILE</Text>
+      <View style={styles.centerContainer}>
+        <Text style={styles.header}>Your Profile</Text>
         <Text> {this.props.userDetails.user.email} </Text>
         <Text> Your health grade: {this.scoreConverter()} </Text>
-        <Text style={styles.welcome}> Your saved products are: </Text>
+        <TouchableOpacity>
+          <Button
+            onPress={this.props.logout}
+            title="Logout"
+          />
+        </TouchableOpacity>
+
+        <Text style={styles.header}>Saved Products</Text>
         <ListView
           dataSource={this.state.savedProducts}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
         />
-        <Text style={styles.welcome}> You recently searched: </Text>
+
+        <Text style={styles.header}>Recent Searches</Text>
         <ListView
           dataSource={this.state.recentSearches}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
@@ -649,7 +710,6 @@ class IndexPage extends Component {
     this._onPressSearchButton = this._onPressSearchButton.bind(this)
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
-    this._onPressLoginButton = this._onPressLoginButton.bind(this)
   }
 
   _onPressSearchButton(){
@@ -664,11 +724,6 @@ class IndexPage extends Component {
     this.props.updateCurrentPage("SignUpPage")
   }
 
-  _onPressLoginButton(){
-    this.props.updateCurrentPage("LoginPage")
-  }
-
-
   render() {
     return (
       <View style={styles.centerContainer}>
@@ -678,12 +733,14 @@ class IndexPage extends Component {
         <TouchableOpacity>
           <Button title="Search Product" onPress={this._onPressSearchButton} />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Button onPress={this._onPressSignUpButton} title="Sign Up" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Button onPress={this._onPressLoginButton} title="Login" />
-        </TouchableOpacity>
+
+        {this.props.userId ?
+          <Text/>
+          :
+          <TouchableOpacity>
+            <Button onPress={this._onPressSignUpButton} title="Sign Up" />
+          </TouchableOpacity>
+        }
       </View>
     );
   }
@@ -700,6 +757,56 @@ class SearchingPage extends Component {
         />
         <Text>Searching...</Text>
       </View>
+    );
+  }
+}
+
+class SignUpPage extends Component {
+  constructor() {
+    super()
+    this.state = {
+      email: '',
+      password: '',
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit() {
+    this.props.createUser(this.state.email, this.state.password)
+  }
+
+  render() {
+    return(
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
+        <Text style={styles.header}>Sign Up</Text>
+        <TextInput
+          placeholder="Enter your e-mail address"
+          placeholderTextColor='#949799'
+          style={styles.input}
+          returnKeyType="next"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(email) => this.setState({email})}
+          onSubmitEditing={() => {this.passwordInput.focus()}}
+        />
+
+        <TextInput
+          placeholder="Enter a password"
+          placeholderTextColor='#949799'
+          style={styles.input}
+          returnKeyType="done"
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          ref={(input) => this.passwordInput = input}
+          onChangeText={(password) => this.setState({password})}
+          onSubmitEditing={this.handleSubmit}
+        />
+        <TouchableOpacity>
+          <Button title="Submit" onPress={this.handleSubmit}/>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     );
   }
 }
