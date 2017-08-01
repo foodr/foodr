@@ -36,6 +36,12 @@ export default class FoodrFrontend extends Component {
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
+    this.logout = this.logout.bind(this)
+  }
+
+  logout() {
+    this.setState({userId: false})
+    this.updateCurrentPage('IndexPage')
   }
 
   searchProduct(upc) {
@@ -245,6 +251,7 @@ export default class FoodrFrontend extends Component {
               <UserProfilePage
                 userDetails = {this.state.userDetails}
                 searchProduct = {this.searchProduct}
+                logout = {this.logout}
               />
             </ScrollView>
           </View>
@@ -299,6 +306,12 @@ render() {
         <Text style={styles.header}>Your Profile</Text>
         <Text> {this.props.userDetails.user.email} </Text>
         <Text> Your health grade: {this.scoreConverter()} </Text>
+        <TouchableOpacity>
+          <Button
+            onPress={this.props.logout}
+            title="Logout"
+          />
+        </TouchableOpacity>
 
         <Text style={styles.header}>Saved Products</Text>
         <ListView
