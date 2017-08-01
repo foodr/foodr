@@ -23,7 +23,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'CameraPage',
+      currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
       foundProductSaved: false,
@@ -104,10 +104,9 @@ export default class FoodrFrontend extends Component {
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <ScrollView>
-              <IndexPage
-              updateCurrentPage = {this.updateCurrentPage} />
-            </ScrollView>
+            <IndexPage
+              updateCurrentPage = {this.updateCurrentPage}
+            />
           </View>
         )
       case 'SearchPage':
@@ -172,17 +171,17 @@ export default class FoodrFrontend extends Component {
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <ScrollView>
-              <NoResultsPage
-                updateCurrentPage = {this.updateCurrentPage}
-                searchTerm = {this.state.searchTerm}
-                />
-            </ScrollView>
+            <NoResultsPage
+              updateCurrentPage = {this.updateCurrentPage}
+              searchTerm = {this.state.searchTerm}
+              />
           </View>
         )
       case 'SearchingPage':
         return(
-          <SearchingPage />
+          <View style={styles.parentContainer}>
+            <SearchingPage />
+          </View>
         )
       case 'UserProfilePage':
         return(
@@ -423,7 +422,7 @@ class NoResultsPage extends Component {
 
   render() {
     return (
-      <View style={styles.body}>
+      <View style={styles.centerContainer}>
         <Text style={styles.header}>{this.props.searchTerm} was not found</Text>
         <Text style={styles.content_small}>Would you like to try another product?</Text>
         <TouchableOpacity>
@@ -512,7 +511,7 @@ class IndexPage extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.centerContainer}>
         <TouchableOpacity>
           <Button title="Scan Product" onPress={this._onPressScanButton} />
         </TouchableOpacity>
@@ -535,11 +534,11 @@ class IndexPage extends Component {
 class SearchingPage extends Component {
   render() {
     return(
-      <View style={styles.body}>
+      <View style={styles.centerContainer}>
         <ActivityIndicator
           animating = {true}
           size = 'large'
-          style={styles.activityIndicator}
+          style={{marginBottom: 20}}
         />
         <Text>Searching...</Text>
       </View>
@@ -574,13 +573,16 @@ class DefaultPage extends Component {
 const styles = StyleSheet.create({
   parentContainer: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   inlineContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   body: {
     justifyContent: 'center',
@@ -607,9 +609,6 @@ const styles = StyleSheet.create({
   cameraView: {
     height: 300,
     width: '100%',
-  },
-  activityIndicator: {
-    marginBottom: 20,
   },
   navbar: {
     justifyContent: 'space-around',
