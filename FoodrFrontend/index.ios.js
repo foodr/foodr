@@ -250,9 +250,9 @@ class CameraPage extends Component {
           onBarCodeRead = {this.onBarCodeRead}
           aspect={Camera.constants.Aspect.fill}>
         </Camera>
-        <Text style={styles.content_small}>The camera will automatically detect when a barcode is present</Text>
+        <Text style={styles.contentSmall}>The camera will automatically detect when a barcode is present</Text>
 
-        <Text style={styles.content_small}>{"\n\n"}No item to scan?</Text>
+        <Text style={styles.contentSmall}>{"\n\n"}No item to scan?</Text>
 
         <TouchableOpacity>
           <Button
@@ -380,7 +380,7 @@ class IngredientModal extends Component {
             />
 
             <Text style={styles.header}>{this.props.ingredient.name}</Text>
-            <Text style={styles.content_small}>{this.props.ingredient.description}</Text>
+            <Text style={styles.contentSmall}>{this.props.ingredient.description}</Text>
 
             <TouchableOpacity>
               <Button
@@ -423,7 +423,7 @@ class NoResultsPage extends Component {
     return (
       <View style={styles.centerContainer}>
         <Text style={styles.header}>{this.props.searchTerm} was not found</Text>
-        <Text style={styles.content_small}>Would you like to try another product?</Text>
+        <Text style={styles.contentSmall}>Would you like to try another product?</Text>
         <TouchableOpacity>
           <Button
            title="Scan a Product"
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  content_small: {
+  contentSmall: {
     textAlign: 'center',
     margin: 10,
   },
