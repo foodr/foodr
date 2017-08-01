@@ -1,4 +1,17 @@
 class UsersController < ApplicationController
+  def authenticate
+    user = User.find_by(email: params[:email])
+
+    if user
+      render json: {
+        found: true,
+        id: user.id
+      }.to_json
+    else
+      render json: { found: false }.to_json
+    end
+  end
+
   def show
     user = User.find_by(id: params[:id])
 
