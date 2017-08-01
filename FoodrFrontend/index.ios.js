@@ -251,9 +251,9 @@ class CameraPage extends Component {
           onBarCodeRead = {this.onBarCodeRead}
           aspect={Camera.constants.Aspect.fill}>
         </Camera>
-        <Text style={styles.small_content}>The camera will automatically detect when a barcode is present</Text>
+        <Text style={styles.content_small}>The camera will automatically detect when a barcode is present</Text>
 
-        <Text style={styles.small_content}>{"\n\n"}No item to scan?</Text>
+        <Text style={styles.content_small}>{"\n\n"}No item to scan?</Text>
 
         <TouchableOpacity>
           <Button
@@ -381,7 +381,7 @@ class IngredientModal extends Component {
             />
 
             <Text style={styles.header}>{this.props.ingredient.name}</Text>
-            <Text style={styles.small_content}>{this.props.ingredient.description}</Text>
+            <Text style={styles.content_small}>{this.props.ingredient.description}</Text>
 
             <TouchableOpacity>
               <Button
@@ -423,20 +423,24 @@ class NoResultsPage extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.body}>
         <Text style={styles.header}>{this.props.searchTerm} was not found</Text>
-        <Text> Would you like to try another product?</Text>
-        <Button
-         title="Scan Another Product"
-         onPress={this.scanAgain}
-         color="blue"
-        />
+        <Text style={styles.content_small}>Would you like to try another product?</Text>
+        <TouchableOpacity>
+          <Button
+           title="Scan a Product"
+           onPress={this.scanAgain}
+          />
+        </TouchableOpacity>
+
         <Text>or</Text>
-        <Button
-         title="Search Product"
-         onPress={this.searchAgain}
-         color="green"
-        />
+
+        <TouchableOpacity>
+          <Button
+           title="Enter a Search Term"
+           onPress={this.searchAgain}
+          />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -596,7 +600,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  small_content: {
+  content_small: {
     textAlign: 'center',
     margin: 10,
   },
