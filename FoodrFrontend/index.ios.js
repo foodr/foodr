@@ -105,10 +105,20 @@ export default class FoodrFrontend extends Component {
       title: 'FOODR',
     };
 
-    const leftButtonConfig = {
-      title: 'Profile',
-      handler: () => this.findUser(),
-    };
+
+
+    const leftButtonConfig =
+      this.state.userId ?
+        {
+          title: 'Profile',
+          handler: () => this.findUser(),
+        }
+      :
+        {
+          title: 'Login',
+          handler: () => this.updateCurrentPage('LoginPage'),
+        }
+      ;
 
     const rightButtonConfig = {
       title: 'Scan',
@@ -183,6 +193,18 @@ export default class FoodrFrontend extends Component {
             </ScrollView>
         </View>
         )
+      case 'LoginPage':
+        return(
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <LoginPage />
+          </View>
+        )
       case 'NoResultsPage':
         return(
           <View style={styles.parentContainer}>
@@ -201,6 +223,12 @@ export default class FoodrFrontend extends Component {
       case 'SearchingPage':
         return(
           <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
             <SearchingPage />
           </View>
         )
@@ -267,16 +295,18 @@ class UserProfilePage extends Component {
 
 render() {
     return(
-      <View style={styles.container}>
-        <Text style={styles.welcome}>USER PROFILE</Text>
+      <View style={styles.centerContainer}>
+        <Text style={styles.header}>Your Profile</Text>
         <Text> {this.props.userDetails.user.email} </Text>
         <Text> Your health grade: {this.scoreConverter()} </Text>
-        <Text style={styles.welcome}> Your saved products are: </Text>
+
+        <Text style={styles.header}>Saved Products</Text>
         <ListView
           dataSource={this.state.savedProducts}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
         />
-        <Text style={styles.welcome}> You recently searched: </Text>
+
+        <Text style={styles.header}>Recent Searches</Text>
         <ListView
           dataSource={this.state.recentSearches}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
@@ -590,9 +620,6 @@ class IndexPage extends Component {
         <TouchableOpacity>
           <Button onPress={this._onPressSignUpButton} title="Sign Up" />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Button onPress={this._onPressSignInButton} title="Sign In" />
-        </TouchableOpacity>
       </View>
     );
   }
@@ -608,6 +635,16 @@ class SearchingPage extends Component {
           style={{marginBottom: 20}}
         />
         <Text>Searching...</Text>
+      </View>
+    );
+  }
+}
+
+class LoginPage extends Component {
+  render() {
+    return(
+      <View style={styles.centerContainer}>
+        <Text style={styles.header}>Login Page</Text>
       </View>
     );
   }
