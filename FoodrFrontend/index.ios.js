@@ -13,13 +13,30 @@ import {
   AlertIOS,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
   ListView,
   KeyboardAvoidingView
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
+import GlobalFont from 'react-native-global-font';
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 // PARENT
+
+class FlexDirectionBasics extends Component {
+  render() {
+    return (
+      // Try setting `flexDirection` to `column`.
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
+      </View>
+    );
+  }
+};
 
 export default class FoodrFrontend extends Component {
   constructor() {
@@ -33,6 +50,7 @@ export default class FoodrFrontend extends Component {
       userId: false, // false if not logged in
       searchTerm: ''
     }
+
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchUPC = this.searchUPC.bind(this)
     this.searchName = this.searchName.bind(this)
@@ -42,6 +60,11 @@ export default class FoodrFrontend extends Component {
     this.authenticateUser = this.authenticateUser.bind(this)
     this.logout = this.logout.bind(this)
     this.createUser = this.createUser.bind(this)
+  }
+
+  componentWillMount() {
+   let fontName = 'Muli'
+   GlobalFont.applyGlobal(fontName)
   }
 
   logout() {
@@ -576,7 +599,7 @@ class ProductPage extends Component {
 
   renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
-      <View style={styles.inlineContainer} key={ingredient.id}>
+      <View key={ingredient.id}>
         { ingredient.is_natural ?
           <Image
             style={{width: 50, height: 50}}
@@ -588,7 +611,6 @@ class ProductPage extends Component {
             source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
           />
          }
-
         <IngredientModal ingredient = {ingredient} />
       </View>
     );
@@ -596,13 +618,28 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View style={styles.body}>
-        <Image
-          style={{width: 375, height: 200}}
-          source={{uri: this.props.foundProduct.product.img_url}}
-        />
-        <Text style={styles.header}>{this.props.foundProduct.product.name}</Text>
-        <Text>Score: {this.scoreConverter()}</Text>
+      <View style={styles.productContainer}>
+        <Grid>
+          <Col style={{ width: 120 }}>
+            <Image
+              style={{ width: 115, height: 120 }}
+              source={{uri: this.props.foundProduct.product.img_url}}
+            />
+          </Col>
+          <Col>
+            <Row style={{ height: 73 }}>
+              <Text style={{ fontSize: 20, lineHeight: 24, paddingTop: 25, paddingBottom: 0, marginBottom: 0, height: 73  }}>{this.props.foundProduct.product.name}</Text>
+            </Row>
+            <Row>
+              <Text style={{ fontSize: 14 }}>food score: {this.scoreConverter()}</Text>
+            </Row>
+          </Col>
+        </Grid>
+
+        <View style={styles.grayContainer}>
+          <Text style={styles.textSmall}>Ingredients:</Text>
+          {this.renderIngredientList()}
+        </View>
 
         {this.props.foundProductSaved ?
           <Text>Product is Saved</Text>
@@ -610,12 +647,8 @@ class ProductPage extends Component {
           <Button
             onPress={this.saveItem}
             title="Save Product"
-          />
+            />
         }
-
-        <Text style={styles.header}>Ingredients:</Text>
-        {this.renderIngredientList()}
-
       </View>
     )
   }
@@ -670,20 +703,28 @@ class IngredientModal extends Component {
           visible={this.state.modalVisible}
         >
           <ScrollView style={{marginTop: 22}}>
+
+            <View style={styles.ingredientContainer}>
+              <Grid style={styles.ingredientTop}>
+                <Col><Text style={{color: '#ffffff', padding: 10}}>Natural</Text></Col>
+                <Col style={{padding: 15}}>
+                  <TouchableWithoutFeedback onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
+                    <Image
+                      style={styles.closeButton}
+                      source={require('./img/close.png')}
+                    />
+                  </TouchableWithoutFeedback>
+                </Col>
+              </Grid>
+
             <Image
-              style={{width: 375, height: 200}}
+              style={styles.ingredientImage}
               source={{uri: this.props.ingredient.img_url}}
             />
 
-            <Text style={styles.header}>{this.props.ingredient.name}</Text>
-            <Text style={styles.contentSmall}>{this.props.ingredient.description}</Text>
-
-            <TouchableOpacity>
-              <Button
-                onPress={() => {this.setModalVisible(!this.state.modalVisible)}}
-                title="Back to Product"
-              />
-            </TouchableOpacity>
+            <Text style={[styles.textLarge, styles.ingredientName]}>{this.props.ingredient.name}</Text>
+            <Text style={[styles.textMedium, styles.ingredientDescription]}>{this.props.ingredient.description}</Text>
+          </View>
           </ScrollView>
         </Modal>
 
@@ -900,11 +941,19 @@ class DefaultPage extends Component {
 const styles = StyleSheet.create({
   parentContainer: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#ffffff',
   },
-  inlineContainer: {
+  productDetails: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  grayContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
+    backgroundColor: '#F7F8F9',
+    paddingHorizontal: 25
   },
   centerContainer: {
     flex: 1,
@@ -926,11 +975,12 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    textAlign: 'center',
     margin: 10,
+    fontWeight: '600'
   },
   contentSmall: {
     textAlign: 'center',
+    fontSize: 16,
     margin: 10,
   },
   cameraView: {
@@ -941,8 +991,61 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: '#EAF1F4',
+    backgroundColor: '#00B549',
   },
+
+// Ingredient Page
+  ingredientContainer: {
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 25,
+    borderColor: '#C7C7C7'
+  },
+  ingredientTop: {
+    backgroundColor: '#FFD45C'
+  },
+  ingredientImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderColor: '#FFD45C',
+    borderWidth: 5,
+    marginTop: 25
+  },
+  ingredientName: {
+    margin: 10,
+    textAlign: 'center',
+    paddingTop: 5,
+  },
+  ingredientDescription: {
+    textAlign: 'center',
+    margin: 10,
+    width: 250,
+    fontWeight: 'normal',
+    lineHeight: 20,
+  },
+  closeButton: {
+    alignSelf: 'flex-end'
+  },
+
+// Global Styles
+  textLarge: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0D0D0D',
+  },
+  textMedium: {
+    fontSize: 16,
+    fontWeight: "300",
+    color: '#0D0D0D',
+  },
+  textSmall: {
+    fontSize: 14,
+    color: '#0D0D0D'
+  }
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
