@@ -27,7 +27,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'CameraPage',
+      currentPage: 'IndexPage',
       foundProduct: {},
       userDetails: {},
       foundProductSaved: false,
@@ -175,27 +175,35 @@ export default class FoodrFrontend extends Component {
 
   render() {
     const titleConfig = {
-      title: 'FOODR',
+      title: 'foodr',
+      tintColor: 'white',
+      style: {
+        fontSize: 25,
+        fontWeight: 'bold',
+      }
     };
 
-
+    const navbarButtonColor = 'white'
 
     const leftButtonConfig =
       this.state.userId ?
         {
           title: 'Profile',
           handler: () => this.findUser(),
+          tintColor: navbarButtonColor,
         }
       :
         {
           title: 'Login',
           handler: () => this.updateCurrentPage('LoginPage'),
+          tintColor: navbarButtonColor,
         }
       ;
 
     const rightButtonConfig = {
       title: 'Scan',
       handler: () => this.updateCurrentPage('CameraPage'),
+      tintColor: navbarButtonColor,
     };
 
     switch(this.state.currentPage) {
@@ -203,7 +211,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -218,7 +226,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -233,7 +241,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
             />
@@ -250,7 +258,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -269,7 +277,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -286,7 +294,7 @@ export default class FoodrFrontend extends Component {
          return(
            <View style={styles.parentContainer}>
              <NavigationBar
-               style={styles.navbar}
+               containerStyle={styles.navbar}
                leftButton={leftButtonConfig}
                title={titleConfig}
                rightButton={rightButtonConfig}
@@ -301,7 +309,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -315,7 +323,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -330,7 +338,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -342,7 +350,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -989,19 +997,21 @@ const styles = StyleSheet.create({
     height: 300,
     width: '100%',
   },
+
+// Nav Bar
   navbar: {
     paddingHorizontal: 5,
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: 'lightgray',
+    backgroundColor: '#00B875',
   },
 
+
+// Product Page
   productImage: {
     width: 115,
     height: 120,
   },
-
-// Product Page
   ingredientButton: {
     flexDirection: 'row',
     alignItems: 'center',
