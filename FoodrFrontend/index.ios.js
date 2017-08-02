@@ -27,7 +27,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'CameraPage',
+      currentPage: 'IndexPage',
       foundProduct: {},
       userDetails: {},
       foundProductSaved: false,
@@ -203,7 +203,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -218,7 +218,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -233,7 +233,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
             />
@@ -250,7 +250,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -269,7 +269,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -286,7 +286,7 @@ export default class FoodrFrontend extends Component {
          return(
            <View style={styles.parentContainer}>
              <NavigationBar
-               style={styles.navbar}
+               containerStyle={styles.navbar}
                leftButton={leftButtonConfig}
                title={titleConfig}
                rightButton={rightButtonConfig}
@@ -301,7 +301,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -315,7 +315,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -330,7 +330,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -342,7 +342,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -989,6 +989,8 @@ const styles = StyleSheet.create({
     height: 300,
     width: '100%',
   },
+
+// Nav Bar
   navbar: {
     paddingHorizontal: 5,
     justifyContent: 'space-between',
@@ -996,12 +998,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
   },
 
+
+// Product Page
   productImage: {
     width: 115,
     height: 120,
   },
-
-// Product Page
   ingredientButton: {
     flexDirection: 'row',
     alignItems: 'center',
