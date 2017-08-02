@@ -23,26 +23,11 @@ import NavigationBar from 'react-native-navbar';
 import GlobalFont from 'react-native-global-font';
 import { Col, Row, Grid } from "react-native-easy-grid";
 
-// PARENT
-
-class FlexDirectionBasics extends Component {
-  render() {
-    return (
-      // Try setting `flexDirection` to `column`.
-      <View style={{flex: 1, flexDirection: 'row'}}>
-        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
-        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
-      </View>
-    );
-  }
-};
-
 export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'IndexPage',
+      currentPage: 'CameraPage',
       foundProduct: {},
       userDetails: {},
       foundProductSaved: false,
@@ -600,17 +585,6 @@ class ProductPage extends Component {
   renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
       <View key={ingredient.id}>
-        { ingredient.is_natural ?
-          <Image
-            style={{width: 50, height: 50}}
-            source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
-          />
-          :
-          <Image
-            style={{width: 50, height: 50}}
-            source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
-          />
-         }
         <IngredientModal ingredient = {ingredient} />
       </View>
     );
@@ -697,6 +671,25 @@ class IngredientModal extends Component {
   render() {
     return (
       <View>
+        <TouchableOpacity style={styles.ingredientButton}>
+          { this.props.ingredient.is_natural ?
+          <Image
+            style={{width: 30, height: 30}}
+            source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
+          />
+          :
+          <Image
+            style={{width: 30, height: 30}}
+            source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
+          />
+         }
+          <Button
+            onPress={() => {this.setModalVisible(true)}}
+            title={this.props.ingredient.name}
+          />
+        </TouchableOpacity>
+
+
         <Modal
           animationType={"slide"}
           transparent={false}
@@ -743,13 +736,6 @@ class IngredientModal extends Component {
           </View>
           </ScrollView>
         </Modal>
-
-        <TouchableOpacity>
-          <Button
-            onPress={() => {this.setModalVisible(true)}}
-            title={this.props.ingredient.name}
-          />
-        </TouchableOpacity>
       </View>
     );
   }
@@ -1007,12 +993,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: '#00B549',
+    backgroundColor: 'lightgray',
   },
 
   productImage: {
     width: 115,
     height: 120,
+  },
+
+// Product Page
+  ingredientButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    padding: 3,
+    margin: 3,
+
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
   },
 
 
