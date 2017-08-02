@@ -519,7 +519,7 @@ class CameraPage extends Component {
   // for testing
   existingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchUPC('03077504')
+    this.props.searchUPC('0028400344371')
   }
 
   nonExistingItem() {
@@ -602,14 +602,14 @@ class ProductPage extends Component {
     return(
       <View>
         <Grid>
-          <Col style={{width: 120, marginLeft: 25, marginRight: 13, marginBottom: 5}}>
+          <Col style={{width: 120, marginLeft: 25, marginRight: 13}}>
             <Image
               style={styles.productImage}
               source={{uri: this.props.foundProduct.product.img_url}}
             />
           </Col>
           <Col>
-            <Row style={{height: 75}}>
+            <Row style={{height: 78}}>
               <Text style={[styles.textLarge, styles.productTitle]}>{this.props.foundProduct.product.name}</Text>
             </Row>
             <Row>
@@ -627,7 +627,7 @@ class ProductPage extends Component {
           <Text>Product is Saved</Text>
           :
           <TouchableOpacity onPress={this.saveItem}>
-            <Text style={styles.saveProductLink}>Save Product</Text>
+            <Text style={styles.grayActionLink}>Save Product</Text>
           </TouchableOpacity>
         }
       </View>
@@ -1013,15 +1013,18 @@ productContainer: {
 },
 productTitle: {
   lineHeight: 24,
-  paddingTop: 25,
+  paddingTop: 32,
   paddingBottom: 0,
+  paddingRight: 25,
   marginBottom: 0,
-  height: 73
+  height: 76
 },
 productImage: {
-  padding: 15,
   width: 115,
-  height: 120,
+  height: 115,
+  padding: 15,
+  marginLeft: 0,
+  margin: 15,
 },
 ingredientButton: {
   flexDirection: 'row',
@@ -1045,13 +1048,7 @@ ingredientButton: {
     marginLeft: 10,
     marginRight: 3
   },
-  saveProductLink: {
-    fontSize: 14,
-    color: '#787878',
-    textAlign: 'center',
-    paddingVertical: 20,
-  },
-  
+
 // Ingredient Page
   ingredientContainer: {
     borderWidth: 1,
@@ -1106,7 +1103,13 @@ ingredientButton: {
   textSmall: {
     fontSize: 14,
     color: '#0D0D0D'
-  }
+  },
+  grayActionLink: {
+    fontSize: 14,
+    color: '#787878',
+    textAlign: 'center',
+    paddingVertical: 20,
+  },
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
