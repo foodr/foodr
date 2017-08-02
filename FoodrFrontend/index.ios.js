@@ -705,22 +705,38 @@ class IngredientModal extends Component {
           <ScrollView style={{marginTop: 22}}>
 
             <View style={styles.ingredientContainer}>
-              <Grid style={styles.ingredientTop}>
-                <Col><Text style={{color: '#ffffff', padding: 10}}>Natural</Text></Col>
-                <Col style={{padding: 15}}>
-                  <TouchableWithoutFeedback onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
-                    <Image
-                      style={styles.closeButton}
-                      source={require('./img/close.png')}
-                    />
-                  </TouchableWithoutFeedback>
-                </Col>
-              </Grid>
 
-            <Image
-              style={styles.ingredientImage}
-              source={{uri: this.props.ingredient.img_url}}
-            />
+              { this.props.ingredient.is_natural ?
+                <Grid style={styles.ingredientTopNatural}>
+                  <Col><Text style={{color: '#ffffff', padding: 10}}>Natural</Text></Col>
+                  <Col style={{padding: 15}}>
+                    <TouchableWithoutFeedback onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
+                      <Image
+                        style={styles.closeButton}
+                        source={require('./img/close.png')}
+                      />
+                    </TouchableWithoutFeedback>
+                  </Col>
+                </Grid>
+                :
+                <Grid style={styles.ingredientTopArtificial}>
+                  <Col><Text style={{color: '#ffffff', padding: 13}}>Artificial</Text></Col>
+                  <Col style={{padding: 15}}>
+                    <TouchableWithoutFeedback onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
+                      <Image
+                        style={styles.closeButton}
+                        source={require('./img/close.png')}
+                      />
+                    </TouchableWithoutFeedback>
+                  </Col>
+                </Grid>
+
+               }
+
+             <Image
+               style={styles.ingredientImage}
+               source={{uri: this.props.ingredient.img_url}}
+             />
 
             <Text style={[styles.textLarge, styles.ingredientName]}>{this.props.ingredient.name}</Text>
             <Text style={[styles.textMedium, styles.ingredientDescription]}>{this.props.ingredient.description}</Text>
@@ -994,6 +1010,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#00B549',
   },
 
+  productImage: {
+    width: 115,
+    height: 120,
+  },
+
+
 // Ingredient Page
   ingredientContainer: {
     borderWidth: 1,
@@ -1004,14 +1026,17 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
     borderColor: '#C7C7C7'
   },
-  ingredientTop: {
+  ingredientTopNatural: {
     backgroundColor: '#FFD45C'
+  },
+  ingredientTopArtificial: {
+    backgroundColor: '#1B60AB'
   },
   ingredientImage: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    borderColor: '#FFD45C',
+    borderColor: '#858585',
     borderWidth: 5,
     marginTop: 25
   },
