@@ -13,7 +13,8 @@ import {
   TouchableHighlight,
   AlertIOS,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  ListView
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
@@ -24,32 +25,53 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'ResultsPage',
+      currentPage: 'IndexPage',
       previousPage: 'DefaultPage',
       foundProduct: {},
       foundProductSaved: false,
+      searchResults: {},
       userId: false, // false if not logged in
       searchTerm: ''
     }
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
-    this.searchProduct = this.searchProduct.bind(this)
+    this.searchUPC = this.searchUPC.bind(this)
+    this.searchName = this.searchName.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
   }
 
-  searchProduct(upc) {
+  searchUPC(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    // fetch('https://dbc-foodr-api.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
       if (this.state.foundProduct.found) {
         this.setState({foundProductSaved: jsonData.search.is_saved})
         this.updateCurrentPage('ProductPage')
-      } else if (this.state.foundProduct.found === 'maybe') {
-        this.setState({foundProductSaved: jsonData.search.is_saved})
+      } else {
+        this.updateCurrentPage('NoResultsPage')
+      }
+    });
+  }
+
+  searchName(name) {
+    this.updateCurrentPage('SearchingPage')
+
+    // fetch('https://dbc-foodr-api.herokuapp.com/product/' + name + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
+    .then((data) => data.json())
+    .then((jsonData) => {
+      // Detects if an exact match was found
+      if (jsonData.found) {
+        this.setState({ foundProduct: jsonData })
+        this.setState({ foundProductSaved: jsonData.search.is_saved})
+        this.updateCurrentPage('ProductPage')
+      // Detects if fuzzy search returned any possible matches
+      } else if (jsonData.matches.length > 0) {
+        this.setState({ searchResults: jsonData })
         this.updateCurrentPage('ResultsPage')
       } else {
         this.updateCurrentPage('NoResultsPage')
@@ -126,7 +148,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView style={styles.scrollView}>
               <SearchPage
                 style={styles.body}
-                searchProduct = {this.searchProduct}
+                searchName = {this.searchName}
                 updateSearchTerm = {this.updateSearchTerm}
               />
             </ScrollView>
@@ -143,7 +165,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView style={styles.scrollView}>
               <CameraPage
                 updateCurrentPage = {this.updateCurrentPage}
-                searchProduct = {this.searchProduct}
+                searchUPC = {this.searchUPC}
                 updateSearchTerm = {this.updateSearchTerm}
               />
             </ScrollView>
@@ -179,6 +201,8 @@ export default class FoodrFrontend extends Component {
             />
             <ScrollView>
               <ResultsPage
+                searchName = {this.searchName}
+                searchResults = {this.state.searchResults}
               />
             </ScrollView>
           </View>
@@ -243,22 +267,22 @@ class CameraPage extends Component {
 
   onBarCodeRead(e) {
     this.props.updateSearchTerm('Product')
-    this.props.searchProduct(e.data)
+    this.props.searchUPC(e.data)
   }
 
-  onPressSearchButton(){
+  onPressSearchButton() {
     this.props.updateCurrentPage("SearchPage")
   }
 
   // for testing
   existingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchProduct('03077504')
+    this.props.searchUPC('03077504')
   }
 
   nonExistingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchProduct('asdf')
+    this.props.searchUPC('asdf')
   }
 
   render() {
@@ -364,23 +388,28 @@ class ProductPage extends Component {
 }
 
 class ResultsPage extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+    // console.error('props.searchName:', props.searchName)
+    var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+    this.state = {
+      results: ds.cloneWithRows(this.props.searchResults.matches)
+    }
+    this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
-  renderMatchesList() {
-    return(
-      <View>
-        <Text>Here are the matches!</Text>
-      </View>
-    )
+  handleButtonPress(productName) {
+    return this.props.searchName(productName)
   }
 
   render() {
     return(
       <View>
         <Text>Possible Matches:</Text>
-        {this.renderMatchesList()}
+        <ListView
+          dataSource={this.state.results}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+        />
       </View>
     )
   }
@@ -475,7 +504,7 @@ class NoResultsPage extends Component {
 // KANAN
 
 class SearchPage extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       text: ''
@@ -484,8 +513,12 @@ class SearchPage extends Component {
   }
 
   startSearch() {
-    this.props.updateSearchTerm(this.state.text)
-    this.props.searchProduct(this.state.text)
+    if (this.state.text === '') {
+      AlertIOS.alert('Please enter a search term')
+    } else {
+      this.props.updateSearchTerm(this.state.text)
+      this.props.searchName(this.state.text)
+    }
   }
 
   render() {
