@@ -17,8 +17,23 @@ import {
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
+import GlobalFont from 'react-native-global-font';
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 // PARENT
+
+class FlexDirectionBasics extends Component {
+  render() {
+    return (
+      // Try setting `flexDirection` to `column`.
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
+      </View>
+    );
+  }
+};
 
 export default class FoodrFrontend extends Component {
   constructor() {
@@ -31,12 +46,18 @@ export default class FoodrFrontend extends Component {
       userId: false, // false if not logged in
       searchTerm: ''
     }
+
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchProduct = this.searchProduct.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
     this.logout = this.logout.bind(this)
+  }
+
+  componentWillMount() {
+   let fontName = 'Muli'
+   GlobalFont.applyGlobal(fontName)
   }
 
   logout() {
@@ -352,7 +373,7 @@ class CameraPage extends Component {
   // for testing
   existingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchProduct('03077504')
+    this.props.searchProduct('0028400344371')
   }
 
   nonExistingItem() {
@@ -445,13 +466,35 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View style={styles.body}>
-        <Image
-          style={{width: 375, height: 200}}
-          source={{uri: this.props.foundProduct.product.img_url}}
-        />
-        <Text style={styles.header}>{this.props.foundProduct.product.name}</Text>
-        <Text>Score: {this.scoreConverter()}</Text>
+      <View style={styles.productContainer}>
+        <Grid>
+          <Col style={{ width: 120 }}>
+            <Image
+              style={{ width: 115, height: 120 }}
+              source={{uri: this.props.foundProduct.product.img_url}}
+            />
+          </Col>
+          <Col>
+            <Row style={{ height: 73 }}>
+              <Text style={{ fontSize: 20, lineHeight: 24, paddingTop: 25, paddingBottom: 0, marginBottom: 0, height: 73  }}>{this.props.foundProduct.product.name}</Text>
+            </Row>
+            <Row>
+              <Text style={{ fontSize: 14 }}>Score: {this.scoreConverter()}</Text>
+            </Row>
+          </Col>
+        </Grid>
+
+        {/* <View style={{flex: 1, flexDirection: 'row'}}>
+          <Image
+            style={{width: 115, height: 120}}
+            source={{uri: this.props.foundProduct.product.img_url}}
+          />
+          <Text style={{width: 250, fontSize: 20, lineHeight: 24, paddingTop: 20}}>{this.props.foundProduct.product.name}</Text>
+          <Text>Score: {this.scoreConverter()}</Text>
+        </View> */}
+
+        <Text style={styles.header}>Ingredients:</Text>
+        {this.renderIngredientList()}
 
         {this.props.foundProductSaved ?
           <Text>Product is Saved</Text>
@@ -462,8 +505,6 @@ class ProductPage extends Component {
           />
         }
 
-        <Text style={styles.header}>Ingredients:</Text>
-        {this.renderIngredientList()}
 
       </View>
     )
@@ -679,7 +720,13 @@ class DefaultPage extends Component {
 const styles = StyleSheet.create({
   parentContainer: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#ffffff',
+  },
+  productDetails: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inlineContainer: {
     flexWrap: 'wrap',
@@ -705,8 +752,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    textAlign: 'center',
     margin: 10,
+    fontWeight: '600'
   },
   contentSmall: {
     textAlign: 'center',
@@ -720,7 +767,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: '#EAF1F4',
+    backgroundColor: '#00B549',
   },
 });
 
