@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get 'products/:search_term', to: 'products#search'
+  get 'products/name/:search_term', to: 'products#search_name'
+  get 'products/upc/:search_term', to: 'products#search_upc'
+
   get 'ingredients/:id', to: 'ingredients#show'
   get 'users/profile/:id', to: 'users#show'
   get 'users/login' , to: 'users#login'
