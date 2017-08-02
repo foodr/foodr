@@ -20,7 +20,8 @@ class UsersController < ApplicationController
 
     if user
       searches = user.searches
-      searched_products = user.products
+      searched_products = user.recent_searches
+      # ordered_searched_products = searched_products.reverse
       saved_product_ids = user.searches.where(is_saved: true).pluck(:product_id)
       saved_products = Product.find(saved_product_ids)
 

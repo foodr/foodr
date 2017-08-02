@@ -8,6 +8,10 @@ class User < ApplicationRecord
   validates :email, :password, presence: true
   validates :email, uniqueness: true
 
+  def recent_searches
+    self.searches.order('created_at DESC').limit(3).map { |search| search.product }
+  end
+
   def grade
     if self.products.any?
       numerator = self.products.pluck(:score).reduce { |sum, score| sum + score }
