@@ -451,7 +451,7 @@ class UserProfilePage extends Component {
   }
 
 
-render() {
+  render() {
     return(
       <View style={styles.centerContainer}>
         <Text style={styles.header}>Your Profile</Text>
@@ -467,13 +467,13 @@ render() {
         <Text style={styles.header}>Saved Products</Text>
         <ListView
           dataSource={this.state.savedProducts}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
         />
 
         <Text style={styles.header}>Recent Searches</Text>
         <ListView
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
         />
       </View>
     );
