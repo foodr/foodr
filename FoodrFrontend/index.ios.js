@@ -52,8 +52,8 @@ export default class FoodrFrontend extends Component {
   searchUPC(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -69,8 +69,8 @@ export default class FoodrFrontend extends Component {
   searchName(name) {
     this.updateCurrentPage('SearchingPage')
 
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/product/' + name + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       // Detects if an exact match was found
@@ -90,7 +90,8 @@ export default class FoodrFrontend extends Component {
 
   saveSearch(searchId) {
     if (this.state.userId) {
-      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
+      fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
+      // fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
       .then(data => data.json())
       .then(jsonData => {
         if (jsonData.save_successful) {
@@ -107,23 +108,24 @@ export default class FoodrFrontend extends Component {
   }
 
   authenticateUser(email, password) {
-   fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
-   .then(data => data.json())
-   .then(jsonData => {
-     if (jsonData.found) {
-      this.setState({userId: jsonData.id})
-      this.updateCurrentPage('IndexPage')
-      AlertIOS.alert('Login Successful!')
-     } else {
-       AlertIOS.alert(jsonData.errors.join("\n"))
-     }
-   })
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
+    // fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
+    .then(data => data.json())
+    .then(jsonData => {
+      if (jsonData.found) {
+        this.setState({userId: jsonData.id})
+        this.updateCurrentPage('IndexPage')
+        AlertIOS.alert('Login Successful!')
+      } else {
+        AlertIOS.alert(jsonData.errors.join("\n"))
+      }
+    })
   }
 
   findUser(){
     if (this.state.userId) {
-      // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/' + this.state.userId)
-      fetch('http://localhost:3000/users/profile/' + this.state.userId)
+      fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
+      // fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -141,7 +143,8 @@ export default class FoodrFrontend extends Component {
   }
 
   createUser(email, password) {
-    fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
+    // fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.saved) {
@@ -212,12 +215,10 @@ export default class FoodrFrontend extends Component {
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <ScrollView>
-              <SearchPage
-                searchName = {this.searchName}
-                updateSearchTerm = {this.updateSearchTerm}
-              />
-            </ScrollView>
+            <SearchPage
+              searchName = {this.searchName}
+              updateSearchTerm = {this.updateSearchTerm}
+            />
           </View>
         )
       case 'CameraPage':
@@ -258,7 +259,7 @@ export default class FoodrFrontend extends Component {
         )
       case 'ResultsPage':
         return(
-          <View style={styles.container}>
+          <View style={styles.parentContainer}>
             <NavigationBar
               style={styles.navbar}
               leftButton={leftButtonConfig}
@@ -623,7 +624,6 @@ class ProductPage extends Component {
 class ResultsPage extends Component {
   constructor(props) {
     super(props)
-    // console.error('props.searchName:', props.searchName)
     var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
     this.state = {
       results: ds.cloneWithRows(this.props.searchResults.matches)
@@ -637,8 +637,8 @@ class ResultsPage extends Component {
 
   render() {
     return(
-      <View>
-        <Text>Possible Matches:</Text>
+      <View style={styles.body}>
+        <Text style={styles.header}>Possible Matches:</Text>
         <ListView
           dataSource={this.state.results}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
@@ -761,7 +761,7 @@ class SearchPage extends Component {
       <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
         <Text style={styles.header}>Search for a Product:</Text>
         <TextInput
-          placeholder="Enter a Product Name or UPC"
+          placeholder="Enter a Product Name"
           placeholderTextColor='#949799'
           returnKeyType="search"
           keyboardType="default"
