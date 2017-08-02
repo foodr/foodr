@@ -9,9 +9,13 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
 
   def grade
-    numerator = self.products.pluck(:score).reduce { |sum, score| sum + score }
-    denominator = self.products.length
-    average = numerator / denominator
-    '%.1f' % average # returns 1 decimal place even for round numbers
+    if self.products.any?
+      numerator = self.products.pluck(:score).reduce { |sum, score| sum + score }
+      denominator = self.products.length
+      average = numerator / denominator
+      '%.1f' % average # returns 1 decimal place even for round numbers
+    else
+      return false
+    end
   end
 end
