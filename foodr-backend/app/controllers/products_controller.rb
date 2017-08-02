@@ -43,7 +43,8 @@ class ProductsController < ApplicationController
 
     # Returns found: false if both exact match and fuzzy search yielded no results
     render json: {
-      found: false
+      found: false,
+      matches: []
     }.to_json
   end
 
