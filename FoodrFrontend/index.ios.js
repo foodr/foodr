@@ -70,8 +70,8 @@ export default class FoodrFrontend extends Component {
   searchProduct(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + 'upc/' + upc + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -448,7 +448,7 @@ class ProductPage extends Component {
 
   renderIngredientList() {
     return this.props.foundProduct.ingredients.map(ingredient =>
-      <View style={styles.inlineContainer} key={ingredient.id}>
+      <View key={ingredient.id}>
         { ingredient.is_natural ?
           <Image
             style={{width: 50, height: 50}}
@@ -460,7 +460,6 @@ class ProductPage extends Component {
             source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
           />
          }
-
         <IngredientModal ingredient = {ingredient} />
       </View>
     );
@@ -486,8 +485,10 @@ class ProductPage extends Component {
           </Col>
         </Grid>
 
-        <Text style={styles.header}>Ingredients:</Text>
-        {this.renderIngredientList()}
+        <View style={styles.grayContainer}>
+          <Text style={styles.textSmall}>Ingredients:</Text>
+          {this.renderIngredientList()}
+        </View>
 
         {this.props.foundProductSaved ?
           <Text>Product is Saved</Text>
@@ -525,34 +526,26 @@ class IngredientModal extends Component {
         >
           <ScrollView style={{marginTop: 22}}>
 
-            <View style={styles.ingredientBody}>
+            <View style={styles.ingredientContainer}>
               <Grid style={styles.ingredientTop}>
                 <Col><Text style={{color: '#ffffff', padding: 10}}>Natural</Text></Col>
                 <Col style={{padding: 15}}>
                   <TouchableWithoutFeedback onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
                     <Image
-                      style={styles.button}
+                      style={styles.closeButton}
                       source={require('./img/close.png')}
                     />
                   </TouchableWithoutFeedback>
-
-
-                  {/* <TouchableOpacity>
-                    <Button
-                      onPress={() => {this.setModalVisible(!this.state.modalVisible)}}
-                      title="Back to Product"
-                    />
-                  </TouchableOpacity> */}
                 </Col>
               </Grid>
 
             <Image
-              style={{ width: 150, height: 150, borderRadius: 75, borderColor: '#FFD45C', borderWidth: 5, marginTop: 25 }}
+              style={styles.ingredientImage}
               source={{uri: this.props.ingredient.img_url}}
             />
 
-            <Text style={styles.ingredientName}>{this.props.ingredient.name}</Text>
-            <Text style={styles.ingredientSmall}>{this.props.ingredient.description}</Text>
+            <Text style={[styles.textLarge, styles.ingredientName]}>{this.props.ingredient.name}</Text>
+            <Text style={[styles.textMedium, styles.ingredientDescription]}>{this.props.ingredient.description}</Text>
           </View>
           </ScrollView>
         </Modal>
@@ -735,9 +728,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  inlineContainer: {
+  grayContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
+    backgroundColor: '#F7F8F9',
+    paddingHorizontal: 25
   },
   centerContainer: {
     flex: 1,
@@ -762,31 +757,6 @@ const styles = StyleSheet.create({
     margin: 10,
     fontWeight: '600'
   },
-  ingredientBody: {
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 25,
-    borderColor: '#C7C7C7'
-  },
-  ingredientName: {
-    fontSize: 20,
-    margin: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingTop: 5,
-  },
-  ingredientSmall: {
-    textAlign: 'center',
-    fontSize: 16,
-    margin: 10,
-    width: 250,
-    fontWeight: 'normal',
-    color: '#0D0D0D',
-    lineHeight: 20,
-  },
   contentSmall: {
     textAlign: 'center',
     fontSize: 16,
@@ -802,11 +772,58 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#00B549',
   },
+
+// Ingredient Page
+  ingredientContainer: {
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 25,
+    borderColor: '#C7C7C7'
+  },
   ingredientTop: {
     backgroundColor: '#FFD45C'
   },
-  button: {
+  ingredientImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderColor: '#FFD45C',
+    borderWidth: 5,
+    marginTop: 25
+  },
+  ingredientName: {
+    margin: 10,
+    textAlign: 'center',
+    paddingTop: 5,
+  },
+  ingredientDescription: {
+    textAlign: 'center',
+    margin: 10,
+    width: 250,
+    fontWeight: 'normal',
+    lineHeight: 20,
+  },
+  closeButton: {
     alignSelf: 'flex-end'
+  },
+
+// Global Styles
+  textLarge: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0D0D0D',
+  },
+  textMedium: {
+    fontSize: 16,
+    fontWeight: "300",
+    color: '#0D0D0D',
+  },
+  textSmall: {
+    fontSize: 14,
+    color: '#0D0D0D'
   }
 });
 
