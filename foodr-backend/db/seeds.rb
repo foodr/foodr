@@ -66,7 +66,7 @@ doritos.ingredients << Ingredient.create(
 
 doritos.ingredients << Ingredient.create(
   name: "Buttermilk",
-  description: "Similar to whey, buttermilk is the byproduct of churning butter out of cream and is usually added to processed foods like Doritos as a means of adding heartiness and oftentimes a sort of creamy texture (though, that’s not so much the case for Doritos).",
+  description: "Similar to whey, buttermilk is the byproduct of churning butter out of cream and is usually added to processed foods as a means of adding heartiness and oftentimes a sort of creamy texture.",
   is_natural: true,
   img_url: ""
   )
