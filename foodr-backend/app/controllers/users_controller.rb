@@ -1,4 +1,20 @@
 class UsersController < ApplicationController
+  def login
+    user = User.find_by(email: params[:email])
+
+    if user && user.authenticate(params[:password])
+      render json: {
+        found: true,
+        id: user.id
+      }.to_json
+    else
+      render json: {
+        found: false,
+        errors: ['Incorrect e-mail or password']
+      }.to_json
+    end
+  end
+
   def show
     user = User.find_by(id: params[:id])
 

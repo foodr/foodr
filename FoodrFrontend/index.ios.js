@@ -15,7 +15,8 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   TouchableWithoutFeedback,
-  ListView
+  ListView,
+  KeyboardAvoidingView
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
@@ -45,16 +46,20 @@ export default class FoodrFrontend extends Component {
       foundProduct: {},
       userDetails: {},
       foundProductSaved: false,
+      searchResults: {},
       userId: false, // false if not logged in
       searchTerm: ''
     }
 
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
-    this.searchProduct = this.searchProduct.bind(this)
+    this.searchUPC = this.searchUPC.bind(this)
+    this.searchName = this.searchName.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
+    this.authenticateUser = this.authenticateUser.bind(this)
     this.logout = this.logout.bind(this)
+    this.createUser = this.createUser.bind(this)
   }
 
   componentWillMount() {
@@ -67,11 +72,11 @@ export default class FoodrFrontend extends Component {
     this.updateCurrentPage('IndexPage')
   }
 
-  searchProduct(upc) {
+  searchUPC(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + 'upc/' + upc + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -84,9 +89,32 @@ export default class FoodrFrontend extends Component {
     });
   }
 
+  searchName(name) {
+    this.updateCurrentPage('SearchingPage')
+
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
+    .then((data) => data.json())
+    .then((jsonData) => {
+      // Detects if an exact match was found
+      if (jsonData.found) {
+        this.setState({ foundProduct: jsonData })
+        this.setState({ foundProductSaved: jsonData.search.is_saved})
+        this.updateCurrentPage('ProductPage')
+      // Detects if fuzzy search returned any possible matches
+      } else if (jsonData.matches.length > 0) {
+        this.setState({ searchResults: jsonData })
+        this.updateCurrentPage('ResultsPage')
+      } else {
+        this.updateCurrentPage('NoResultsPage')
+      }
+    });
+  }
+
   saveSearch(searchId) {
     if (this.state.userId) {
-      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
+      fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
+      // fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
       .then(data => data.json())
       .then(jsonData => {
         if (jsonData.save_successful) {
@@ -102,10 +130,25 @@ export default class FoodrFrontend extends Component {
     }
   }
 
+  authenticateUser(email, password) {
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
+    // fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
+    .then(data => data.json())
+    .then(jsonData => {
+      if (jsonData.found) {
+        this.setState({userId: jsonData.id})
+        this.updateCurrentPage('IndexPage')
+        AlertIOS.alert('Login Successful!')
+      } else {
+        AlertIOS.alert(jsonData.errors.join("\n"))
+      }
+    })
+  }
+
   findUser(){
     if (this.state.userId) {
-      // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/' + this.state.userId)
-      fetch('http://localhost:3000/users/' + this.state.userId)
+      fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
+      // fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -113,12 +156,28 @@ export default class FoodrFrontend extends Component {
           this.updateCurrentPage('UserProfilePage')
         } else {
           AlertIOS.alert('You are not a registered user. Please sign up.');
+          this.setState({userId: false})
           this.updateCurrentPage('IndexPage');
         }
       })
     } else {
       AlertIOS.alert('Please sign up or login to access your profile.');
     }
+  }
+
+  createUser(email, password) {
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
+    // fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
+    .then(data => data.json())
+    .then(jsonData => {
+      if (jsonData.saved) {
+        AlertIOS.alert('Registration Successful!')
+        this.setState({userId: jsonData.user.id})
+        this.updateCurrentPage('IndexPage')
+      } else {
+        AlertIOS.alert(jsonData.errors.join("\n"))
+      }
+    })
   }
 
   updateCurrentPage(pageName) {
@@ -166,6 +225,7 @@ export default class FoodrFrontend extends Component {
             />
             <IndexPage
               updateCurrentPage = {this.updateCurrentPage}
+              userId = {this.state.userId}
             />
           </View>
         )
@@ -178,12 +238,10 @@ export default class FoodrFrontend extends Component {
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <ScrollView>
-              <SearchPage
-                searchProduct = {this.searchProduct}
-                updateSearchTerm = {this.updateSearchTerm}
-              />
-            </ScrollView>
+            <SearchPage
+              searchName = {this.searchName}
+              updateSearchTerm = {this.updateSearchTerm}
+            />
           </View>
         )
       case 'CameraPage':
@@ -197,7 +255,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView>
               <CameraPage
                 updateCurrentPage = {this.updateCurrentPage}
-                searchProduct = {this.searchProduct}
+                searchUPC = {this.searchUPC}
                 updateSearchTerm = {this.updateSearchTerm}
               />
             </ScrollView>
@@ -222,7 +280,7 @@ export default class FoodrFrontend extends Component {
             </ScrollView>
         </View>
         )
-      case 'LoginPage':
+      case 'ResultsPage':
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
@@ -231,7 +289,41 @@ export default class FoodrFrontend extends Component {
               title={titleConfig}
               rightButton={rightButtonConfig}
             />
-            <LoginPage />
+            <ScrollView>
+              <ResultsPage
+                searchName = {this.searchName}
+                searchResults = {this.state.searchResults}
+              />
+            </ScrollView>
+          </View>
+        )
+      case 'LoginPage':
+         return(
+           <View style={styles.parentContainer}>
+             <NavigationBar
+               style={styles.navbar}
+               leftButton={leftButtonConfig}
+               title={titleConfig}
+               rightButton={rightButtonConfig}
+             />
+             <LoginPage
+               authenticateUser={this.authenticateUser}
+               updateCurrentPage = {this.updateCurrentPage}
+             />
+           </View>
+         )
+      case 'SignUpPage':
+        return(
+          <View style={styles.parentContainer}>
+            <NavigationBar
+              style={styles.navbar}
+              leftButton={leftButtonConfig}
+              title={titleConfig}
+              rightButton={rightButtonConfig}
+            />
+            <SignUpPage
+              createUser={this.createUser}
+            />
           </View>
         )
       case 'NoResultsPage':
@@ -273,7 +365,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView>
               <UserProfilePage
                 userDetails = {this.state.userDetails}
-                searchProduct = {this.searchProduct}
+                searchUPC = {this.searchUPC}
                 logout = {this.logout}
               />
             </ScrollView>
@@ -284,6 +376,65 @@ export default class FoodrFrontend extends Component {
           <DefaultPage />
         )
     }
+  }
+}
+
+class LoginPage extends Component {
+  constructor(){
+    super();
+    this.state = {
+      em: '',
+      pw: ''
+    }
+    this.loginUser = this.loginUser.bind(this)
+    this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
+  }
+
+  loginUser(){
+    this.props.authenticateUser(this.state.em, this.state.pw)
+  }
+
+  _onPressSignUpButton(){
+    this.props.updateCurrentPage("SignUpPage")
+  }
+
+  render() {
+    return (
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
+        <Text style={styles.header}>Login</Text>
+        <TextInput
+          placeholder="email"
+          placeholderTextColor='#949799'
+          returnKeyType="next"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={(em) => this.setState({em})}
+          onSubmitEditing={() => this.passwordInput.focus()}
+        />
+        <TextInput
+          placeholder="password"
+          placeholderTextColor='#949799'
+          returnKeyType="go"
+          keyboardType="default"
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={(pw) => this.setState({pw})}
+          ref={(input) => this.passwordInput = input}
+          onSubmitEditing={this.loginUser}
+        />
+        <TouchableOpacity>
+          <Button title="Login" onPress={this.loginUser}/>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text>Don't have an account?</Text>
+          <Button title="Sign Up" onPress={this._onPressSignUpButton} />
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    );
   }
 }
 
@@ -319,11 +470,11 @@ class UserProfilePage extends Component {
   }
 
   handleButtonPress(productName) {
-    return this.props.searchProduct(productName)
+    return this.props.searchUPC(productName)
   }
 
 
-render() {
+  render() {
     return(
       <View style={styles.centerContainer}>
         <Text style={styles.header}>Your Profile</Text>
@@ -339,13 +490,13 @@ render() {
         <Text style={styles.header}>Saved Products</Text>
         <ListView
           dataSource={this.state.savedProducts}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
         />
 
         <Text style={styles.header}>Recent Searches</Text>
         <ListView
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
         />
       </View>
     );
@@ -365,22 +516,22 @@ class CameraPage extends Component {
 
   onBarCodeRead(e) {
     this.props.updateSearchTerm('Product')
-    this.props.searchProduct(e.data)
+    this.props.searchUPC(e.data)
   }
 
-  onPressSearchButton(){
+  onPressSearchButton() {
     this.props.updateCurrentPage("SearchPage")
   }
 
   // for testing
   existingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchProduct('0028400344371')
+    this.props.searchUPC('03077504')
   }
 
   nonExistingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchProduct('asdf')
+    this.props.searchUPC('asdf')
   }
 
   render() {
@@ -503,6 +654,33 @@ class ProductPage extends Component {
   }
 }
 
+class ResultsPage extends Component {
+  constructor(props) {
+    super(props)
+    var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+    this.state = {
+      results: ds.cloneWithRows(this.props.searchResults.matches)
+    }
+    this.handleButtonPress = this.handleButtonPress.bind(this)
+  }
+
+  handleButtonPress(productName) {
+    return this.props.searchName(productName)
+  }
+
+  render() {
+    return(
+      <View style={styles.body}>
+        <Text style={styles.header}>Possible Matches:</Text>
+        <ListView
+          dataSource={this.state.results}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+        />
+      </View>
+    )
+  }
+}
+
 class IngredientModal extends Component {
   constructor() {
     super()
@@ -602,7 +780,7 @@ class NoResultsPage extends Component {
 }
 
 class SearchPage extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       text: ''
@@ -611,16 +789,20 @@ class SearchPage extends Component {
   }
 
   startSearch() {
-    this.props.updateSearchTerm(this.state.text)
-    this.props.searchProduct(this.state.text)
+    if (this.state.text === '') {
+      AlertIOS.alert('Please enter a search term')
+    } else {
+      this.props.updateSearchTerm(this.state.text)
+      this.props.searchName(this.state.text)
+    }
   }
 
   render() {
     return (
-      <View style={styles.body}>
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
         <Text style={styles.header}>Search for a Product:</Text>
         <TextInput
-          placeholder="Enter a Product Name or UPC"
+          placeholder="Enter a Product Name"
           placeholderTextColor='#949799'
           returnKeyType="search"
           keyboardType="default"
@@ -631,7 +813,7 @@ class SearchPage extends Component {
         <TouchableOpacity>
           <Button title="Search" onPress={this.startSearch}/>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -642,7 +824,6 @@ class IndexPage extends Component {
     this._onPressSearchButton = this._onPressSearchButton.bind(this)
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
-    this._onPressSignInButton = this._onPressSignInButton.bind(this)
   }
 
   _onPressSearchButton(){
@@ -654,13 +835,8 @@ class IndexPage extends Component {
   }
 
   _onPressSignUpButton(){
-    this.props.updateCurrentPage("IndexPage")
+    this.props.updateCurrentPage("SignUpPage")
   }
-
-  _onPressSignInButton(){
-    this.props.updateCurrentPage("IndexPage")
-  }
-
 
   render() {
     return (
@@ -671,9 +847,14 @@ class IndexPage extends Component {
         <TouchableOpacity>
           <Button title="Search Product" onPress={this._onPressSearchButton} />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Button onPress={this._onPressSignUpButton} title="Sign Up" />
-        </TouchableOpacity>
+
+        {this.props.userId ?
+          <Text/>
+          :
+          <TouchableOpacity>
+            <Button onPress={this._onPressSignUpButton} title="Sign Up" />
+          </TouchableOpacity>
+        }
       </View>
     );
   }
@@ -694,12 +875,52 @@ class SearchingPage extends Component {
   }
 }
 
-class LoginPage extends Component {
+class SignUpPage extends Component {
+  constructor() {
+    super()
+    this.state = {
+      email: '',
+      password: '',
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit() {
+    this.props.createUser(this.state.email, this.state.password)
+  }
+
   render() {
     return(
-      <View style={styles.centerContainer}>
-        <Text style={styles.header}>Login Page</Text>
-      </View>
+      <KeyboardAvoidingView behavior="padding" style={styles.centerContainer}>
+        <Text style={styles.header}>Sign Up</Text>
+        <TextInput
+          placeholder="Enter your e-mail address"
+          placeholderTextColor='#949799'
+          style={styles.input}
+          returnKeyType="next"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(email) => this.setState({email})}
+          onSubmitEditing={() => {this.passwordInput.focus()}}
+        />
+
+        <TextInput
+          placeholder="Enter a password"
+          placeholderTextColor='#949799'
+          style={styles.input}
+          returnKeyType="done"
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          ref={(input) => this.passwordInput = input}
+          onChangeText={(password) => this.setState({password})}
+          onSubmitEditing={this.handleSubmit}
+        />
+        <TouchableOpacity>
+          <Button title="Submit" onPress={this.handleSubmit}/>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     );
   }
 }
