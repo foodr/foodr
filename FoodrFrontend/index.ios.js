@@ -13,6 +13,8 @@ import {
   AlertIOS,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
   ListView
 } from 'react-native';
 import Camera from 'react-native-camera';
@@ -68,8 +70,8 @@ export default class FoodrFrontend extends Component {
   searchProduct(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + upc + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -479,19 +481,10 @@ class ProductPage extends Component {
               <Text style={{ fontSize: 20, lineHeight: 24, paddingTop: 25, paddingBottom: 0, marginBottom: 0, height: 73  }}>{this.props.foundProduct.product.name}</Text>
             </Row>
             <Row>
-              <Text style={{ fontSize: 14 }}>Score: {this.scoreConverter()}</Text>
+              <Text style={{ fontSize: 14 }}>food score: {this.scoreConverter()}</Text>
             </Row>
           </Col>
         </Grid>
-
-        {/* <View style={{flex: 1, flexDirection: 'row'}}>
-          <Image
-            style={{width: 115, height: 120}}
-            source={{uri: this.props.foundProduct.product.img_url}}
-          />
-          <Text style={{width: 250, fontSize: 20, lineHeight: 24, paddingTop: 20}}>{this.props.foundProduct.product.name}</Text>
-          <Text>Score: {this.scoreConverter()}</Text>
-        </View> */}
 
         <Text style={styles.header}>Ingredients:</Text>
         {this.renderIngredientList()}
@@ -502,10 +495,8 @@ class ProductPage extends Component {
           <Button
             onPress={this.saveItem}
             title="Save Product"
-          />
+            />
         }
-
-
       </View>
     )
   }
@@ -533,20 +524,36 @@ class IngredientModal extends Component {
           visible={this.state.modalVisible}
         >
           <ScrollView style={{marginTop: 22}}>
+
+            <View style={styles.ingredientBody}>
+              <Grid style={styles.ingredientTop}>
+                <Col><Text style={{color: '#ffffff', padding: 10}}>Natural</Text></Col>
+                <Col style={{padding: 15}}>
+                  <TouchableWithoutFeedback onPress={() => {this.setModalVisible(!this.state.modalVisible)}}>
+                    <Image
+                      style={styles.button}
+                      source={require('./img/close.png')}
+                    />
+                  </TouchableWithoutFeedback>
+
+
+                  {/* <TouchableOpacity>
+                    <Button
+                      onPress={() => {this.setModalVisible(!this.state.modalVisible)}}
+                      title="Back to Product"
+                    />
+                  </TouchableOpacity> */}
+                </Col>
+              </Grid>
+
             <Image
-              style={{width: 375, height: 200}}
+              style={{ width: 150, height: 150, borderRadius: 75, borderColor: '#FFD45C', borderWidth: 5, marginTop: 25 }}
               source={{uri: this.props.ingredient.img_url}}
             />
 
-            <Text style={styles.header}>{this.props.ingredient.name}</Text>
-            <Text style={styles.contentSmall}>{this.props.ingredient.description}</Text>
-
-            <TouchableOpacity>
-              <Button
-                onPress={() => {this.setModalVisible(!this.state.modalVisible)}}
-                title="Back to Product"
-              />
-            </TouchableOpacity>
+            <Text style={styles.ingredientName}>{this.props.ingredient.name}</Text>
+            <Text style={styles.ingredientSmall}>{this.props.ingredient.description}</Text>
+          </View>
           </ScrollView>
         </Modal>
 
@@ -755,8 +762,34 @@ const styles = StyleSheet.create({
     margin: 10,
     fontWeight: '600'
   },
+  ingredientBody: {
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 25,
+    borderColor: '#C7C7C7'
+  },
+  ingredientName: {
+    fontSize: 20,
+    margin: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingTop: 5,
+  },
+  ingredientSmall: {
+    textAlign: 'center',
+    fontSize: 16,
+    margin: 10,
+    width: 250,
+    fontWeight: 'normal',
+    color: '#0D0D0D',
+    lineHeight: 20,
+  },
   contentSmall: {
     textAlign: 'center',
+    fontSize: 16,
     margin: 10,
   },
   cameraView: {
@@ -769,6 +802,12 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#00B549',
   },
+  ingredientTop: {
+    backgroundColor: '#FFD45C'
+  },
+  button: {
+    alignSelf: 'flex-end'
+  }
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
