@@ -39,6 +39,7 @@ export default class FoodrFrontend extends Component {
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchUPC = this.searchUPC.bind(this)
     this.searchName = this.searchName.bind(this)
+    this.getProductInfo = this.getProductInfo.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
@@ -77,8 +78,8 @@ export default class FoodrFrontend extends Component {
   searchName(name) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       // Detects if an exact match was found
@@ -90,6 +91,23 @@ export default class FoodrFrontend extends Component {
       } else if (jsonData.matches.length > 0) {
         this.setState({ searchResults: jsonData })
         this.updateCurrentPage('ResultsPage')
+      } else {
+        this.updateCurrentPage('NoResultsPage')
+      }
+    });
+  }
+
+  getProductInfo(id) {
+    this.updateCurrentPage('SearchingPage')
+
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + id + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/' + id + "?user_id=" + this.state.userId)
+    .then((data) => data.json())
+    .then((jsonData) => {
+      this.setState({ foundProduct: jsonData })
+      if (this.state.foundProduct.found) {
+        this.setState({foundProductSaved: jsonData.search.is_saved})
+        this.updateCurrentPage('ProductPage')
       } else {
         this.updateCurrentPage('NoResultsPage')
       }
@@ -276,7 +294,7 @@ export default class FoodrFrontend extends Component {
             />
             <ScrollView>
               <ResultsPage
-                searchName = {this.searchName}
+                getProductInfo = {this.getProductInfo}
                 searchResults = {this.state.searchResults}
               />
             </ScrollView>
@@ -638,8 +656,8 @@ class ResultsPage extends Component {
     this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
-  handleButtonPress(productName) {
-    return this.props.searchName(productName)
+  handleButtonPress(productId) {
+    return this.props.getProductInfo(productId)
   }
 
   render() {
@@ -648,7 +666,7 @@ class ResultsPage extends Component {
         <Text style={styles.header}>Possible Matches:</Text>
         <ListView
           dataSource={this.state.results}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.id)}/>}
         />
       </View>
     )
@@ -871,7 +889,7 @@ class SearchingPage extends Component {
           size = 'large'
           style={{marginBottom: 20}}
         />
-        <Text>Searching...</Text>
+        <Text>Loading...</Text>
       </View>
     );
   }
