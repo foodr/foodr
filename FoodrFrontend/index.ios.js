@@ -592,36 +592,35 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View style={styles.productContainer}>
+      <View>
         <Grid>
-          <Col style={{ width: 120 }}>
+          <Col style={{width: 120, marginLeft: 25, marginRight: 13, marginBottom: 5}}>
             <Image
-              style={{ width: 115, height: 120 }}
+              style={styles.productImage}
               source={{uri: this.props.foundProduct.product.img_url}}
             />
           </Col>
           <Col>
-            <Row style={{ height: 73 }}>
-              <Text style={{ fontSize: 20, lineHeight: 24, paddingTop: 25, paddingBottom: 0, marginBottom: 0, height: 73  }}>{this.props.foundProduct.product.name}</Text>
+            <Row style={{height: 75}}>
+              <Text style={[styles.textLarge, styles.productTitle]}>{this.props.foundProduct.product.name}</Text>
             </Row>
             <Row>
-              <Text style={{ fontSize: 14 }}>food score: {this.scoreConverter()}</Text>
+              <Text style={styles.textMedium}>food score: {this.scoreConverter()}</Text>
             </Row>
           </Col>
         </Grid>
 
         <View style={styles.grayContainer}>
-          <Text style={styles.textSmall}>Ingredients:</Text>
+          <View style={{width: 300, paddingBottom: 12}}><Text style={styles.textSmall}>ingredients:</Text></View>
           {this.renderIngredientList()}
         </View>
 
         {this.props.foundProductSaved ?
           <Text>Product is Saved</Text>
           :
-          <Button
-            onPress={this.saveItem}
-            title="Save Product"
-            />
+          <TouchableOpacity onPress={this.saveItem}>
+            <Text style={styles.saveProductLink}>Save Product</Text>
+          </TouchableOpacity>
         }
       </View>
     )
@@ -671,22 +670,19 @@ class IngredientModal extends Component {
   render() {
     return (
       <View>
-        <TouchableOpacity style={styles.ingredientButton}>
+        <TouchableOpacity style={styles.ingredientButton} onPress={() => {this.setModalVisible(true)}}>
           { this.props.ingredient.is_natural ?
           <Image
-            style={{width: 30, height: 30}}
-            source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
+            style={styles.ingredientIcon}
+            source={require('./img/natural-icon.png')}
           />
           :
           <Image
-            style={{width: 30, height: 30}}
-            source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
+            style={styles.ingredientIcon}
+            source={require('./img/artificial-icon.png')}
           />
          }
-          <Button
-            onPress={() => {this.setModalVisible(true)}}
-            title={this.props.ingredient.name}
-          />
+          <Text style={styles.ingredientLabel}>{this.props.ingredient.name}</Text>
         </TouchableOpacity>
 
 
@@ -955,7 +951,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     backgroundColor: '#F7F8F9',
-    paddingHorizontal: 25
+    paddingHorizontal: 25,
+    paddingVertical: 20
+
   },
   centerContainer: {
     flex: 1,
@@ -996,25 +994,54 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
   },
 
-  productImage: {
-    width: 115,
-    height: 120,
-  },
 
 // Product Page
-  ingredientButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+productContainer: {
+  width: 120,
+  marginLeft: 25,
+  marginRight: 15,
+  marginBottom: 5
+},
+productTitle: {
+  lineHeight: 24,
+  paddingTop: 25,
+  paddingBottom: 0,
+  marginBottom: 0,
+  height: 73
+},
+productImage: {
+  padding: 15,
+  width: 115,
+  height: 120,
+},
+ingredientButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
 
-    padding: 3,
-    margin: 3,
+  paddingVertical: 7,
+  paddingRight: 5,
+  margin: 4,
 
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
+  borderWidth: 1,
+  borderColor: 'gray',
+  borderRadius: 5,
+
+  backgroundColor: '#ffffff'
   },
-
-
+  ingredientLabel: {
+    paddingLeft: 5,
+    paddingRight: 3
+  },
+  ingredientIcon: {
+    marginLeft: 10,
+    marginRight: 3
+  },
+  saveProductLink: {
+    fontSize: 14,
+    color: '#787878',
+    textAlign: 'center',
+    paddingVertical: 20
+  },
 // Ingredient Page
   ingredientContainer: {
     borderWidth: 1,
@@ -1035,7 +1062,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    borderColor: '#858585',
+    borderColor: '#9B9B9B',
     borderWidth: 5,
     marginTop: 25
   },
