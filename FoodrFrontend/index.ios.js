@@ -859,12 +859,11 @@ class IndexPage extends Component {
 
   render() {
     return(
-      <View>
+      <View style={styles.centerContainer}>
         <StatusBar
           barStyle="light-content"
         />
-        <Image source={require('./img/bg.png')}>
-
+        <Image style={styles.centerContainer} source={require('./img/bg.png')}>
 
           <View style={styles.logoContainer}>
             <View style={{height: 50}}><Text style={[styles.indexTitle, styles.clearBackground]}>foodr</Text></View>
@@ -872,6 +871,7 @@ class IndexPage extends Component {
           <View>
             <View><Text style={[{textAlign: 'center', marginTop: 10, marginBottom: 30 }, styles.indexTagline, styles.clearBackground]}>Eat what's good for you.</Text></View>
           </View>
+
           <View style={styles.iconContainer}>
             <TouchableOpacity style={{paddingRight: 25}} onPress={this._onPressScanButton}>
               <Image source={require('./img/barcode.png')} />
@@ -1003,14 +1003,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 75
   },
   logoContainer: {
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
-    height: 75
   },
   centerContainer: {
     flex: 1,
