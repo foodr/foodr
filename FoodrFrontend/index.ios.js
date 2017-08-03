@@ -465,28 +465,43 @@ class UserProfilePage extends Component {
 
   render() {
     return(
-      <View style={styles.centerContainer}>
-        <Text style={styles.header}>Your Profile</Text>
-        <Text> {this.props.userDetails.user.email} </Text>
-        <Text> Your health grade: {this.scoreConverter()} </Text>
-        <TouchableOpacity>
-          <Button
-            onPress={this.props.logout}
-            title="Logout"
+      <View>
+        <View style={styles.profileScore}>
+          <View><Text style={styles.textWhite}>Your health grade:</Text></View>
+          <View><Text style={styles.score}>{this.scoreConverter()}</Text></View>
+        </View>
+
+        <Text style={styles.textLargeFoods}>My Foods</Text>
+        <View style={styles.grayResultsContainer}>
+          <ListView
+            dataSource={this.state.savedProducts}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+            renderRow={(rowData) =>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              </TouchableOpacity>}
           />
-        </TouchableOpacity>
+        </View>
 
-        <Text style={styles.header}>Saved Products</Text>
+      <View style={styles.recentlySearchedContainer}>
+        <Text style={styles.textSmallHeader}>recently searched</Text>
         <ListView
-          dataSource={this.state.savedProducts}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
-        />
-
-        <Text style={styles.header}>Recent Searches</Text>
-        <ListView
+          horizontal={true}
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
+          renderRow={(rowData) =>
+            <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
+              <View>
+                <Image
+                  style={styles.productImageCircle}
+                  source={{uri: rowData.img_url}}
+            />
+          </View>
+        </TouchableOpacity>}
         />
+      </View>
+        <TouchableOpacity onPress={this.props.logout}>
+          <Text style={styles.grayActionLink}>Log Out</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -515,7 +530,7 @@ class CameraPage extends Component {
   // for testing
   existingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchUPC('03077504')
+    this.props.searchUPC('0028400344371')
   }
 
   nonExistingItem() {
@@ -598,14 +613,14 @@ class ProductPage extends Component {
     return(
       <View>
         <Grid>
-          <Col style={{width: 120, marginLeft: 25, marginRight: 13, marginBottom: 5}}>
+          <Col style={{width: 120, marginLeft: 25, marginRight: 13}}>
             <Image
               style={styles.productImage}
               source={{uri: this.props.foundProduct.product.img_url}}
             />
           </Col>
           <Col>
-            <Row style={{height: 75}}>
+            <Row style={{height: 78}}>
               <Text style={[styles.textLarge, styles.productTitle]}>{this.props.foundProduct.product.name}</Text>
             </Row>
             <Row>
@@ -620,10 +635,10 @@ class ProductPage extends Component {
         </View>
 
         {this.props.foundProductSaved ?
-          <Text>Product is Saved</Text>
+          <Text style={styles.grayActionLink}>Product is Saved</Text>
           :
           <TouchableOpacity onPress={this.saveItem}>
-            <Text style={styles.saveProductLink}>Save Product</Text>
+            <Text style={styles.grayActionLink}>Save Product</Text>
           </TouchableOpacity>
         }
       </View>
@@ -647,12 +662,19 @@ class ResultsPage extends Component {
 
   render() {
     return(
-      <View style={styles.body}>
-        <Text style={styles.header}>Possible Matches:</Text>
-        <ListView
-          dataSource={this.state.results}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
-        />
+      <View>
+        <Text style={styles.textSmallHeader}>possible matches</Text>
+
+        <View style={styles.grayResultsContainer}>
+          <ListView
+            dataSource={this.state.results}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+            renderRow={(rowData) =>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.name)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              </TouchableOpacity>}
+          />
+        </View>
       </View>
     )
   }
@@ -976,7 +998,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F8F9',
     paddingHorizontal: 25,
     paddingVertical: 20
-
   },
   centerContainer: {
     flex: 1,
@@ -1003,8 +1024,9 @@ const styles = StyleSheet.create({
   },
   contentSmall: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 14,
     margin: 10,
+    paddingHorizontal: 25
   },
   cameraView: {
     height: 300,
@@ -1070,15 +1092,18 @@ productContainer: {
 },
 productTitle: {
   lineHeight: 24,
-  paddingTop: 25,
+  paddingTop: 32,
   paddingBottom: 0,
+  paddingRight: 25,
   marginBottom: 0,
-  height: 73
+  height: 76
 },
 productImage: {
-  padding: 15,
   width: 115,
-  height: 120,
+  height: 115,
+  padding: 15,
+  marginLeft: 0,
+  margin: 15,
 },
 ingredientButton: {
   flexDirection: 'row',
@@ -1102,13 +1127,7 @@ ingredientButton: {
     marginLeft: 10,
     marginRight: 3
   },
-  saveProductLink: {
-    fontSize: 14,
-    color: '#787878',
-    textAlign: 'center',
-    paddingVertical: 20,
-  },
-  
+
 // Ingredient Page
   ingredientContainer: {
     borderWidth: 1,
@@ -1149,11 +1168,48 @@ ingredientButton: {
     alignSelf: 'flex-end'
   },
 
+// Profile
+  profileScore: {
+    justifyContent: 'center',
+    backgroundColor: '#AB1B70',
+    height: 215,
+    alignItems: 'center',
+    paddingVertical: 25,
+  },
+  score: {
+    fontSize: 50,
+    color: '#ffffff'
+  },
+  recentlySearchedContainer: {
+    marginHorizontal: 25,
+    paddingBottom: 25,
+    borderBottomWidth: 1,
+    borderColor: '#C7C7C7',
+  },
+  productImageCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 5,
+    borderColor: '#C7C7C7',
+    borderWidth: 1,
+    marginTop: 5,
+    marginRight: 12,
+    backgroundColor: '#C7C7C7',
+  },
+
 // Global Styles
   textLarge: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#0D0D0D',
+  },
+  textLargeFoods: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0D0D0D',
+    paddingTop: 20,
+    paddingLeft: 25,
+    paddingBottom: 15,
   },
   textMedium: {
     fontSize: 16,
@@ -1163,6 +1219,40 @@ ingredientButton: {
   textSmall: {
     fontSize: 14,
     color: '#0D0D0D'
+  },
+  textSmallHeader: {
+    fontSize: 14,
+    color: '#0D0D0D',
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
+  textWhite: {
+    fontSize: 14,
+    color: '#ffffff'
+  },
+  grayActionLink: {
+    fontSize: 14,
+    color: '#787878',
+    textAlign: 'center',
+    paddingVertical: 20,
+  },
+  listViewContainer: {
+    flex: 1,
+    marginTop: 20,
+    backgroundColor: '#F7F8F9',
+  },
+  listItems: {
+    paddingVertical: 25
+  },
+  grayResultsContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    backgroundColor: '#F7F8F9',
+    paddingHorizontal: 25,
+  },
+  separator: {
+    borderBottomWidth: 1,
+    borderColor: '#C7C7C7',
   }
 });
 
