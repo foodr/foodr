@@ -32,7 +32,7 @@ export default class FoodrFrontend extends Component {
       userDetails: {},
       foundProductSaved: false,
       searchResults: {},
-      userId: 3, // false if not logged in
+      userId: false, // false if not logged in
       searchTerm: ''
     }
 
@@ -470,29 +470,20 @@ class UserProfilePage extends Component {
   render() {
     return(
       <View>
-        {/* <Text style={styles.header}>Your Profile</Text>
-        <Text> {this.props.userDetails.user.email} </Text> */}
-
         <View style={styles.profileScore}>
           <View><Text style={styles.textWhite}>Your health grade:</Text></View>
           <View><Text style={styles.score}>{this.scoreConverter()}</Text></View>
         </View>
 
         <Text style={styles.textLargeFoods}>My Foods</Text>
-
-
         <View style={styles.grayResultsContainer}>
           <ListView
             dataSource={this.state.savedProducts}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             renderRow={(rowData) =>
-
-              // <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>
               <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
                 <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
-              </TouchableOpacity>
-
-            }
+              </TouchableOpacity>}
           />
         </View>
 
@@ -502,19 +493,14 @@ class UserProfilePage extends Component {
           horizontal={true}
           dataSource={this.state.recentSearches}
           renderRow={(rowData) =>
-
-            // <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>
-
             <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
               <View>
                 <Image
                   style={styles.productImageCircle}
                   source={{uri: rowData.img_url}}
-                />
-              </View>
-            </TouchableOpacity>
-
-          }
+            />
+          </View>
+        </TouchableOpacity>}
         />
       </View>
         <TouchableOpacity onPress={this.props.logout}>
@@ -688,23 +674,11 @@ class ResultsPage extends Component {
             dataSource={this.state.results}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             renderRow={(rowData) =>
-
-              // <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>
               <TouchableOpacity onPress={() => this.handleButtonPress(rowData.name)}>
                 <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
-              </TouchableOpacity>
-
-            }
+              </TouchableOpacity>}
           />
         </View>
-
-
-
-
-        {/* <ListView
-          dataSource={this.state.results}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
-        /> */}
       </View>
     )
   }
