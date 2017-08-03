@@ -182,8 +182,8 @@ doritos.ingredients << Ingredient.create(
   )
 
 doritos.ingredients << Ingredient.create(
-  name: "Red and Green Bell Pepper Powder
-  description: "Description placholder.",",
+  name: "Red and Green Bell Pepper Powder",
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
@@ -200,6 +200,43 @@ doritos.ingredients << Ingredient.create(
   description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
+  )
+
+## QUAKER CHEWY BAR
+
+chewy = Product.create(
+  upc: "03077504",
+  name: "Quaker Chewy Chocolate Chip Bar",
+  score: 3,
+  img_url: "https://images-na.ssl-images-amazon.com/images/I/81wqeA8l9CL._SL1500_.jpg"
+  )
+
+chewy.ingredients << Ingredient.create(
+  name: "Granola",
+  description: "Granola is an extremely popular breakfast and snack food with a wealth of health benefits, including its ability to lower cholesterol, regulate digestion, aid in weight loss attempts, improve your heart health, increase energy, prevent anemia and promote proper organ function. Intake of granola also helps to lower blood pressure, increase cognitive activity, improve skin quality, build stronger bones, manage diabetes, stimulate new tissue and hormonal growth, and even prevent cancer.\n\nGranola is traditionally composed of rolled oats, which are oat groats that have been pressed flat and lightly steamed, as well as honey, nuts, and puffed rice. The entire mixture is baked until crispy and can then be taken anywhere quite conveniently for an energy-boosting snack. Most commonly, granola is regularly used by people on-the-go, as well as by hikers, campers, and outdoor-oriented people who won’t have a refrigerator for their food, and don’t want to worry about crushing anything that they plan to eat.",
+  is_natural: true,
+  img_url: "https://pioneerwoman.files.wordpress.com/2016/01/homemade-granola-08.jpg"
+  )
+
+chewy.ingredients << Ingredient.create(
+  name: "Semisweet Chocolate Chip",
+  description: "Semisweet chocolate contains an impressive oxygen radical absorbance capacity (ORAC) value of 18,053 micromoles in 100 grams. These powerful antioxidants are responsible for protecting your body from oxygen free radicals that cause you to age. The flavonoids in semisweet chocolate help protect your low-density-lipoprotein (LDL) cholesterol from oxidation, thus preventing the dreaded “bad cholesterol.” Interestingly, according to Harvard University, when chocolate is combined with dairy milk, these antioxidant benefits are prevented. Traditionally, semisweet chocolate does not contain any milk, but manufacturers may hold artistic licensing on this tradition, so read the label before consuming this tasty treat.",
+  is_natural: false,
+  img_url: "https://nuts.com/images/auto/510x340/assets/51e5a614afaf394a.jpg"
+  )
+
+chewy.ingredients << Ingredient.create(
+  name: "Corn Syrup",
+  description: "Corn syrup is a food syrup which is made from the starch of corn (called maize in some countries) and contains varying amounts of maltose and higher oligosaccharides, depending on the grade. Corn syrup, also known as glucose syrup to confectioners, is used in foods to soften texture, add volume, prevent crystallization of sugar, and enhance flavor. Corn syrup is distinct from high-fructose corn syrup (HFCS), which is manufactured from corn syrup by converting a large proportion of its glucose into fructose using the enzyme D-xylose isomerase, thus producing a sweeter compound due to higher levels of fructose.",
+  is_natural: false,
+  img_url: "https://health.clevelandclinic.org/wp-content/uploads/sites/3/2015/04/CornSyrup.jpg"
+  )
+
+chewy.ingredients << Ingredient.create(
+  name: "Glycerin",
+  description: "Glycerin belongs to a special category of carbohydrates called polyols, which also includes sugar alcohols like sorbitol and erythritol. Like sugar alcohols, which I’ve talked about before, glycerin tastes sweet but it is not metabolized as sugar in the body and doesn’t cause a rise in blood sugar. For that reason, it’s sometimes used as a sweetener in foods marketed to diabetics and low-carb dieters.  Glycerin also has that moisture-attracting property. The same way that adding glycerin to a lotion helps keeps your skin stay plump and moist, adding glycerin to foods helps them stay moist. So glycerin is also widely used in food manufacturing as a preservative.",
+  is_natural: false,
+  img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Glycerin_Skelett.svg/1200px-Glycerin_Skelett.svg.png"
   )
 
 ## NATURE VALLEY BAR
@@ -241,32 +278,15 @@ nature_valley.ingredients << Ingredient.create(
 
 nature_valley.ingredients << Ingredient.create(
   name: "Semisweet Chocolate Chips",
-  is_natural: false
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
-nature_valley.ingredients << Ingredient.find_by(
-  name: "Vegetable Oil",
-  is_natural: true,
-  img_url: "https://unsplash.it/300"
- )
-
-nature_valley.ingredients << Ingredient.find_by(
-  name: "Sugar",
-  is_natural: true,
-  img_url: "https://unsplash.it/300"
- )
-
-nature_valley.ingredients << Ingredient.find_by(
-  name: "Corn Syrup",
-  is_natural: false,
-  img_url: "https://unsplash.it/300"
- )
-
-nature_valley.ingredients << Ingredient.find_by(
-  name: "Whey Protein Concentrate",
-  is_natural: false,
-  img_url: "https://unsplash.it/300"
- )
+nature_valley.ingredients << Ingredient.find_by(name: "Vegetable Oil")
+nature_valley.ingredients << Ingredient.find_by(name: "Sugar")
+nature_valley.ingredients << Ingredient.find_by(name: "Corn Syrup")
+nature_valley.ingredients << Ingredient.find_by(name: "Whey Protein Concentrate")
+nature_valley.ingredients << Ingredient.find_by(name: "Salt")
 
 nature_valley.ingredients << Ingredient.create(
   name: "Fructose",
@@ -298,8 +318,6 @@ nature_valley.ingredients << Ingredient.create(
   img_url: "https://unsplash.it/300"
   )
 
-nature_valley.ingredients << Ingredient.find_by(name: "Salt")
-
 nature_valley.ingredients << Ingredient.create(
   name: "Corn Starch",
   is_natural: false,
@@ -310,44 +328,6 @@ nature_valley.ingredients << Ingredient.create(
   name: "Natural Flavor",
   is_natural: false,
   img_url: "https://unsplash.it/300"
-  )
-
-
-## QUAKER CHEWY BAR
-
-chewy = Product.create(
-  upc: "03077504",
-  name: "Quaker Chewy Chocolate Chip Bar",
-  score: 3,
-  img_url: "https://images-na.ssl-images-amazon.com/images/I/81wqeA8l9CL._SL1500_.jpg"
-  )
-
-chewy.ingredients << Ingredient.create(
-  name: "Granola",
-  description: "Granola is an extremely popular breakfast and snack food with a wealth of health benefits, including its ability to lower cholesterol, regulate digestion, aid in weight loss attempts, improve your heart health, increase energy, prevent anemia and promote proper organ function. Intake of granola also helps to lower blood pressure, increase cognitive activity, improve skin quality, build stronger bones, manage diabetes, stimulate new tissue and hormonal growth, and even prevent cancer.\n\nGranola is traditionally composed of rolled oats, which are oat groats that have been pressed flat and lightly steamed, as well as honey, nuts, and puffed rice. The entire mixture is baked until crispy and can then be taken anywhere quite conveniently for an energy-boosting snack. Most commonly, granola is regularly used by people on-the-go, as well as by hikers, campers, and outdoor-oriented people who won’t have a refrigerator for their food, and don’t want to worry about crushing anything that they plan to eat.",
-  is_natural: true,
-  img_url: "https://pioneerwoman.files.wordpress.com/2016/01/homemade-granola-08.jpg"
-  )
-
-chewy.ingredients << Ingredient.create(
-  name: "Semisweet Chocolate Chip",
-  description: "Semisweet chocolate contains an impressive oxygen radical absorbance capacity (ORAC) value of 18,053 micromoles in 100 grams. These powerful antioxidants are responsible for protecting your body from oxygen free radicals that cause you to age. The flavonoids in semisweet chocolate help protect your low-density-lipoprotein (LDL) cholesterol from oxidation, thus preventing the dreaded “bad cholesterol.” Interestingly, according to Harvard University, when chocolate is combined with dairy milk, these antioxidant benefits are prevented. Traditionally, semisweet chocolate does not contain any milk, but manufacturers may hold artistic licensing on this tradition, so read the label before consuming this tasty treat.",
-  is_natural: false,
-  img_url: "https://nuts.com/images/auto/510x340/assets/51e5a614afaf394a.jpg"
-  )
-
-chewy.ingredients << Ingredient.create(
-  name: "Corn Syrup",
-  description: "Corn syrup is a food syrup which is made from the starch of corn (called maize in some countries) and contains varying amounts of maltose and higher oligosaccharides, depending on the grade. Corn syrup, also known as glucose syrup to confectioners, is used in foods to soften texture, add volume, prevent crystallization of sugar, and enhance flavor. Corn syrup is distinct from high-fructose corn syrup (HFCS), which is manufactured from corn syrup by converting a large proportion of its glucose into fructose using the enzyme D-xylose isomerase, thus producing a sweeter compound due to higher levels of fructose.",
-  is_natural: false,
-  img_url: "https://health.clevelandclinic.org/wp-content/uploads/sites/3/2015/04/CornSyrup.jpg"
-  )
-
-chewy.ingredients << Ingredient.create(
-  name: "Glycerin",
-  description: "Glycerin belongs to a special category of carbohydrates called polyols, which also includes sugar alcohols like sorbitol and erythritol. Like sugar alcohols, which I’ve talked about before, glycerin tastes sweet but it is not metabolized as sugar in the body and doesn’t cause a rise in blood sugar. For that reason, it’s sometimes used as a sweetener in foods marketed to diabetics and low-carb dieters.  Glycerin also has that moisture-attracting property. The same way that adding glycerin to a lotion helps keeps your skin stay plump and moist, adding glycerin to foods helps them stay moist. So glycerin is also widely used in food manufacturing as a preservative.",
-  is_natural: false,
-  img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Glycerin_Skelett.svg/1200px-Glycerin_Skelett.svg.png"
   )
 
   ## SEED PRODUCTS & INGREDIENTS (has served its purpose)
