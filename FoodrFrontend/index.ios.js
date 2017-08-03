@@ -16,7 +16,9 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   ListView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  StatusBar,
+  ImageBackground
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
@@ -139,7 +141,8 @@ export default class FoodrFrontend extends Component {
     .then(jsonData => {
       if (jsonData.found) {
         this.setState({userId: jsonData.id})
-        this.updateCurrentPage('IndexPage')
+        this.findUser()
+        this.updateCurrentPage('UserProfilePage')
         AlertIOS.alert('Login Successful!')
       } else {
         AlertIOS.alert(jsonData.errors.join("\n"))
@@ -192,39 +195,41 @@ export default class FoodrFrontend extends Component {
 
   render() {
     const titleConfig = {
-      title: 'FOODR',
+      title: 'foodr',
+      tintColor: 'white',
+      style: {
+        fontSize: 25,
+        fontWeight: 'bold',
+      }
     };
 
-
+    const navbarButtonColor = 'white'
 
     const leftButtonConfig =
       this.state.userId ?
         {
           title: 'Profile',
           handler: () => this.findUser(),
+          tintColor: navbarButtonColor,
         }
       :
         {
           title: 'Login',
           handler: () => this.updateCurrentPage('LoginPage'),
+          tintColor: navbarButtonColor,
         }
       ;
 
     const rightButtonConfig = {
       title: 'Scan',
       handler: () => this.updateCurrentPage('CameraPage'),
+      tintColor: navbarButtonColor,
     };
 
     switch(this.state.currentPage) {
       case 'IndexPage':
         return(
           <View style={styles.parentContainer}>
-            <NavigationBar
-              style={styles.navbar}
-              leftButton={leftButtonConfig}
-              title={titleConfig}
-              rightButton={rightButtonConfig}
-            />
             <IndexPage
               updateCurrentPage = {this.updateCurrentPage}
               userId = {this.state.userId}
@@ -235,7 +240,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -250,7 +255,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
             />
@@ -267,7 +272,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -287,7 +292,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -304,7 +309,7 @@ export default class FoodrFrontend extends Component {
          return(
            <View style={styles.parentContainer}>
              <NavigationBar
-               style={styles.navbar}
+               containerStyle={styles.navbar}
                leftButton={leftButtonConfig}
                title={titleConfig}
                rightButton={rightButtonConfig}
@@ -319,7 +324,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -333,7 +338,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -348,7 +353,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -360,7 +365,7 @@ export default class FoodrFrontend extends Component {
         return(
           <View style={styles.parentContainer}>
             <NavigationBar
-              style={styles.navbar}
+              containerStyle={styles.navbar}
               leftButton={leftButtonConfig}
               title={titleConfig}
               rightButton={rightButtonConfig}
@@ -429,13 +434,13 @@ class LoginPage extends Component {
           ref={(input) => this.passwordInput = input}
           onSubmitEditing={this.loginUser}
         />
-        <TouchableOpacity>
-          <Button title="Login" onPress={this.loginUser}/>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.loginUser}>
+          <Text style={styles.indexButtonText}> Go</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>Don't have an account?</Text>
-          <Button title="Sign Up" onPress={this._onPressSignUpButton} />
-        </TouchableOpacity>
+
+          <Text style={styles.FormPageTagline}>Don't have an account?
+          <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Sign Up.</Text>
+        </Text>
       </KeyboardAvoidingView>
     );
   }
@@ -479,28 +484,45 @@ class UserProfilePage extends Component {
 
   render() {
     return(
-      <View style={styles.centerContainer}>
-        <Text style={styles.header}>Your Profile</Text>
-        <Text> {this.props.userDetails.user.email} </Text>
-        <Text> Your health grade: {this.scoreConverter()} </Text>
-        <TouchableOpacity>
-          <Button
-            onPress={this.props.logout}
-            title="Logout"
+      <View>
+        <View style={styles.profileScore}>
+          <View><Text style={styles.textWhite}>Your health grade:</Text></View>
+          <View><Text style={styles.score}>{this.scoreConverter()}</Text></View>
+        </View>
+
+        <Text style={styles.textLargeFoods}>My Foods</Text>
+        <View style={styles.grayResultsContainer}>
+          <ListView
+            dataSource={this.state.savedProducts}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+            renderRow={(rowData) =>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.id)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.product_name}</Text></View>
+              </TouchableOpacity>}
           />
-        </TouchableOpacity>
+        </View>
 
-        <Text style={styles.header}>Saved Products</Text>
-        <ListView
-          dataSource={this.state.savedProducts}
-          renderRow={(rowData) => <Button title={rowData.product_name} onPress={() => this.handleButtonPress(rowData.id)}/>}
-        />
 
-        <Text style={styles.header}>Recent Searches</Text>
+      <View style={styles.recentlySearchedContainer}>
+        <Text style={styles.textSmallHeader}>recently searched</Text>
         <ListView
+          horizontal={true}
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.product_name} onPress={() => this.handleButtonPress(rowData.id)}/>}
+
+          renderRow={(rowData) =>
+            <TouchableOpacity onPress={() => this.handleButtonPress(rowData.id)}>
+              <View>
+                <Image
+                  style={styles.productImageCircle}
+                  source={{uri: rowData.img_url}} //need to insert image url to json
+            />
+          </View>
+        </TouchableOpacity>}
         />
+      </View>
+        <TouchableOpacity onPress={this.props.logout}>
+          <Text style={styles.grayActionLink}>Log Out</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -529,7 +551,7 @@ class CameraPage extends Component {
   // for testing
   existingItem() {
     this.props.updateSearchTerm('Product')
-    this.props.searchUPC('03077504')
+    this.props.searchUPC('0028400344371')
   }
 
   nonExistingItem() {
@@ -610,36 +632,35 @@ class ProductPage extends Component {
 
   render() {
     return(
-      <View style={styles.productContainer}>
+      <View>
         <Grid>
-          <Col style={{ width: 120 }}>
+          <Col style={{width: 120, marginLeft: 25, marginRight: 13}}>
             <Image
-              style={{ width: 115, height: 120 }}
+              style={styles.productImage}
               source={{uri: this.props.foundProduct.product.img_url}}
             />
           </Col>
           <Col>
-            <Row style={{ height: 73 }}>
-              <Text style={{ fontSize: 20, lineHeight: 24, paddingTop: 25, paddingBottom: 0, marginBottom: 0, height: 73  }}>{this.props.foundProduct.product.name}</Text>
+            <Row style={{height: 78}}>
+              <Text style={[styles.textLarge, styles.productTitle]}>{this.props.foundProduct.product.name}</Text>
             </Row>
             <Row>
-              <Text style={{ fontSize: 14 }}>food score: {this.scoreConverter()}</Text>
+              <Text style={styles.textMedium}>food score: {this.scoreConverter()}</Text>
             </Row>
           </Col>
         </Grid>
 
         <View style={styles.grayContainer}>
-          <Text style={styles.textSmall}>Ingredients:</Text>
+          <View style={{width: 300, paddingBottom: 12}}><Text style={styles.textSmall}>ingredients:</Text></View>
           {this.renderIngredientList()}
         </View>
 
         {this.props.foundProductSaved ?
-          <Text>Product is Saved</Text>
+          <Text style={styles.grayActionLink}>Product is Saved</Text>
           :
-          <Button
-            onPress={this.saveItem}
-            title="Save Product"
-            />
+          <TouchableOpacity onPress={this.saveItem}>
+            <Text style={styles.grayActionLink}>Save Product</Text>
+          </TouchableOpacity>
         }
       </View>
     )
@@ -662,12 +683,20 @@ class ResultsPage extends Component {
 
   render() {
     return(
-      <View style={styles.body}>
-        <Text style={styles.header}>Possible Matches:</Text>
-        <ListView
-          dataSource={this.state.results}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
-        />
+
+      <View>
+        <Text style={styles.textSmallHeader}>possible matches</Text>
+
+        <View style={styles.grayResultsContainer}>
+          <ListView
+            dataSource={this.state.results}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+            renderRow={(rowData) =>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              </TouchableOpacity>}
+          />
+        </View>
       </View>
     )
   }
@@ -689,22 +718,19 @@ class IngredientModal extends Component {
   render() {
     return (
       <View>
-        <TouchableOpacity style={styles.ingredientButton}>
+        <TouchableOpacity style={styles.ingredientButton} onPress={() => {this.setModalVisible(true)}}>
           { this.props.ingredient.is_natural ?
           <Image
-            style={{width: 30, height: 30}}
-            source={{uri: "https://image.flaticon.com/icons/png/512/32/32070.png"}}
+            style={styles.ingredientIcon}
+            source={require('./img/natural-icon.png')}
           />
           :
           <Image
-            style={{width: 30, height: 30}}
-            source={{uri: "https://d30y9cdsu7xlg0.cloudfront.net/png/909435-200.png"}}
+            style={styles.ingredientIcon}
+            source={require('./img/artificial-icon.png')}
           />
          }
-          <Button
-            onPress={() => {this.setModalVisible(true)}}
-            title={this.props.ingredient.name}
-          />
+          <Text style={styles.ingredientLabel}>{this.props.ingredient.name}</Text>
         </TouchableOpacity>
 
 
@@ -830,8 +856,8 @@ class SearchPage extends Component {
           onChangeText={(text) => this.setState({text})}
           onSubmitEditing={this.startSearch}
         />
-        <TouchableOpacity>
-          <Button title="Search" onPress={this.startSearch}/>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.startSearch}>
+          <Text style={styles.indexButtonText}>Search</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     )
@@ -844,6 +870,7 @@ class IndexPage extends Component {
     this._onPressSearchButton = this._onPressSearchButton.bind(this)
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
+    this._onPressLoginButton = this._onPressLoginButton.bind(this)
   }
 
   _onPressSearchButton(){
@@ -858,25 +885,43 @@ class IndexPage extends Component {
     this.props.updateCurrentPage("SignUpPage")
   }
 
-  render() {
-    return (
-      <View style={styles.centerContainer}>
-        <TouchableOpacity>
-          <Button title="Scan Product" onPress={this._onPressScanButton} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Button title="Search Product" onPress={this._onPressSearchButton} />
-        </TouchableOpacity>
+  _onPressLoginButton(){
+    this.props.updateCurrentPage("LoginPage")
+  }
 
-        {this.props.userId ?
-          <Text/>
-          :
-          <TouchableOpacity>
-            <Button onPress={this._onPressSignUpButton} title="Sign Up" />
-          </TouchableOpacity>
-        }
+  render() {
+    return(
+      <View style={styles.centerContainer}>
+        <StatusBar
+          barStyle="light-content"
+        />
+        <Image source={require('./img/bg.png')}>
+          <View style={styles.centerContainer}>
+            <Text style={[styles.indexTitle, styles.clearBackbround]}>foodr</Text>
+            <Text style={[{ marginBottom: 30 }, styles.indexTagline, styles.clearBackbround]}>Eat what's good for you.</Text>
+            <TouchableOpacity style={styles.indexButtons} onPress={this._onPressScanButton}>
+              <Text style={styles.indexButtonText}>Scan Product</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.indexButtons} onPress={this._onPressSearchButton}>
+              <Text style={styles.indexButtonText}>Search Product</Text>
+            </TouchableOpacity>
+            {this.props.userId ?
+              <View></View>
+              :
+
+              <View style={[{ marginTop: 50, alignItems: 'center' }, styles.clearBackbround]}>
+                <TouchableOpacity style={styles.indexButtons} onPress={this._onPressLoginButton}>
+                  <Text style={styles.indexButtonText}>Login</Text>
+                </TouchableOpacity>
+                <Text style={styles.indexTagline}>Don't have an account?
+                  <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Sign Up.</Text>
+                </Text>
+              </View>
+            }
+          </View>
+        </Image>
       </View>
-    );
+    )
   }
 }
 
@@ -937,8 +982,8 @@ class SignUpPage extends Component {
           onChangeText={(password) => this.setState({password})}
           onSubmitEditing={this.handleSubmit}
         />
-        <TouchableOpacity>
-          <Button title="Submit" onPress={this.handleSubmit}/>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.handleSubmit}>
+          <Text style={styles.indexButtonText}>Submit </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
@@ -973,7 +1018,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     backgroundColor: '#F7F8F9',
-    paddingHorizontal: 25
+    paddingHorizontal: 25,
+    paddingVertical: 20
   },
   centerContainer: {
     flex: 1,
@@ -987,10 +1033,10 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     width: 300,
-    borderRadius: 10,
     margin: 10,
     textAlign: 'center',
-    borderColor: 'gray',
+    borderColor: 'white',
+    borderBottomColor: '#00B875',
     borderWidth: 1,
   },
   header: {
@@ -1000,38 +1046,109 @@ const styles = StyleSheet.create({
   },
   contentSmall: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 14,
     margin: 10,
+    paddingHorizontal: 25
   },
   cameraView: {
     height: 300,
     width: '100%',
   },
+
+// Nav Bar
   navbar: {
     paddingHorizontal: 5,
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: 'lightgray',
+    backgroundColor: '#00B875',
   },
 
-  productImage: {
-    width: 115,
-    height: 120,
+// Index Page
+  clearBackbround: {
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  indexTitle: {
+    color: 'white',
+    fontSize: 40,
+    fontWeight: 'bold',
+  },
+  indexTagline: {
+    color: 'white',
+    fontSize: 14,
+  },
+  FormPageTagline: {
+    fontSize: 14,
+  },
+  indexButtons: {
+    backgroundColor: '#00B875',
+    padding: 10,
+    margin: 5,
+    borderRadius: 25,
+    width: 200,
+    alignItems: 'center'
+  },
+   insideAppButtons: {
+    backgroundColor: '#00B875',
+    padding: 10,
+    margin: 5,
+    borderRadius: 25,
+    width: 200,
+    alignItems: 'center',
+    marginTop: 20
+  },
+  indexButtonText: {
+    color: 'white',
+    fontSize: 20,
+    lineHeight: 25,
+  },
+  indexRegisterText: {
+    fontWeight: 'bold',
   },
 
 // Product Page
-  ingredientButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+productContainer: {
+  width: 120,
+  marginLeft: 25,
+  marginRight: 15,
+  marginBottom: 5
+},
+productTitle: {
+  lineHeight: 24,
+  paddingTop: 32,
+  paddingBottom: 0,
+  paddingRight: 25,
+  marginBottom: 0,
+  height: 76
+},
+productImage: {
+  width: 115,
+  height: 115,
+  padding: 15,
+  marginLeft: 0,
+  margin: 15,
+},
+ingredientButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
 
-    padding: 3,
-    margin: 3,
+  paddingVertical: 7,
+  paddingRight: 5,
+  margin: 4,
 
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
+  borderWidth: 1,
+  borderColor: 'gray',
+  borderRadius: 5,
+
+  backgroundColor: '#ffffff'
   },
-
+  ingredientLabel: {
+    paddingLeft: 5,
+    paddingRight: 3
+  },
+  ingredientIcon: {
+    marginLeft: 10,
+    marginRight: 3
+  },
 
 // Ingredient Page
   ingredientContainer: {
@@ -1053,7 +1170,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    borderColor: '#858585',
+    borderColor: '#9B9B9B',
     borderWidth: 5,
     marginTop: 25
   },
@@ -1073,11 +1190,48 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
 
+// Profile
+  profileScore: {
+    justifyContent: 'center',
+    backgroundColor: '#AB1B70',
+    height: 215,
+    alignItems: 'center',
+    paddingVertical: 25,
+  },
+  score: {
+    fontSize: 50,
+    color: '#ffffff'
+  },
+  recentlySearchedContainer: {
+    marginHorizontal: 25,
+    paddingBottom: 25,
+    borderBottomWidth: 1,
+    borderColor: '#C7C7C7',
+  },
+  productImageCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 5,
+    borderColor: '#C7C7C7',
+    borderWidth: 1,
+    marginTop: 5,
+    marginRight: 12,
+    backgroundColor: '#C7C7C7',
+  },
+
 // Global Styles
   textLarge: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#0D0D0D',
+  },
+  textLargeFoods: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0D0D0D',
+    paddingTop: 20,
+    paddingLeft: 25,
+    paddingBottom: 15,
   },
   textMedium: {
     fontSize: 16,
@@ -1087,6 +1241,40 @@ const styles = StyleSheet.create({
   textSmall: {
     fontSize: 14,
     color: '#0D0D0D'
+  },
+  textSmallHeader: {
+    fontSize: 14,
+    color: '#0D0D0D',
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
+  textWhite: {
+    fontSize: 14,
+    color: '#ffffff'
+  },
+  grayActionLink: {
+    fontSize: 14,
+    color: '#787878',
+    textAlign: 'center',
+    paddingVertical: 20,
+  },
+  listViewContainer: {
+    flex: 1,
+    marginTop: 20,
+    backgroundColor: '#F7F8F9',
+  },
+  listItems: {
+    paddingVertical: 25
+  },
+  grayResultsContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    backgroundColor: '#F7F8F9',
+    paddingHorizontal: 25,
+  },
+  separator: {
+    borderBottomWidth: 1,
+    borderColor: '#C7C7C7',
   }
 });
 
