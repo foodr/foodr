@@ -469,7 +469,7 @@ class UserProfilePage extends Component {
 
   render() {
     return(
-      <View style={styles.inlineContainer}>
+      <View>
         {/* <Text style={styles.header}>Your Profile</Text>
         <Text> {this.props.userDetails.user.email} </Text> */}
 
@@ -496,20 +496,27 @@ class UserProfilePage extends Component {
           />
         </View>
 
-        {/* <Text style={styles.textSmall}>recently searched</Text>
+      <View style={styles.recentlySearchedContainer}>
+        <Text style={styles.textSmallHeader}>recently searched</Text>
         <ListView
+          horizontal={true}
           dataSource={this.state.recentSearches}
           renderRow={(rowData) =>
 
             // <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>
 
             <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
-              <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              <View>
+                <Image
+                  style={styles.productImageCircle}
+                  source={{uri: rowData.img_url}}
+                />
+              </View>
             </TouchableOpacity>
 
           }
-        /> */}
-
+        />
+      </View>
         <TouchableOpacity onPress={this.props.logout}>
           <Text style={styles.grayActionLink}>Log Out</Text>
         </TouchableOpacity>
@@ -646,7 +653,7 @@ class ProductPage extends Component {
         </View>
 
         {this.props.foundProductSaved ?
-          <Text>Product is Saved</Text>
+          <Text style={styles.grayActionLink}>Product is Saved</Text>
           :
           <TouchableOpacity onPress={this.saveItem}>
             <Text style={styles.grayActionLink}>Save Product</Text>
@@ -673,12 +680,31 @@ class ResultsPage extends Component {
 
   render() {
     return(
-      <View style={styles.body}>
-        <Text style={styles.header}>Possible Matches:</Text>
-        <ListView
+      <View>
+        <Text style={styles.textSmallHeader}>possible matches</Text>
+
+        <View style={styles.grayResultsContainer}>
+          <ListView
+            dataSource={this.state.results}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+            renderRow={(rowData) =>
+
+              // <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.name)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              </TouchableOpacity>
+
+            }
+          />
+        </View>
+
+
+
+
+        {/* <ListView
           dataSource={this.state.results}
           renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.name)}/>}
-        />
+        /> */}
       </View>
     )
   }
@@ -1114,14 +1140,29 @@ ingredientButton: {
   profileScore: {
     justifyContent: 'center',
     backgroundColor: '#AB1B70',
-    flex: 1,
-    flexDirection: 'column',
+    height: 175,
     alignItems: 'center',
-    paddingVertical: 25
+    paddingVertical: 25,
   },
   score: {
     fontSize: 50,
     color: '#ffffff'
+  },
+  recentlySearchedContainer: {
+    marginHorizontal: 25,
+    paddingBottom: 25,
+    borderBottomWidth: 1,
+    borderColor: '#C7C7C7',
+  },
+  productImageCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 5,
+    borderColor: '#C7C7C7',
+    borderWidth: 1,
+    marginTop: 5,
+    marginRight: 12,
+    backgroundColor: '#C7C7C7',
   },
 
 // Global Styles
@@ -1146,6 +1187,12 @@ ingredientButton: {
   textSmall: {
     fontSize: 14,
     color: '#0D0D0D'
+  },
+  textSmallHeader: {
+    fontSize: 14,
+    color: '#0D0D0D',
+    paddingTop: 20,
+    paddingBottom: 10,
   },
   textWhite: {
     fontSize: 14,
