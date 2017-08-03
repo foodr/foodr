@@ -812,7 +812,7 @@ class SearchPage extends Component {
           onChangeText={(text) => this.setState({text})}
           onSubmitEditing={this.startSearch}
         />
-        <TouchableOpacity style={styles.iinsideAppButtons} onPress={this.startSearch}>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.startSearch}>
           <Text style={styles.indexButtonText}>Search</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
