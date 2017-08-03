@@ -415,7 +415,7 @@ class LoginPage extends Component {
           ref={(input) => this.passwordInput = input}
           onSubmitEditing={this.loginUser}
         />
-        <TouchableOpacity style={styles.indexButtons} onPress={this.loginUser}>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.loginUser}>
           <Text style={styles.indexButtonText}> Go</Text>
         </TouchableOpacity>
         
@@ -812,8 +812,8 @@ class SearchPage extends Component {
           onChangeText={(text) => this.setState({text})}
           onSubmitEditing={this.startSearch}
         />
-        <TouchableOpacity>
-          <Button title="Search" onPress={this.startSearch}/>
+        <TouchableOpacity style={styles.iinsideAppButtons} onPress={this.startSearch}>
+          <Text style={styles.indexButtonText}>Search</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     )
@@ -938,7 +938,7 @@ class SignUpPage extends Component {
           onChangeText={(password) => this.setState({password})}
           onSubmitEditing={this.handleSubmit}
         />
-        <TouchableOpacity style={styles.indexButtons} onPress={this.handleSubmit}>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.handleSubmit}>
           <Text style={styles.indexButtonText}>Submit </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
@@ -1041,7 +1041,16 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 25,
     width: 200,
+    alignItems: 'center'
+  },
+   insideAppButtons: {
+    backgroundColor: '#00B875',
+    padding: 10,
+    margin: 5,
+    borderRadius: 25,
+    width: 200,
     alignItems: 'center',
+    marginTop: 20
   },
   indexButtonText: {
     color: 'white',
