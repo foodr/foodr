@@ -1,16 +1,14 @@
-User.delete_all
-Product.delete_all
-Ingredient.delete_all
+# User.delete_all
+# Product.delete_all
+# Ingredient.delete_all
 
 ## SEED USERS
 
 dummy_user = User.create(email: 'user@email.com', password: 'password')
-User.create(email: 'kanan@email.com', password: 'password')
-User.create(email: 'tiff@email.com', password: 'password')
-User.create(email: 'vic@email.com', password: 'password')
-User.create(email: 'xander@email.com', password: 'password')
-
-# INGREDIENTS
+User.create(email: 'kanan@dbc.com', password: 'password')
+User.create(email: 'tiff@dbc.com', password: 'password')
+User.create(email: 'vic@dbc.com', password: 'password')
+User.create(email: 'xander@dbc.com', password: 'password')
 
 ## DORITOS
 
@@ -42,125 +40,167 @@ doritos.ingredients << Ingredient.create(
   img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Maltodextrin.png/1200px-Maltodextrin.png"
   )
 
+  doritos.ingredients << Ingredient.create(
+  name: "Monosodium Glutamate (MSG)",
+  description: "A naturally occurring amino acid (one of the building blocks of protein) that’s added to foods as a savory flavor enhancer. While it has a reputation for causing insatiable hunger, the food industry has no problem using it because it occurs in nature. Researchers, however, haven’t come to any decisive conclusions about its effects.",
+  is_natural: true,
+  img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Monosodium_glutamate_crystals.jpg/1200px-Monosodium_glutamate_crystals.jpg"
+  )
+
+  doritos.ingredients << Ingredient.create(
+  name: "Buttermilk",
+  description: "Similar to whey, buttermilk is the byproduct of churning butter out of cream and is usually added to processed foods as a means of adding heartiness and oftentimes a sort of creamy texture.",
+  is_natural: true,
+  img_url: "https://fthmb.tqn.com/1uefBX_jl9StT18NA3jNmtwE414=/960x0/filters:no_upscale()/about/Buttermilk-GettyImages-542871762-58a0e7175f9b58819c216897.jpg"
+  )
+
 doritos.ingredients << Ingredient.create(
   name: "Salt",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Cheddar Cheese",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Whey",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
-doritos.ingredients << Ingredient.create(
-  name: "Monosodium Glutamate (MSG)",
-  description: "A naturally occurring amino acid (one of the building blocks of protein) that’s added to foods as a savory flavor enhancer. While it has a reputation for causing insatiable hunger, the food industry has no problem using it because it occurs in nature. Researchers, however, haven’t come to any decisive conclusions about its effects.",
-  is_natural: true,
-  img_url: "https://cdn.authoritynutrition.com/wp-content/uploads/2015/03/msg-monosodium-glutamate.jpg"
-  )
-
-doritos.ingredients << Ingredient.create(
-  name: "Buttermilk",
-  description: "Similar to whey, buttermilk is the byproduct of churning butter out of cream and is usually added to processed foods as a means of adding heartiness and oftentimes a sort of creamy texture.",
-  is_natural: true,
-  img_url: ""
-  )
 
 doritos.ingredients << Ingredient.create(
   name: "Romano Cheese",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Whey Protein Concentrate",
-  is_natural: false
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Onion Powder",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Corn Flour",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Natural and Artificial Flavor",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Dextrose",
-  is_natural: false
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Tomato Powder",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Lactose",
-  is_natural: false
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Spices",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Artifical Color",
-  is_natural: false
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Lactic Acid",
-  is_natural: false
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Citic Acid",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Sugar",
-  is_natural: false
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Garlic Powder",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Skim Milk",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
-  name: "Red and Green Bell Pepper Powder",
-  is_natural: true
+  name: "Red and Green Bell Pepper Powder
+  description: "Description placholder."",
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Disodium Inosinate",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Disodium Guanylate",
-  is_natural: true
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
-
 
 ## NATURE VALLEY BAR
 
@@ -168,7 +208,7 @@ nature_valley = Product.create(
   upc: "0016000507661",
   name: "Nature Valley Peanut Butter Dark Chocolate Chewy Bar",
   score: 4,
-  img_url: ""
+  img_url: "https://d2ln0cvn4pv5w2.cloudfront.net/unsafe/1024x800/filters:quality(100):max_bytes(200000):fill(white)/dcmzfk78s4reh.cloudfront.net/1470334066593.jpg"
   )
 
 nature_valley.ingredients << Ingredient.create(
@@ -193,32 +233,6 @@ nature_valley.ingredients << Ingredient.create(
   )
 
 nature_valley.ingredients << Ingredient.create(
-  name: "Semisweet Chocolate Chips",
-  is_natural: false
-  )
-
-nature_valley.ingredients << Ingredient.find_by(name: "Vegetable Oil")
-
-nature_valley.ingredients << Ingredient.find_by(name: "Sugar")
-
-nature_valley.ingredients << Ingredient.create(
-  name: "Corn Syrup",
-  is_natural: false
-  )
-
-nature_valley.ingredients << Ingredient.find_by(name: "Whey Protein Concentrate")
-
-nature_valley.ingredients << Ingredient.create(
-  name: "Fructose",
-  is_natural: false
-  )
-
-nature_valley.ingredients << Ingredient.create(
-  name: "Peanut Butter",
-  is_natural: false
-  )
-
-nature_valley.ingredients << Ingredient.create(
   name: "Cocoa",
   description: "Cocoa beans are the fermented seeds of the cacao tree. Health benefits of cocoa include relief from high blood pressure, cholesterol, obesity, constipation, diabetes, bronchial asthma, cancer, chronic fatigue syndrome and various neurodegenerative diseases. It is beneficial for quick wound healing, skin care, and it helps to improve cardiovascular health and brain health. It also helps in treating copper deficiency. It possesses mood-enhancing properties and exerts protective effects against neurotoxicity.",
   is_natural: true,
@@ -226,30 +240,76 @@ nature_valley.ingredients << Ingredient.create(
   )
 
 nature_valley.ingredients << Ingredient.create(
-  name: "Vegetable Glycerin",
+  name: "Semisweet Chocolate Chips",
   is_natural: false
+  )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Vegetable Oil",
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Sugar",
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Corn Syrup",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Whey Protein Concentrate",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Fructose",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Peanut Butter",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Vegetable Glycerin",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 nature_valley.ingredients << Ingredient.create(
   name: "Rice Starch",
-  is_natural: false
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 nature_valley.ingredients << Ingredient.create(
   name: "Soy Lecithin",
-  is_natural: false
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 nature_valley.ingredients << Ingredient.find_by(name: "Salt")
 
 nature_valley.ingredients << Ingredient.create(
   name: "Corn Starch",
-  is_natural: false
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 nature_valley.ingredients << Ingredient.create(
   name: "Natural Flavor",
-  is_natural: false
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 
@@ -289,9 +349,6 @@ chewy.ingredients << Ingredient.create(
   is_natural: false,
   img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Glycerin_Skelett.svg/1200px-Glycerin_Skelett.svg.png"
   )
-
-
-
 
   ## SEED PRODUCTS & INGREDIENTS (has served its purpose)
 
