@@ -1035,8 +1035,9 @@ const styles = StyleSheet.create({
   },
   contentSmall: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 14,
     margin: 10,
+    paddingHorizontal: 25
   },
   cameraView: {
     height: 300,
