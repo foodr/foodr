@@ -24,19 +24,22 @@ class UsersController < ApplicationController
       # find recent searches
       searches = user.recent_searches
 
-      # add product name to each search
+      # add product name & img_url to each search
       searched_products = searches.map do |search|
         search_hash = JSON.parse(search.to_json)
         search_hash[:product_name] = search.product.name
+        search_hash[:img_url] = search.product.img_url
         search_hash
       end
 
       # find saved searches
       saved_searches = user.searches.where(is_saved: true)
 
+      # add product name & img_url to each search
       saved_products = saved_searches.map do |search|
         search_hash = JSON.parse(search.to_json)
         search_hash[:product_name] = search.product.name
+        search_hash[:img_url] = search.product.img_url
         search_hash
       end
 
@@ -44,7 +47,6 @@ class UsersController < ApplicationController
         found: true,
         user: user,
         user_grade: user.grade,
-        searches: searches,
         searched_products: searched_products,
         saved_products: saved_products
       }.to_json
