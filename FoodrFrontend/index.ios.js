@@ -63,7 +63,7 @@ export default class FoodrFrontend extends Component {
   searchUPC(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
     // fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
@@ -80,7 +80,7 @@ export default class FoodrFrontend extends Component {
   searchName(name) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
     // fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
@@ -102,7 +102,7 @@ export default class FoodrFrontend extends Component {
   getProductInfoBySearchID(searchID) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchID)
+    fetch('https://dbc-foodr-api.herokuapp.com/searches/' + searchID)
     // fetch('http://localhost:3000/searches/' + searchID)
     .then((data) => data.json())
     .then((jsonData) => {
@@ -118,7 +118,7 @@ export default class FoodrFrontend extends Component {
 
   saveSearch(searchId) {
     if (this.state.userId) {
-      fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
+      fetch('https://dbc-foodr-api.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
       // fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
       .then(data => data.json())
       .then(jsonData => {
@@ -136,7 +136,7 @@ export default class FoodrFrontend extends Component {
   }
 
   authenticateUser(email, password) {
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
+    fetch('https://dbc-foodr-api.herokuapp.com/users/login?email=' + email + '&password=' + password)
     // fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
     .then(data => data.json())
     .then(jsonData => {
@@ -153,7 +153,7 @@ export default class FoodrFrontend extends Component {
 
   findUser(){
     if (this.state.userId) {
-      fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
+      fetch('https://dbc-foodr-api.herokuapp.com/users/profile/' + this.state.userId)
       // fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
@@ -172,7 +172,7 @@ export default class FoodrFrontend extends Component {
   }
 
   createUser(email, password) {
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
+    fetch('https://dbc-foodr-api.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
     // fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
     .then(data => data.json())
     .then(jsonData => {
