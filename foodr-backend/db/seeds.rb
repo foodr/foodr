@@ -56,21 +56,21 @@ doritos.ingredients << Ingredient.create(
 
 doritos.ingredients << Ingredient.create(
   name: "Salt",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Cheddar Cheese",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Whey",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
@@ -78,126 +78,126 @@ doritos.ingredients << Ingredient.create(
 
 doritos.ingredients << Ingredient.create(
   name: "Romano Cheese",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Whey Protein Concentrate",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: false,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Onion Powder",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Corn Flour",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Natural and Artificial Flavor",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Dextrose",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: false,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Tomato Powder",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Lactose",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: false,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Spices",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Artifical Color",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: false,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Lactic Acid",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: false,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Citic Acid",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Sugar",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: false,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Garlic Powder",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Skim Milk",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Red and Green Bell Pepper Powder
-  description: "Description placholder."",
+  description: "Description placholder.",",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Disodium Inosinate",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Disodium Guanylate",
-  description: "Description placholder."
+  description: "Description placholder.",
   is_natural: true,
   img_url: "https://unsplash.it/300"
   )
