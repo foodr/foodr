@@ -63,8 +63,8 @@ export default class FoodrFrontend extends Component {
   searchUPC(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -80,8 +80,8 @@ export default class FoodrFrontend extends Component {
   searchName(name) {
     this.updateCurrentPage('SearchingPage')
 
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
+    // fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       // Detects if an exact match was found
@@ -102,7 +102,8 @@ export default class FoodrFrontend extends Component {
   getProductInfoBySearchID(searchID) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('http://localhost:3000/searches/' + searchID)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchID)
+    // fetch('http://localhost:3000/searches/' + searchID)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -117,8 +118,8 @@ export default class FoodrFrontend extends Component {
 
   saveSearch(searchId) {
     if (this.state.userId) {
-      // fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
-      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
+      fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
+      // fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
       .then(data => data.json())
       .then(jsonData => {
         if (jsonData.save_successful) {
@@ -135,8 +136,8 @@ export default class FoodrFrontend extends Component {
   }
 
   authenticateUser(email, password) {
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
-    fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
+    // fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.found) {
@@ -152,8 +153,8 @@ export default class FoodrFrontend extends Component {
 
   findUser(){
     if (this.state.userId) {
-      // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
-      fetch('http://localhost:3000/users/profile/' + this.state.userId)
+      fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
+      // fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -171,8 +172,8 @@ export default class FoodrFrontend extends Component {
   }
 
   createUser(email, password) {
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
-    fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
+    // fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.saved) {
@@ -533,10 +534,6 @@ class CameraPage extends Component {
     super()
     this.onBarCodeRead = this.onBarCodeRead.bind(this)
     this.onPressSearchButton = this.onPressSearchButton.bind(this)
-
-    // for testing
-    this.existingItem = this.existingItem.bind(this)
-    this.nonExistingItem = this.nonExistingItem.bind(this)
   }
 
   onBarCodeRead(e) {
@@ -546,17 +543,6 @@ class CameraPage extends Component {
 
   onPressSearchButton() {
     this.props.updateCurrentPage("SearchPage")
-  }
-
-  // for testing
-  existingItem() {
-    this.props.updateSearchTerm('Product')
-    this.props.searchUPC('0028400344371')
-  }
-
-  nonExistingItem() {
-    this.props.updateSearchTerm('Product')
-    this.props.searchUPC('asdf')
   }
 
   render() {
@@ -571,22 +557,12 @@ class CameraPage extends Component {
         </Camera>
         <Text style={styles.contentSmall}>The camera will automatically detect when a barcode is present</Text>
 
-        <Text style={styles.contentSmall}>{"\n\n"}No item to scan?</Text>
+        <Text style={styles.contentSmall}>No item to scan?</Text>
 
         <TouchableOpacity>
           <Button
             title="Enter a Search Term"
             onPress={this.onPressSearchButton}
-          />
-          <Button
-            title="Test: Existing Item"
-            onPress={this.existingItem}
-            color='red'
-          />
-          <Button
-            title="Test: Nonexisting Item"
-            onPress={this.nonExistingItem}
-            color='red'
           />
         </TouchableOpacity>
       </View>
@@ -990,14 +966,12 @@ class SignUpPage extends Component {
   }
 }
 
-// FOR TESTING
-
 class DefaultPage extends Component {
   render() {
     return(
-      <View style={styles.body}>
-        <Text style={styles.header}>Default Page</Text>
-        <Text>The case statement hit default</Text>
+      <View style={styles.centerContainer}>
+        <Text style={[styles.header, {color: 'red'}]}>404 Error</Text>
+        <Text style={{color: 'red'}}>Page not found</Text>
       </View>
     );
   }
