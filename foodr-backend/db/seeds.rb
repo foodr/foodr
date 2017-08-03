@@ -1,40 +1,14 @@
+# User.delete_all
+# Product.delete_all
+# Ingredient.delete_all
+
 ## SEED USERS
 
 dummy_user = User.create(email: 'user@email.com', password: 'password')
-User.create(email: 'kanan@email.com', password: 'password')
-User.create(email: 'tiff@email.com', password: 'password')
-User.create(email: 'vic@email.com', password: 'password')
-User.create(email: 'xander@email.com', password: 'password')
-
-## SEED PRODUCTS & INGREDIENTS
-
-scores = [1,2,3,4,5]
-true_false = [true, false]
-dimensions = [200,300,400]
-
-# 5 Products
-5.times do |number|
-  product = Product.create(
-    upc: number,
-    name: Faker::Food.dish,
-    score: scores.sample,
-    img_url: "https://unsplash.it/#{dimensions.sample}/#{dimensions.sample}"
-  )
-
-  # 3 ingredients per product
-  3.times do
-
-    product.ingredients << Ingredient.create(
-      name: Faker::Food.ingredient,
-      description: Faker::Lorem.paragraph,
-      is_natural: true_false.sample,
-      img_url: "https://unsplash.it/#{dimensions.sample}/#{dimensions.sample}"
-      )
-  end
-
-  # each product is saved by dummy_user
-  product.searches.create(user: dummy_user, is_saved: true_false.sample)
-end
+User.create(email: 'kanan@dbc.com', password: 'password')
+User.create(email: 'tiff@dbc.com', password: 'password')
+User.create(email: 'vic@dbc.com', password: 'password')
+User.create(email: 'xander@dbc.com', password: 'password')
 
 ## DORITOS
 
@@ -47,37 +21,185 @@ doritos = Product.create(
 
 doritos.ingredients << Ingredient.create(
   name: "Corn",
-  description: "To create the actual tortilla chip, raw yellow corn kernels are soaked in large vats of near-boiling water, where they’re combined with lime (the chemical, not the fruit). While lime’s main purpose is loosening the husks and making them easier to remove, it also injects a bit of calcium into the corn and releases niacin (vitamin B3), which is known to improve cholesterol levels and lower cardiovascular risks. Once the husks and any excess lime have been washed away, the now-hydrated corn is ground into a corn flour called masa, pressed into that famous Dorito shape and fried in vegetable oil.",
+  description: "Raw yellow corn kernels are soaked in large vats of near-boiling water, where they’re combined with lime (the chemical, not the fruit). Once the husks and any excess lime have been washed away, the now-hydrated corn is ground into a corn flour called masa, pressed into shape and fried in vegetable oil.",
   is_natural: true,
   img_url: "https://www.organicfacts.net/wp-content/uploads/2013/05/Corn12-1020x765.jpg"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Vegetable Oil",
-  description: "Extracted from whichever source (sunflower, canola or corn) is cheapest at the time, vegetable oils have a notorious reputation. “The refining process of removing these oils is extremely chemically harsh,” explains physician and biochemist Cate Shanahan, author of Deep Nutrition: Why Your Genes Need Traditional Food. “It damages the molecules and turns them into new compounds that don’t occur in nature, many of which have toxic effects on our body — like, for instance, disturbing DNA replication and energy processing.”",
+  description: "Extracted from whichever source (sunflower, canola or corn) is cheapest at the time, vegetable oils have a notorious reputation. The refining process is extremely harsh and damages the moluecules and turns them into new compounds that don't occur in nature, many that are harmful to our bodies.",
   is_natural: true,
   img_url: "https://images-na.ssl-images-amazon.com/images/I/81CBn7U1c1L._SX355_.jpg"
   )
 
 doritos.ingredients << Ingredient.create(
   name: "Maltodextrin",
-  description: "An artificial sugar made from maltose (aka malt sugar) and dextrose (see below), Maltodextrin is usually used as a thickener or filler ingredient to add bulk to processed food and to increase its shelf life — maltodextrin itself has a shelf life of two years.",
+  description: "An artificial sugar made from maltose (aka malt sugar) and dextrose, Maltodextrin is usually used as a thickener or filler ingredient to add bulk to processed food and to increase its shelf life — maltodextrin itself has a shelf life of two years.",
   is_natural: false,
   img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Maltodextrin.png/1200px-Maltodextrin.png"
   )
 
-doritos.ingredients << Ingredient.create(
-  name: "Monosodium Glutamate",
-  description: "Better known as MSG, monosodium glutamate is a naturally occurring amino acid (one of the building blocks of protein) that’s added to foods as a savory flavor enhancer. While it has a reputation for causing insatiable hunger, the food industry has no problem using it because it occurs in nature. And while Shanahan sort of agrees, there’s some room for worry. “Eating MSG without a high-protein ingredient in the food is a huge blast of MSG all at once, and some people are very sensitive to that,” she explains. “They’ll get headaches and some people who get seizures say they’ll get a seizure aura [that is, the feeling you get right before you experience a seizure].” Researchers, however, haven’t come to any decisive conclusions about the effects of MSG.",
-  is_natural: false,
-  img_url: "https://cdn.authoritynutrition.com/wp-content/uploads/2015/03/msg-monosodium-glutamate.jpg"
+  doritos.ingredients << Ingredient.create(
+  name: "Monosodium Glutamate (MSG)",
+  description: "A naturally occurring amino acid (one of the building blocks of protein) that’s added to foods as a savory flavor enhancer. While it has a reputation for causing insatiable hunger, the food industry has no problem using it because it occurs in nature. Researchers, however, haven’t come to any decisive conclusions about its effects.",
+  is_natural: true,
+  img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Monosodium_glutamate_crystals.jpg/1200px-Monosodium_glutamate_crystals.jpg"
+  )
+
+  doritos.ingredients << Ingredient.create(
+  name: "Buttermilk",
+  description: "Similar to whey, buttermilk is the byproduct of churning butter out of cream and is usually added to processed foods as a means of adding heartiness and oftentimes a sort of creamy texture.",
+  is_natural: true,
+  img_url: "https://fthmb.tqn.com/1uefBX_jl9StT18NA3jNmtwE414=/960x0/filters:no_upscale()/about/Buttermilk-GettyImages-542871762-58a0e7175f9b58819c216897.jpg"
   )
 
 doritos.ingredients << Ingredient.create(
-  name: "Buttermilk",
-  description: "Similar to whey, buttermilk is the byproduct of churning butter out of cream and is usually added to processed foods like Doritos as a means of adding heartiness and oftentimes a sort of creamy texture (though, that’s not so much the case for Doritos).",
+  name: "Salt",
+  description: "Description placholder."
   is_natural: true,
-  img_url: "https://fthmb.tqn.com/1uefBX_jl9StT18NA3jNmtwE414=/960x0/filters:no_upscale()/about/Buttermilk-GettyImages-542871762-58a0e7175f9b58819c216897.jpg"
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Cheddar Cheese",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Whey",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+
+doritos.ingredients << Ingredient.create(
+  name: "Romano Cheese",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Whey Protein Concentrate",
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Onion Powder",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Corn Flour",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Natural and Artificial Flavor",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Dextrose",
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Tomato Powder",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Lactose",
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Spices",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Artifical Color",
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Lactic Acid",
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Citic Acid",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Sugar",
+  description: "Description placholder."
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Garlic Powder",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Skim Milk",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Red and Green Bell Pepper Powder
+  description: "Description placholder."",
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Disodium Inosinate",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+  )
+
+doritos.ingredients << Ingredient.create(
+  name: "Disodium Guanylate",
+  description: "Description placholder."
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
   )
 
 ## NATURE VALLEY BAR
@@ -91,14 +213,14 @@ nature_valley = Product.create(
 
 nature_valley.ingredients << Ingredient.create(
   name: "Roasted Peanuts",
-  description: "In addition to being every kid's (and many grownup kid's) favorite sandwich filling, peanuts pack a serious nutritional punch and offer a variety of health benefits.\n\nPeanuts are rich in monounsaturated fats, the type of fat that is emphasized in the heart-healthy Mediterranean diet. Studies of diets with a special emphasis on peanuts have shown that this little legume is a big ally for a healthy heart. In one such randomized, double-blind, cross-over study involving 22 subjects, a high monounsaturated diet that emphasized peanuts and peanut butter decreased cardiovascular disease risk by an estimated 21 percent compared to the average American diet.",
+  description: "Peanuts pack a serious nutritional punch and offer a variety of health benefits. They are rich in monounsaturated fats, the type of fat that is emphasized in the heart-healthy Mediterranean diet. Studies of diets with a special emphasis on peanuts have shown that this little legume is a big ally for a healthy heart.",
   is_natural: true,
   img_url: "https://sc01.alicdn.com/kf/UTB8tEc_earFXKJk43Ovq6ybnpXaU/Top-Roasted-Peanut-in-Shell-9-11.jpg"
   )
 
 nature_valley.ingredients << Ingredient.create(
   name: "Soy Protein Isolate",
-  description: "Soy protein isolate is extracted from defatted soy flour. It is made of almost pure protein, since the isolation process yields a product that is 93 to 97 percent protein, leaving minimal fat and carbohydrates. The concern about the isolation process centers on the fact that aluminum found in the giant vats used to isolate the soy protein may leach into the protein itself, increasing the likelihood of heavy-metal poisoning. This is completely speculative, as we have yet to see an analysis of soy, whey, or any protein isolate showing heavy metal contamination from the containers used during the isolation process.\n\nNinety percent of genetically modified soy is resistant to glyphosate, the pesticide found in Round Up. A concern raised about eating products with soy protein isolate is that you will consume excessive amounts of this chemical. The good news? Glyphosate is not well absorbed by the human GI tract, the potential negative effects on humans are dose-dependent, and the level of that dose is very controversial.",
+  description: "Soy protein isolate is extracted from defatted soy flour. It is made of almost pure protein, since the isolation process yields a product that is 93 to 97 percent protein, leaving minimal fat and carbohydrates. The concern about the isolation process centers on the fact that aluminum found in the giant vats used to isolate the soy protein may leach into the protein itself, increasing the likelihood of heavy-metal poisoning. This is completely speculative, as we have yet to see an analysis of soy, whey, or any protein isolate showing heavy metal contamination from the containers used during the isolation process.",
   is_natural: false,
   img_url: "https://sc01.alicdn.com/kf/UTB8uOrfcVfFXKJk43Otq6xIPFXaX/High-Quality-Soy-Isolated-Protein-and-Soy.jpg"
   )
@@ -112,9 +234,82 @@ nature_valley.ingredients << Ingredient.create(
 
 nature_valley.ingredients << Ingredient.create(
   name: "Cocoa",
-  description: "Health benefits of cocoa include relief from high blood pressure, cholesterol, obesity, constipation, diabetes, bronchial asthma, cancer, chronic fatigue syndrome and various neurodegenerative diseases. It is beneficial for quick wound healing, skin care, and it helps to improve cardiovascular health and brain health. It also helps in treating copper deficiency. It possesses mood-enhancing properties and exerts protective effects against neurotoxicity.\n\nCocoa beans are the fermented seeds of the cacao tree, whose Latin name is Theobroma cacao, which means “Food of the Gods”. It is native to the Amazon region and as the meaning suggests, cocoa was historically considered a very important crop in Central and South America. In fact, its beans were so prized that the native tribes used them as a form of currency. The cacao tree stands about 12-25 feet tall and grows naturally in tropical climates.",
+  description: "Cocoa beans are the fermented seeds of the cacao tree. Health benefits of cocoa include relief from high blood pressure, cholesterol, obesity, constipation, diabetes, bronchial asthma, cancer, chronic fatigue syndrome and various neurodegenerative diseases. It is beneficial for quick wound healing, skin care, and it helps to improve cardiovascular health and brain health. It also helps in treating copper deficiency. It possesses mood-enhancing properties and exerts protective effects against neurotoxicity.",
   is_natural: true,
   img_url: "https://i1.wp.com/www.rjeem.com/wp-content/uploads/2015/12/00000000000000000000098.jpg"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Semisweet Chocolate Chips",
+  is_natural: false
+  )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Vegetable Oil",
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Sugar",
+  is_natural: true,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Corn Syrup",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.find_by(
+  name: "Whey Protein Concentrate",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+ )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Fructose",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Peanut Butter",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Vegetable Glycerin",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Rice Starch",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Soy Lecithin",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.find_by(name: "Salt")
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Corn Starch",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
+  )
+
+nature_valley.ingredients << Ingredient.create(
+  name: "Natural Flavor",
+  is_natural: false,
+  img_url: "https://unsplash.it/300"
   )
 
 
@@ -154,3 +349,33 @@ chewy.ingredients << Ingredient.create(
   is_natural: false,
   img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Glycerin_Skelett.svg/1200px-Glycerin_Skelett.svg.png"
   )
+
+  ## SEED PRODUCTS & INGREDIENTS (has served its purpose)
+
+  # scores = [1,2,3,4,5]
+  # true_false = [true, false]
+  # dimensions = [200,300,400]
+  #
+  # # 5 Products
+  # 5.times do |number|
+  #   product = Product.create(
+  #     upc: number,
+  #     name: Faker::Food.dish,
+  #     score: scores.sample,
+  #     img_url: "https://unsplash.it/#{dimensions.sample}/#{dimensions.sample}"
+  #   )
+  #
+  #   # 3 ingredients per product
+  #   3.times do
+  #
+  #     product.ingredients << Ingredient.create(
+  #       name: Faker::Food.ingredient,
+  #       description: Faker::Lorem.paragraph,
+  #       is_natural: true_false.sample,
+  #       img_url: "https://unsplash.it/#{dimensions.sample}/#{dimensions.sample}"
+  #       )
+  #   end
+  #
+  #   # each product is saved by dummy_user
+  #   product.searches.create(user: dummy_user, is_saved: true_false.sample)
+  # end
