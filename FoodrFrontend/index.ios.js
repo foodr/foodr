@@ -415,13 +415,13 @@ class LoginPage extends Component {
           ref={(input) => this.passwordInput = input}
           onSubmitEditing={this.loginUser}
         />
-        <TouchableOpacity>
-          <Button title="Login" onPress={this.loginUser}/>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.loginUser}>
+          <Text style={styles.indexButtonText}> Go</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>Don't have an account?</Text>
-          <Button title="Sign Up" onPress={this._onPressSignUpButton} />
-        </TouchableOpacity>
+        
+          <Text style={styles.FormPageTagline}>Don't have an account?
+          <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Sign Up.</Text> 
+        </Text>
       </KeyboardAvoidingView>
     );
   }
@@ -812,8 +812,8 @@ class SearchPage extends Component {
           onChangeText={(text) => this.setState({text})}
           onSubmitEditing={this.startSearch}
         />
-        <TouchableOpacity>
-          <Button title="Search" onPress={this.startSearch}/>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.startSearch}>
+          <Text style={styles.indexButtonText}>Search</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     )
@@ -853,17 +853,14 @@ class IndexPage extends Component {
         />
         <Image source={require('./img/bg.png')}>
           <View style={styles.centerContainer}>
-
             <Text style={[styles.indexTitle, styles.clearBackbround]}>foodr</Text>
             <Text style={[{ marginBottom: 30 }, styles.indexTagline, styles.clearBackbround]}>Eat what's good for you.</Text>
-
             <TouchableOpacity style={styles.indexButtons} onPress={this._onPressScanButton}>
               <Text style={styles.indexButtonText}>Scan Product</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.indexButtons} onPress={this._onPressSearchButton}>
               <Text style={styles.indexButtonText}>Search Product</Text>
             </TouchableOpacity>
-
             {this.props.userId ?
               <View></View>
               :
@@ -872,8 +869,8 @@ class IndexPage extends Component {
                 <TouchableOpacity style={styles.indexButtons} onPress={this._onPressLoginButton}>
                   <Text style={styles.indexButtonText}>Login</Text>
                 </TouchableOpacity>
-                <Text style={styles.indexTagline}>New User?
-                  <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Register account.</Text>
+                <Text style={styles.indexTagline}>Don't have an account?
+                  <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Sign Up.</Text>
                 </Text>
               </View>
             }
@@ -881,7 +878,6 @@ class IndexPage extends Component {
         </Image>
       </View>
     )
-
   }
 }
 
@@ -942,8 +938,8 @@ class SignUpPage extends Component {
           onChangeText={(password) => this.setState({password})}
           onSubmitEditing={this.handleSubmit}
         />
-        <TouchableOpacity>
-          <Button title="Submit" onPress={this.handleSubmit}/>
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.handleSubmit}>
+          <Text style={styles.indexButtonText}>Submit </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
@@ -994,10 +990,10 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     width: 300,
-    borderRadius: 10,
     margin: 10,
     textAlign: 'center',
-    borderColor: 'gray',
+    borderColor: 'white',
+    borderBottomColor: '#00B875',
     borderWidth: 1,
   },
   header: {
@@ -1036,13 +1032,25 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
   },
+  FormPageTagline: {
+    fontSize: 14,
+  },
   indexButtons: {
     backgroundColor: '#00B875',
     padding: 10,
     margin: 5,
     borderRadius: 25,
     width: 200,
+    alignItems: 'center'
+  },
+   insideAppButtons: {
+    backgroundColor: '#00B875',
+    padding: 10,
+    margin: 5,
+    borderRadius: 25,
+    width: 200,
     alignItems: 'center',
+    marginTop: 20
   },
   indexButtonText: {
     color: 'white',
