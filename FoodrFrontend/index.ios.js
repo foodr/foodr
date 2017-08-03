@@ -475,6 +475,7 @@ class UserProfilePage extends Component {
         <Text style={styles.textLargeFoods}>My Foods</Text>
         <View style={styles.grayResultsContainer}>
           <ListView
+            enableEmptySections={true}
             dataSource={this.state.savedProducts}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             renderRow={(rowData) =>
@@ -485,8 +486,9 @@ class UserProfilePage extends Component {
         </View>
 
       <View style={styles.recentlySearchedContainer}>
-        <Text style={styles.textSmallHeader}>recently searched</Text>
+        <Text style={styles.textSmallHeaderRecent}>recently searched</Text>
         <ListView
+          enableEmptySections={true}
           horizontal={true}
           dataSource={this.state.recentSearches}
           renderRow={(rowData) =>
@@ -501,7 +503,7 @@ class UserProfilePage extends Component {
         />
       </View>
         <TouchableOpacity onPress={this.props.logout}>
-          <Text style={styles.grayActionLink}>Log Out</Text>
+          <Text style={styles.greenActionLink}>Log Out</Text>
         </TouchableOpacity>
       </View>
     );
@@ -542,7 +544,7 @@ class CameraPage extends Component {
   render() {
     return(
       <View style={styles.body}>
-        <Text style={styles.header}>Place Barcode in View</Text>
+        <Text style={{fontSize: 16, marginVertical: 10}}>Place Barcode in View</Text>
         <Camera
           ref={(cam) => {this.camera = cam;}}
           style={styles.cameraView}
@@ -551,23 +553,11 @@ class CameraPage extends Component {
         </Camera>
         <Text style={styles.contentSmall}>The camera will automatically detect when a barcode is present</Text>
 
-        <Text style={styles.contentSmall}>{"\n\n"}No item to scan?</Text>
+        <Text style={styles.textSmall}>{"\n\n"}No item to scan?</Text>
 
-        <TouchableOpacity>
-          <Button
-            title="Enter a Search Term"
-            onPress={this.onPressSearchButton}
-          />
-          <Button
-            title="Test: Existing Item"
-            onPress={this.existingItem}
-            color='red'
-          />
-          <Button
-            title="Test: Nonexisting Item"
-            onPress={this.nonExistingItem}
-            color='red'
-          />
+
+        <TouchableOpacity onPress={this.onPressSearchButton}>
+          <Text style={styles.indexButtonTextInverse}> Enter Search Term </Text>
         </TouchableOpacity>
       </View>
     );
@@ -639,7 +629,7 @@ class ProductPage extends Component {
           <Text style={styles.grayActionLink}>Product is Saved</Text>
           :
           <TouchableOpacity onPress={this.saveItem}>
-            <Text style={styles.grayActionLink}>Save Product</Text>
+            <Text style={styles.greenActionLink}>Save Product</Text>
           </TouchableOpacity>
         }
       </View>
@@ -782,22 +772,16 @@ class NoResultsPage extends Component {
   render() {
     return (
       <View style={styles.centerContainer}>
-        <Text style={styles.header}>{this.props.searchTerm} was not found</Text>
+        <Image source={require('./img/empty.png')} style={{marginBottom: 15}} />
+        <Text style={styles.textLarge}>{this.props.searchTerm} was not found</Text>
         <Text style={styles.contentSmall}>Would you like to try another product?</Text>
-        <TouchableOpacity>
-          <Button
-           title="Scan a Product"
-           onPress={this.scanAgain}
-          />
+
+        <TouchableOpacity onPress={this.scanAgain}>
+          <Text style={styles.greenActionLinkNoPadding}>Scan a Product</Text>
         </TouchableOpacity>
-
         <Text>or</Text>
-
-        <TouchableOpacity>
-          <Button
-           title="Enter a Search Term"
-           onPress={this.searchAgain}
-          />
+        <TouchableOpacity onPress={this.searchAgain}>
+          <Text style={styles.greenActionLinkNoPadding}>Enter a Search Term</Text>
         </TouchableOpacity>
       </View>
     );
@@ -870,25 +854,36 @@ class IndexPage extends Component {
 
   render() {
     return(
-      <View style={styles.centerContainer}>
+      <View>
         <StatusBar
           barStyle="light-content"
         />
         <Image source={require('./img/bg.png')}>
-          <View style={styles.centerContainer}>
-            <Text style={[styles.indexTitle, styles.clearBackbround]}>foodr</Text>
-            <Text style={[{ marginBottom: 30 }, styles.indexTagline, styles.clearBackbround]}>Eat what's good for you.</Text>
-            <TouchableOpacity style={styles.indexButtons} onPress={this._onPressScanButton}>
-              <Text style={styles.indexButtonText}>Scan Product</Text>
+
+
+          <View style={styles.logoContainer}>
+            <View style={{height: 50}}><Text style={[styles.indexTitle, styles.clearBackground]}>foodr</Text></View>
+          </View>
+          <View>
+            <View><Text style={[{textAlign: 'center', marginTop: 10, marginBottom: 30 }, styles.indexTagline, styles.clearBackground]}>Eat what's good for you.</Text></View>
+          </View>
+          <View style={styles.iconContainer}>
+            <TouchableOpacity style={{paddingRight: 25}} onPress={this._onPressScanButton}>
+              <Image source={require('./img/barcode.png')} />
+              <Text style={styles.homeTextLarge}>Scan</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.indexButtons} onPress={this._onPressSearchButton}>
-              <Text style={styles.indexButtonText}>Search Product</Text>
+            <TouchableOpacity style={{paddingLeft: 25}} onPress={this._onPressSearchButton}>
+              <Image style={{height: 50}} source={require('./img/search.png')} />
+              <Text style={styles.homeTextLarge}>Search</Text>
             </TouchableOpacity>
+          </View>
+
+          <View style={styles.iconContainer}>
             {this.props.userId ?
               <View></View>
               :
 
-              <View style={[{ marginTop: 50, alignItems: 'center' }, styles.clearBackbround]}>
+              <View style={[{ marginTop: 50, alignItems: 'center' }, styles.clearBackground]}>
                 <TouchableOpacity style={styles.indexButtons} onPress={this._onPressLoginButton}>
                   <Text style={styles.indexButtonText}>Login</Text>
                 </TouchableOpacity>
@@ -1000,7 +995,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 20
   },
+  iconContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 75
+  },
+  logoContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    height: 75
+  },
   centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  homeContainerTop: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -1043,7 +1057,7 @@ const styles = StyleSheet.create({
   },
 
 // Index Page
-  clearBackbround: {
+  clearBackground: {
     backgroundColor: 'rgba(0,0,0,0)',
   },
   indexTitle: {
@@ -1076,8 +1090,13 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   indexButtonText: {
-    color: 'white',
+    color: '#ffffff',
     fontSize: 20,
+    lineHeight: 25,
+  },
+  indexButtonTextInverse: {
+    color: '#00B575',
+    fontSize: 16,
     lineHeight: 25,
   },
   indexRegisterText: {
@@ -1172,13 +1191,13 @@ ingredientButton: {
 // Profile
   profileScore: {
     justifyContent: 'center',
-    backgroundColor: '#AB1B70',
+    backgroundColor: '#B50058',
     height: 215,
     alignItems: 'center',
     paddingVertical: 25,
   },
   score: {
-    fontSize: 50,
+    fontSize: 40,
     color: '#ffffff'
   },
   recentlySearchedContainer: {
@@ -1197,6 +1216,14 @@ ingredientButton: {
     marginRight: 12,
     backgroundColor: '#C7C7C7',
   },
+
+// homeTextLarge
+homeTextLarge: {
+  fontSize: 20,
+  color: '#ffffff',
+  textAlign: 'center',
+  backgroundColor: 'rgba(0,0,0,0)',
+},
 
 // Global Styles
   textLarge: {
@@ -1226,6 +1253,13 @@ ingredientButton: {
     color: '#0D0D0D',
     paddingTop: 20,
     paddingBottom: 10,
+    marginLeft: 25
+  },
+  textSmallHeaderRecent: {
+    fontSize: 14,
+    color: '#0D0D0D',
+    paddingTop: 20,
+    paddingBottom: 10,
   },
   textWhite: {
     fontSize: 14,
@@ -1236,6 +1270,18 @@ ingredientButton: {
     color: '#787878',
     textAlign: 'center',
     paddingVertical: 20,
+  },
+  greenActionLink: {
+    fontSize: 14,
+    color: '#00B575',
+    textAlign: 'center',
+    paddingVertical: 20,
+  },
+  greenActionLinkNoPadding: {
+    fontSize: 14,
+    color: '#00B575',
+    textAlign: 'center',
+    paddingVertical: 15,
   },
   listViewContainer: {
     flex: 1,
