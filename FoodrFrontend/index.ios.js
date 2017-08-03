@@ -32,7 +32,7 @@ export default class FoodrFrontend extends Component {
       userDetails: {},
       foundProductSaved: false,
       searchResults: {},
-      userId: false, // false if not logged in
+      userId: 3, // false if not logged in
       searchTerm: ''
     }
 
@@ -469,28 +469,50 @@ class UserProfilePage extends Component {
 
   render() {
     return(
-      <View style={styles.centerContainer}>
-        <Text style={styles.header}>Your Profile</Text>
-        <Text> {this.props.userDetails.user.email} </Text>
-        <Text> Your health grade: {this.scoreConverter()} </Text>
-        <TouchableOpacity>
-          <Button
-            onPress={this.props.logout}
-            title="Logout"
+      <View style={styles.inlineContainer}>
+        {/* <Text style={styles.header}>Your Profile</Text>
+        <Text> {this.props.userDetails.user.email} </Text> */}
+
+        <View style={styles.profileScore}>
+          <View><Text style={styles.textWhite}>Your health grade:</Text></View>
+          <View><Text style={styles.score}>{this.scoreConverter()}</Text></View>
+        </View>
+
+        <Text style={styles.textLargeFoods}>My Foods</Text>
+
+
+        <View style={styles.grayResultsContainer}>
+          <ListView
+            dataSource={this.state.savedProducts}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+            renderRow={(rowData) =>
+
+              // <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              </TouchableOpacity>
+
+            }
           />
-        </TouchableOpacity>
+        </View>
 
-        <Text style={styles.header}>Saved Products</Text>
-        <ListView
-          dataSource={this.state.savedProducts}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
-        />
-
-        <Text style={styles.header}>Recent Searches</Text>
+        {/* <Text style={styles.textSmall}>recently searched</Text>
         <ListView
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
-        />
+          renderRow={(rowData) =>
+
+            // <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>
+
+            <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
+              <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+            </TouchableOpacity>
+
+          }
+        /> */}
+
+        <TouchableOpacity onPress={this.props.logout}>
+          <Text style={styles.grayActionLink}>Log Out</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -961,7 +983,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F8F9',
     paddingHorizontal: 25,
     paddingVertical: 20
-
   },
   centerContainer: {
     flex: 1,
@@ -1089,11 +1110,33 @@ ingredientButton: {
     alignSelf: 'flex-end'
   },
 
+// Profile
+  profileScore: {
+    justifyContent: 'center',
+    backgroundColor: '#AB1B70',
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingVertical: 25
+  },
+  score: {
+    fontSize: 50,
+    color: '#ffffff'
+  },
+
 // Global Styles
   textLarge: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#0D0D0D',
+  },
+  textLargeFoods: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0D0D0D',
+    paddingTop: 20,
+    paddingLeft: 25,
+    paddingBottom: 15,
   },
   textMedium: {
     fontSize: 16,
@@ -1104,12 +1147,34 @@ ingredientButton: {
     fontSize: 14,
     color: '#0D0D0D'
   },
+  textWhite: {
+    fontSize: 14,
+    color: '#ffffff'
+  },
   grayActionLink: {
     fontSize: 14,
     color: '#787878',
     textAlign: 'center',
     paddingVertical: 20,
   },
+  listViewContainer: {
+    flex: 1,
+    marginTop: 20,
+    backgroundColor: '#F7F8F9',
+  },
+  listItems: {
+    paddingVertical: 25
+  },
+  grayResultsContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    backgroundColor: '#F7F8F9',
+    paddingHorizontal: 25,
+  },
+  separator: {
+    borderBottomWidth: 1,
+    borderColor: '#C7C7C7',
+  }
 });
 
 AppRegistry.registerComponent('FoodrFrontend', () => FoodrFrontend);
