@@ -1,9 +1,9 @@
 class SearchesController < ApplicationController
 
   def show
-    search = Search.find(params[:id])
-    product = search.product
-    if product
+    search = Search.find_by(id: params[:id])
+    if search
+      product = search.product
       render json: {
         found: true,
         product: product,
