@@ -16,7 +16,9 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   ListView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  StatusBar,
+  ImageBackground
 } from 'react-native';
 import Camera from 'react-native-camera';
 import NavigationBar from 'react-native-navbar';
@@ -210,12 +212,6 @@ export default class FoodrFrontend extends Component {
       case 'IndexPage':
         return(
           <View style={styles.parentContainer}>
-            <NavigationBar
-              containerStyle={styles.navbar}
-              leftButton={leftButtonConfig}
-              title={titleConfig}
-              rightButton={rightButtonConfig}
-            />
             <IndexPage
               updateCurrentPage = {this.updateCurrentPage}
               userId = {this.state.userId}
@@ -834,6 +830,7 @@ class IndexPage extends Component {
     this._onPressSearchButton = this._onPressSearchButton.bind(this)
     this._onPressScanButton = this._onPressScanButton.bind(this)
     this._onPressSignUpButton = this._onPressSignUpButton.bind(this)
+    this._onPressLoginButton = this._onPressLoginButton.bind(this)
   }
 
   _onPressSearchButton(){
@@ -848,25 +845,47 @@ class IndexPage extends Component {
     this.props.updateCurrentPage("SignUpPage")
   }
 
-  render() {
-    return (
-      <View style={styles.centerContainer}>
-        <TouchableOpacity>
-          <Button title="Scan Product" onPress={this._onPressScanButton} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Button title="Search Product" onPress={this._onPressSearchButton} />
-        </TouchableOpacity>
+  _onPressLoginButton(){
+    this.props.updateCurrentPage("LoginPage")
+  }
 
-        {this.props.userId ?
-          <Text/>
-          :
-          <TouchableOpacity>
-            <Button onPress={this._onPressSignUpButton} title="Sign Up" />
-          </TouchableOpacity>
-        }
+  render() {
+    return(
+      <View>
+        <StatusBar
+          barStyle="light-content"
+        />
+        <Image source={require('./img/bg.png')}>
+          <View style={styles.centerContainer}>
+
+            <Text style={[styles.indexTitle, styles.clearBackbround]}>foodr</Text>
+            <Text style={[{ marginBottom: 30 }, styles.indexTagline, styles.clearBackbround]}>Eat what's good for you.</Text>
+
+            <TouchableOpacity style={styles.indexButtons} onPress={this._onPressScanButton}>
+              <Text style={styles.indexButtonText}>Scan Product</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.indexButtons} onPress={this._onPressSearchButton}>
+              <Text style={styles.indexButtonText}>Search Product</Text>
+            </TouchableOpacity>
+
+            {this.props.userId ?
+              <View></View>
+              :
+
+              <View style={[{ marginTop: 50, alignItems: 'center' }, styles.clearBackbround]}>
+                <TouchableOpacity style={styles.indexButtons} onPress={this._onPressLoginButton}>
+                  <Text style={styles.indexButtonText}>Login</Text>
+                </TouchableOpacity>
+                <Text style={styles.indexTagline}>New User?
+                  <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Register account.</Text>
+                </Text>
+              </View>
+            }
+          </View>
+        </Image>
       </View>
-    );
+    )
+
   }
 }
 
@@ -1004,6 +1023,36 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     backgroundColor: '#00B875',
+  },
+
+// Index Page
+  clearBackbround: {
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+  indexTitle: {
+    color: 'white',
+    fontSize: 40,
+    fontWeight: 'bold',
+  },
+  indexTagline: {
+    color: 'white',
+    fontSize: 12,
+  },
+  indexButtons: {
+    backgroundColor: '#00B875',
+    padding: 10,
+    margin: 5,
+    borderRadius: 25,
+    width: 200,
+    alignItems: 'center',
+  },
+  indexButtonText: {
+    color: 'white',
+    fontSize: 20,
+    lineHeight: 25,
+  },
+  indexRegisterText: {
+    fontWeight: 'bold',
   },
 
 
