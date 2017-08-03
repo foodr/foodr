@@ -124,7 +124,8 @@ export default class FoodrFrontend extends Component {
     .then(jsonData => {
       if (jsonData.found) {
         this.setState({userId: jsonData.id})
-        this.updateCurrentPage('IndexPage')
+        this.findUser()
+        this.updateCurrentPage('UserProfilePage')
         AlertIOS.alert('Login Successful!')
       } else {
         AlertIOS.alert(jsonData.errors.join("\n"))
@@ -418,9 +419,9 @@ class LoginPage extends Component {
         <TouchableOpacity style={styles.insideAppButtons} onPress={this.loginUser}>
           <Text style={styles.indexButtonText}> Go</Text>
         </TouchableOpacity>
-        
+
           <Text style={styles.FormPageTagline}>Don't have an account?
-          <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Sign Up.</Text> 
+          <Text style={styles.indexRegisterText} onPress={this._onPressSignUpButton}> Sign Up.</Text>
         </Text>
       </KeyboardAvoidingView>
     );
@@ -1082,7 +1083,7 @@ const styles = StyleSheet.create({
   indexRegisterText: {
     fontWeight: 'bold',
   },
-  
+
 // Product Page
 productContainer: {
   width: 120,
