@@ -851,7 +851,7 @@ class IndexPage extends Component {
 
   render() {
     return(
-      <View>
+      <View style={styles.centerContainer}>
         <StatusBar
           barStyle="light-content"
         />
@@ -1036,7 +1036,7 @@ const styles = StyleSheet.create({
   },
   indexTagline: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
   },
   indexButtons: {
     backgroundColor: '#00B875',
