@@ -469,11 +469,8 @@ class UserProfilePage extends Component {
         <Text style={styles.header}>Your Profile</Text>
         <Text> {this.props.userDetails.user.email} </Text>
         <Text> Your health grade: {this.scoreConverter()} </Text>
-        <TouchableOpacity>
-          <Button
-            onPress={this.props.logout}
-            title="Logout"
-          />
+        <TouchableOpacity style={styles.insideAppButtons} onPress={this.props.logout}>
+          <Text style={styles.indexButtonText}>Logout</Text>
         </TouchableOpacity>
 
         <Text style={styles.header}>Saved Products</Text>
