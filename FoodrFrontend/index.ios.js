@@ -74,7 +74,8 @@ export default class FoodrFrontend extends Component {
       } else {
         this.updateCurrentPage('NoResultsPage')
       }
-    });
+    })
+    .catch((error) => {}) // currently not catching errors
   }
 
   searchName(name) {
@@ -96,7 +97,8 @@ export default class FoodrFrontend extends Component {
       } else {
         this.updateCurrentPage('NoResultsPage')
       }
-    });
+    })
+    .catch((error) => {}) // currently not catching errors
   }
 
   getProductInfoBySearchID(searchID) {
@@ -113,7 +115,8 @@ export default class FoodrFrontend extends Component {
       } else {
         this.updateCurrentPage('NoResultsPage')
       }
-    });
+    })
+    .catch((error) => {}) // currently not catching errors
   }
 
   saveSearch(searchId) {
@@ -130,6 +133,7 @@ export default class FoodrFrontend extends Component {
           AlertIOS.alert('Product was not saved.');
         }
       })
+      .catch((error) => {}) // currently not catching errors
     } else {
       AlertIOS.alert('Please sign up or login to save an item.');
     }
@@ -149,6 +153,7 @@ export default class FoodrFrontend extends Component {
         AlertIOS.alert(jsonData.errors.join("\n"))
       }
     })
+    .catch((error) => {}) // currently not catching errors
   }
 
   findUser(){
@@ -166,6 +171,7 @@ export default class FoodrFrontend extends Component {
           this.updateCurrentPage('IndexPage');
         }
       })
+      .catch((error) => {}) // currently not catching errors
     } else {
       AlertIOS.alert('Please sign up or login to access your profile.');
     }
@@ -184,6 +190,7 @@ export default class FoodrFrontend extends Component {
         AlertIOS.alert(jsonData.errors.join("\n"))
       }
     })
+    .catch((error) => {}) // currently not catching errors
   }
 
   updateCurrentPage(pageName) {
