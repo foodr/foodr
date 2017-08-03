@@ -41,6 +41,7 @@ export default class FoodrFrontend extends Component {
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchUPC = this.searchUPC.bind(this)
     this.searchName = this.searchName.bind(this)
+    this.getProductInfoBySearchID = this.getProductInfoBySearchID.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
@@ -62,8 +63,8 @@ export default class FoodrFrontend extends Component {
   searchUPC(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -79,8 +80,8 @@ export default class FoodrFrontend extends Component {
   searchName(name) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/name/' + name + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/name/' + name + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       // Detects if an exact match was found
@@ -98,10 +99,26 @@ export default class FoodrFrontend extends Component {
     });
   }
 
+  getProductInfoBySearchID(searchID) {
+    this.updateCurrentPage('SearchingPage')
+
+    fetch('http://localhost:3000/searches/' + searchID)
+    .then((data) => data.json())
+    .then((jsonData) => {
+      this.setState({ foundProduct: jsonData })
+      if (this.state.foundProduct.found) {
+        this.setState({foundProductSaved: jsonData.search.is_saved})
+        this.updateCurrentPage('ProductPage')
+      } else {
+        this.updateCurrentPage('NoResultsPage')
+      }
+    });
+  }
+
   saveSearch(searchId) {
     if (this.state.userId) {
-      fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
-      // fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
+      // fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
+      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
       .then(data => data.json())
       .then(jsonData => {
         if (jsonData.save_successful) {
@@ -118,8 +135,8 @@ export default class FoodrFrontend extends Component {
   }
 
   authenticateUser(email, password) {
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
-    // fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
+    fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.found) {
@@ -135,8 +152,8 @@ export default class FoodrFrontend extends Component {
 
   findUser(){
     if (this.state.userId) {
-      fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
-      // fetch('http://localhost:3000/users/profile/' + this.state.userId)
+      // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
+      fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -154,8 +171,8 @@ export default class FoodrFrontend extends Component {
   }
 
   createUser(email, password) {
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
-    // fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
+    fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.saved) {
@@ -264,6 +281,7 @@ export default class FoodrFrontend extends Component {
               <ProductPage
                 foundProduct = {this.state.foundProduct}
                 foundProductSaved = {this.state.foundProductSaved}
+                searchResults = {this.state.searchResults}
                 updateCurrentPage = {this.updateCurrentPage}
                 saveSearch = {this.saveSearch}
               />
@@ -281,7 +299,7 @@ export default class FoodrFrontend extends Component {
             />
             <ScrollView>
               <ResultsPage
-                searchName = {this.searchName}
+                searchUPC = {this.searchUPC}
                 searchResults = {this.state.searchResults}
               />
             </ScrollView>
@@ -355,7 +373,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView>
               <UserProfilePage
                 userDetails = {this.state.userDetails}
-                searchUPC = {this.searchUPC}
+                getProductInfoBySearchID = {this.getProductInfoBySearchID}
                 logout = {this.logout}
               />
             </ScrollView>
@@ -431,7 +449,7 @@ class LoginPage extends Component {
 
 
 class UserProfilePage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
     this.state = {
@@ -459,8 +477,8 @@ class UserProfilePage extends Component {
       }
   }
 
-  handleButtonPress(productName) {
-    return this.props.searchUPC(productName)
+  handleButtonPress(productId) {
+    return this.props.getProductInfoBySearchID(productId, true)
   }
 
 
@@ -478,23 +496,25 @@ class UserProfilePage extends Component {
             dataSource={this.state.savedProducts}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             renderRow={(rowData) =>
-              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
-                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.id)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.product_name}</Text></View>
               </TouchableOpacity>}
           />
         </View>
+
 
       <View style={styles.recentlySearchedContainer}>
         <Text style={styles.textSmallHeader}>recently searched</Text>
         <ListView
           horizontal={true}
           dataSource={this.state.recentSearches}
+
           renderRow={(rowData) =>
-            <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
+            <TouchableOpacity onPress={() => this.handleButtonPress(rowData.id)}>
               <View>
                 <Image
                   style={styles.productImageCircle}
-                  source={{uri: rowData.img_url}}
+                  source={{uri: rowData.img_url}} //need to insert image url to json
             />
           </View>
         </TouchableOpacity>}
@@ -657,12 +677,13 @@ class ResultsPage extends Component {
     this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
-  handleButtonPress(productName) {
-    return this.props.searchName(productName)
+  handleButtonPress(productUPC) {
+    return this.props.searchUPC(productUPC)
   }
 
   render() {
     return(
+
       <View>
         <Text style={styles.textSmallHeader}>possible matches</Text>
 
@@ -671,7 +692,7 @@ class ResultsPage extends Component {
             dataSource={this.state.results}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             renderRow={(rowData) =>
-              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.name)}>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
                 <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
               </TouchableOpacity>}
           />
@@ -913,7 +934,7 @@ class SearchingPage extends Component {
           size = 'large'
           style={{marginBottom: 20}}
         />
-        <Text>Searching...</Text>
+        <Text>Loading...</Text>
       </View>
     );
   }

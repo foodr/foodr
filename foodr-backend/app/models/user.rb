@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
 
   def recent_searches
-    self.searches.order('created_at DESC').limit(3).map { |search| search.product }
+    self.searches.order('created_at DESC').limit(3)
   end
 
   def grade

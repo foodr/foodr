@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   get 'users/login' , to: 'users#login'
   post 'users/', to: 'users#create'
   post 'searches/:id/save', to: 'searches#save'
+  get 'searches/:id', to: 'searches#show'
 end
