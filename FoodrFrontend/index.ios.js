@@ -1140,7 +1140,7 @@ ingredientButton: {
   profileScore: {
     justifyContent: 'center',
     backgroundColor: '#AB1B70',
-    height: 175,
+    height: 215,
     alignItems: 'center',
     paddingVertical: 25,
   },
