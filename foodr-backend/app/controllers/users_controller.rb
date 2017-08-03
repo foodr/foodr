@@ -20,10 +20,25 @@ class UsersController < ApplicationController
 
     if user
       searches = user.searches
-      searched_products = user.recent_searches
-      # ordered_searched_products = searched_products.reverse
-      saved_product_ids = user.searches.where(is_saved: true).pluck(:product_id)
-      saved_products = Product.find(saved_product_ids)
+
+      # find recent searches
+      searches = user.recent_searches
+
+      # add product name to each search
+      searched_products = searches.map do |search|
+        search_hash = JSON.parse(search.to_json)
+        search_hash[:product_name] = search.product.name
+        search_hash
+      end
+
+      # find saved searches
+      saved_searches = user.searches.where(is_saved: true)
+
+      saved_products = saved_searches.map do |search|
+        search_hash = JSON.parse(search.to_json)
+        search_hash[:product_name] = search.product.name
+        search_hash
+      end
 
       render json: {
         found: true,

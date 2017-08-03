@@ -27,7 +27,7 @@ export default class FoodrFrontend extends Component {
   constructor() {
     super()
     this.state = {
-      currentPage: 'CameraPage',
+      currentPage: 'IndexPage',
       foundProduct: {},
       userDetails: {},
       foundProductSaved: false,
@@ -39,7 +39,7 @@ export default class FoodrFrontend extends Component {
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchUPC = this.searchUPC.bind(this)
     this.searchName = this.searchName.bind(this)
-    this.getProductInfo = this.getProductInfo.bind(this)
+    this.getProductInfoBySearchID = this.getProductInfoBySearchID.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
@@ -61,8 +61,8 @@ export default class FoodrFrontend extends Component {
   searchUPC(upc) {
     this.updateCurrentPage('SearchingPage')
 
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
-    // fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/upc/' + upc + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/products/upc/' + upc + "?user_id=" + this.state.userId)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -97,11 +97,10 @@ export default class FoodrFrontend extends Component {
     });
   }
 
-  getProductInfo(id) {
+  getProductInfoBySearchID(searchID) {
     this.updateCurrentPage('SearchingPage')
 
-    // fetch('https://dbc-foodr-api-vc.herokuapp.com/products/' + id + "?user_id=" + this.state.userId)
-    fetch('http://localhost:3000/products/' + id + "?user_id=" + this.state.userId)
+    fetch('http://localhost:3000/searches/' + searchID)
     .then((data) => data.json())
     .then((jsonData) => {
       this.setState({ foundProduct: jsonData })
@@ -116,8 +115,8 @@ export default class FoodrFrontend extends Component {
 
   saveSearch(searchId) {
     if (this.state.userId) {
-      fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
-      // fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
+      // fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
+      fetch('http://localhost:3000/searches/' + searchId + '/save', {method: 'POST'})
       .then(data => data.json())
       .then(jsonData => {
         if (jsonData.save_successful) {
@@ -134,8 +133,8 @@ export default class FoodrFrontend extends Component {
   }
 
   authenticateUser(email, password) {
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
-    // fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/login?email=' + email + '&password=' + password)
+    fetch('http://localhost:3000/users/login?email=' + email + '&password=' + password)
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.found) {
@@ -150,8 +149,8 @@ export default class FoodrFrontend extends Component {
 
   findUser(){
     if (this.state.userId) {
-      fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
-      // fetch('http://localhost:3000/users/profile/' + this.state.userId)
+      // fetch('https://dbc-foodr-api-vc.herokuapp.com/users/profile/' + this.state.userId)
+      fetch('http://localhost:3000/users/profile/' + this.state.userId)
       .then(data => data.json())
       .then(jsonData => {
         this.setState({ userDetails: jsonData })
@@ -169,8 +168,8 @@ export default class FoodrFrontend extends Component {
   }
 
   createUser(email, password) {
-    fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
-    // fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
+    // fetch('https://dbc-foodr-api-vc.herokuapp.com/users?email=' + email + '&password=' + password, {method: 'POST'})
+    fetch('http://localhost:3000/users?email=' + email + '&password=' + password, {method: 'POST'})
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.saved) {
@@ -277,6 +276,7 @@ export default class FoodrFrontend extends Component {
               <ProductPage
                 foundProduct = {this.state.foundProduct}
                 foundProductSaved = {this.state.foundProductSaved}
+                searchResults = {this.state.searchResults}
                 updateCurrentPage = {this.updateCurrentPage}
                 saveSearch = {this.saveSearch}
               />
@@ -294,7 +294,7 @@ export default class FoodrFrontend extends Component {
             />
             <ScrollView>
               <ResultsPage
-                getProductInfo = {this.getProductInfo}
+                searchUPC = {this.searchUPC}
                 searchResults = {this.state.searchResults}
               />
             </ScrollView>
@@ -368,7 +368,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView>
               <UserProfilePage
                 userDetails = {this.state.userDetails}
-                searchUPC = {this.searchUPC}
+                getProductInfoBySearchID = {this.getProductInfoBySearchID}
                 logout = {this.logout}
               />
             </ScrollView>
@@ -444,7 +444,7 @@ class LoginPage extends Component {
 
 
 class UserProfilePage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
     this.state = {
@@ -472,8 +472,8 @@ class UserProfilePage extends Component {
       }
   }
 
-  handleButtonPress(productName) {
-    return this.props.searchUPC(productName)
+  handleButtonPress(productId) {
+    return this.props.getProductInfoBySearchID(productId, true)
   }
 
 
@@ -493,13 +493,13 @@ class UserProfilePage extends Component {
         <Text style={styles.header}>Saved Products</Text>
         <ListView
           dataSource={this.state.savedProducts}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
+          renderRow={(rowData) => <Button title={rowData.product_name} onPress={() => this.handleButtonPress(rowData.id)}/>}
         />
 
         <Text style={styles.header}>Recent Searches</Text>
         <ListView
           dataSource={this.state.recentSearches}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
+          renderRow={(rowData) => <Button title={rowData.product_name} onPress={() => this.handleButtonPress(rowData.id)}/>}
         />
       </View>
     );
@@ -656,8 +656,8 @@ class ResultsPage extends Component {
     this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
-  handleButtonPress(productId) {
-    return this.props.getProductInfo(productId)
+  handleButtonPress(productUPC) {
+    return this.props.searchUPC(productUPC)
   }
 
   render() {
@@ -666,7 +666,7 @@ class ResultsPage extends Component {
         <Text style={styles.header}>Possible Matches:</Text>
         <ListView
           dataSource={this.state.results}
-          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.id)}/>}
+          renderRow={(rowData) => <Button title={rowData.name} onPress={() => this.handleButtonPress(rowData.upc)}/>}
         />
       </View>
     )
