@@ -140,10 +140,10 @@ export default class FoodrFrontend extends Component {
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.found) {
+        AlertIOS.alert('Login Successful!')
         this.setState({userId: jsonData.id})
         this.findUser()
         this.updateCurrentPage('UserProfilePage')
-        AlertIOS.alert('Login Successful!')
       } else {
         AlertIOS.alert(jsonData.errors.join("\n"))
       }
