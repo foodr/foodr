@@ -41,6 +41,7 @@ export default class FoodrFrontend extends Component {
     this.updateCurrentPage = this.updateCurrentPage.bind(this)
     this.searchUPC = this.searchUPC.bind(this)
     this.searchName = this.searchName.bind(this)
+    this.getProductInfoBySearchID = this.getProductInfoBySearchID.bind(this)
     this.updateSearchTerm = this.updateSearchTerm.bind(this)
     this.saveSearch = this.saveSearch.bind(this)
     this.findUser = this.findUser.bind(this)
@@ -98,6 +99,23 @@ export default class FoodrFrontend extends Component {
     });
   }
 
+  getProductInfoBySearchID(searchID) {
+    this.updateCurrentPage('SearchingPage')
+
+    fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchID)
+    // fetch('http://localhost:3000/searches/' + searchID)
+    .then((data) => data.json())
+    .then((jsonData) => {
+      this.setState({ foundProduct: jsonData })
+      if (this.state.foundProduct.found) {
+        this.setState({foundProductSaved: jsonData.search.is_saved})
+        this.updateCurrentPage('ProductPage')
+      } else {
+        this.updateCurrentPage('NoResultsPage')
+      }
+    });
+  }
+
   saveSearch(searchId) {
     if (this.state.userId) {
       fetch('https://dbc-foodr-api-vc.herokuapp.com/searches/' + searchId + '/save', {method: 'POST'})
@@ -123,10 +141,10 @@ export default class FoodrFrontend extends Component {
     .then(data => data.json())
     .then(jsonData => {
       if (jsonData.found) {
+        AlertIOS.alert('Login Successful!')
         this.setState({userId: jsonData.id})
         this.findUser()
         this.updateCurrentPage('UserProfilePage')
-        AlertIOS.alert('Login Successful!')
       } else {
         AlertIOS.alert(jsonData.errors.join("\n"))
       }
@@ -264,6 +282,7 @@ export default class FoodrFrontend extends Component {
               <ProductPage
                 foundProduct = {this.state.foundProduct}
                 foundProductSaved = {this.state.foundProductSaved}
+                searchResults = {this.state.searchResults}
                 updateCurrentPage = {this.updateCurrentPage}
                 saveSearch = {this.saveSearch}
               />
@@ -281,7 +300,7 @@ export default class FoodrFrontend extends Component {
             />
             <ScrollView>
               <ResultsPage
-                searchName = {this.searchName}
+                searchUPC = {this.searchUPC}
                 searchResults = {this.state.searchResults}
               />
             </ScrollView>
@@ -355,7 +374,7 @@ export default class FoodrFrontend extends Component {
             <ScrollView>
               <UserProfilePage
                 userDetails = {this.state.userDetails}
-                searchUPC = {this.searchUPC}
+                getProductInfoBySearchID = {this.getProductInfoBySearchID}
                 logout = {this.logout}
               />
             </ScrollView>
@@ -431,7 +450,7 @@ class LoginPage extends Component {
 
 
 class UserProfilePage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     var ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
     this.state = {
@@ -459,8 +478,8 @@ class UserProfilePage extends Component {
       }
   }
 
-  handleButtonPress(productName) {
-    return this.props.searchUPC(productName)
+  handleButtonPress(productId) {
+    return this.props.getProductInfoBySearchID(productId, true)
   }
 
 
@@ -479,11 +498,12 @@ class UserProfilePage extends Component {
             dataSource={this.state.savedProducts}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             renderRow={(rowData) =>
-              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
-                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.id)}>
+                <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.product_name}</Text></View>
               </TouchableOpacity>}
           />
         </View>
+
 
       <View style={styles.recentlySearchedContainer}>
         <Text style={styles.textSmallHeaderRecent}>recently searched</Text>
@@ -491,12 +511,13 @@ class UserProfilePage extends Component {
           enableEmptySections={true}
           horizontal={true}
           dataSource={this.state.recentSearches}
+
           renderRow={(rowData) =>
-            <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
+            <TouchableOpacity onPress={() => this.handleButtonPress(rowData.id)}>
               <View>
                 <Image
                   style={styles.productImageCircle}
-                  source={{uri: rowData.img_url}}
+                  source={{uri: rowData.img_url}} //need to insert image url to json
             />
           </View>
         </TouchableOpacity>}
@@ -515,10 +536,6 @@ class CameraPage extends Component {
     super()
     this.onBarCodeRead = this.onBarCodeRead.bind(this)
     this.onPressSearchButton = this.onPressSearchButton.bind(this)
-
-    // for testing
-    this.existingItem = this.existingItem.bind(this)
-    this.nonExistingItem = this.nonExistingItem.bind(this)
   }
 
   onBarCodeRead(e) {
@@ -528,17 +545,6 @@ class CameraPage extends Component {
 
   onPressSearchButton() {
     this.props.updateCurrentPage("SearchPage")
-  }
-
-  // for testing
-  existingItem() {
-    this.props.updateSearchTerm('Product')
-    this.props.searchUPC('0028400344371')
-  }
-
-  nonExistingItem() {
-    this.props.updateSearchTerm('Product')
-    this.props.searchUPC('asdf')
   }
 
   render() {
@@ -554,10 +560,8 @@ class CameraPage extends Component {
         <Text style={styles.contentSmall}>The camera will automatically detect when a barcode is present</Text>
 
         <Text style={styles.textSmall}>{"\n\n"}No item to scan?</Text>
-
-
         <TouchableOpacity onPress={this.onPressSearchButton}>
-          <Text style={styles.indexButtonTextInverse}> Enter Search Term </Text>
+          <Text style={styles.indexButtonTextInverse}>Enter Search Term</Text>
         </TouchableOpacity>
       </View>
     );
@@ -647,12 +651,13 @@ class ResultsPage extends Component {
     this.handleButtonPress = this.handleButtonPress.bind(this)
   }
 
-  handleButtonPress(productName) {
-    return this.props.searchName(productName)
+  handleButtonPress(productUPC) {
+    return this.props.searchUPC(productUPC)
   }
 
   render() {
     return(
+
       <View>
         <Text style={styles.textSmallHeader}>possible matches</Text>
 
@@ -661,7 +666,7 @@ class ResultsPage extends Component {
             dataSource={this.state.results}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
             renderRow={(rowData) =>
-              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.name)}>
+              <TouchableOpacity onPress={() => this.handleButtonPress(rowData.upc)}>
                 <View><Text style={[styles.textMedium, styles.listItems]}>{rowData.name}</Text></View>
               </TouchableOpacity>}
           />
@@ -908,7 +913,7 @@ class SearchingPage extends Component {
           size = 'large'
           style={{marginBottom: 20}}
         />
-        <Text>Searching...</Text>
+        <Text>Loading...</Text>
       </View>
     );
   }
@@ -964,14 +969,12 @@ class SignUpPage extends Component {
   }
 }
 
-// FOR TESTING
-
 class DefaultPage extends Component {
   render() {
     return(
-      <View style={styles.body}>
-        <Text style={styles.header}>Default Page</Text>
-        <Text>The case statement hit default</Text>
+      <View style={styles.centerContainer}>
+        <Text style={[styles.header, {color: 'red'}]}>404 Error</Text>
+        <Text style={{color: 'red'}}>Page not found</Text>
       </View>
     );
   }
